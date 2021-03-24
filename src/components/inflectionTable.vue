@@ -289,7 +289,7 @@ import inflectionRowsAdj from './inflectionRowsAdj.vue'
 
 import { calculateStandardParadigms, // compareParadigms,
          word_formsEqual, hasTags, tagToName
-       } from '@/components/mixins/ordbankUtils.js'
+       } from './mixins/ordbankUtils.js'
 
 const posNames = { NOUN: "substantiv",
                    VERB: "verb",

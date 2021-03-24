@@ -29,7 +29,7 @@
 import $ from 'jquery'
 
 import { inflectedForm, tagToName
-       } from '@/components/mixins/ordbankUtils.js' 
+       } from './mixins/ordbankUtils.js' 
 
 export default {
     name: 'inflectionRowsAdj',

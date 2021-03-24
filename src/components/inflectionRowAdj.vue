@@ -19,7 +19,7 @@
 import $ from 'jquery'
 
 import { inflectedForm
-       } from '@/components/mixins/ordbankUtils.js' 
+       } from './mixins/ordbankUtils.js'
 
 export default {
     name: 'inflectionRowAdj',

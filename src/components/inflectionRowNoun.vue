@@ -23,7 +23,7 @@
 import $ from 'jquery'
 
 import { inflectedForm, tagToName, indefArticle
-       } from '@/components/mixins/ordbankUtils.js' 
+       } from './mixins/ordbankUtils.js' 
 
 export default {
     name: 'inflectionRowNoun',
