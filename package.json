@@ -1,6 +1,6 @@
 {
   "name": "inflection-table",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "scripts": {
     "build": "npm run build:umd & npm run build:es & npm run build:unpkg",
     "build:umd": "rollup --config build/rollup.config.js --format umd --file dist/inflection-table.umd.js",

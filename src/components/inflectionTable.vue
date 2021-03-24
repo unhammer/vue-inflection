@@ -417,7 +417,7 @@ export default {
             return this.lemma.mode == 'edit' || this.lemma.mode == 'new'
         },
         firstLemma: function() {
-          return this.lemmas && this.lemmas[0]
+          return this.lemmaList && this.lemmaList[0]
         }
     },
     methods: {
