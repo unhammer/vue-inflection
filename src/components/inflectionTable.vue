@@ -319,14 +319,14 @@ export default {
                 },
     props: ['lemmaList','showTable','inline', 'mq'],
     data: function () {
-        return { wordClass: posNames[this.firstLemma && this.firstLemma.word_class] || this.firstLemma && this.firstLemma.word_class,
-                 language: this.firstLemma && this.firstLemma.language,
+        return { wordClass: posNames[this.lemmaList && this.lemmaList[0] && this.firstLemma.word_class] || this.lemmaList && this.lemmaList[0] && this.firstLemma.word_class,
+                 language: this.lemmaList && this.lemmaList[0] && this.firstLemma.language,
                  hasFem: this.hasInflForm(['Pos','Fem']),
                  hasDeg: this.hasInflForm(['Cmp']),
                  hasPerfPart: this.hasInflForm(['Adj','<PerfPart>']),
                  hasPerfPartDef: this.hasInflForm(['Adj','<PerfPart>','Def']),
                  hasImp: this.hasInflForm(['Imp']),
-                 isUninflected: !['NOUN','ADJ','VERB'].find(wc=>wc==this.firstLemma && this.firstLemma.word_class),
+                 isUninflected: !['NOUN','ADJ','VERB'].find(wc=>wc==this.lemmaList && this.lemmaList[0] && this.firstLemma.word_class),
                  // genderList:
                  show: true,
                  lemma: this.firstLemma,
@@ -415,14 +415,11 @@ export default {
         },
         edit: function () {
             return this.lemma.mode == 'edit' || this.lemma.mode == 'new'
-        },
-        firstLemma: function() {
-          return this.lemmaList && this.lemmaList[0]
         }
     },
     methods: {
         hasInflForm: function (tagList) {
-            let info = this.firstLemma && this.firstLemma.paradigm_info && this.firstLemma.paradigm_info.find(
+            let info = this.lemmaList && this.lemmaList[0] && this.firstLemma.paradigm_info && this.firstLemma.paradigm_info.find(
                 paradigm => (paradigm.standardisation == 'STANDARD' &&
                              !paradigm.to &&
                              paradigm.inflection.find(
