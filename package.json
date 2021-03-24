@@ -1,6 +1,6 @@
 {
   "name": "inflection-table",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "scripts": {
     "build": "node build/build.js",
     "build-docs": "node build/build-docs.js",

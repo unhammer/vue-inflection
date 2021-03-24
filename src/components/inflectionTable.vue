@@ -306,6 +306,7 @@ const posNames = { NOUN: "substantiv",
                  }
 
 export default {
+    name: 'inflectionTable',
     components: { inflectionRowNoun,
                   inflectionRowAdj,
                   inflectionRowAdjDeg,
