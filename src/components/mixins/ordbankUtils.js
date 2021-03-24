@@ -4,7 +4,7 @@
 export function calculateStandardParadigms (lemma,edit) {
     if (lemma.paradigm_info) {
         return mergeParadigms(
-            lemma.paradigm_info?.filter(paradigm =>
+            lemma.paradigm_info && lemma.paradigm_info.filter(paradigm =>
                                         paradigm.standardisation=='STANDARD' &&
                                         !paradigm.to && // we assume this is in the past if not null
                                     (!edit || !paradigm.exclude)
@@ -233,8 +233,8 @@ function inflectedForms (paradigm, tagList, exclTagList) {
                   }
                   return found
                 })
-    return [inflection[0]?.rowspan,
-            inflection[0]?.index,
+    return [inflection[0] && inflection[0].rowspan,
+            inflection[0] && inflection[0].index,
             appendWordForms(inflection.map(i => i.word_form))]
 }
 
@@ -324,4 +324,3 @@ export function indefArticle (tagList, language) {
         return indefArticle_nno[tagList[1]]
     }
 }
-    
