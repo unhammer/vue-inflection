@@ -8,10 +8,7 @@ publish:
   - tags
   artifacts:
     paths:
-      - package.json
-      - babel.config.js
-      - dist/
-      - src/
+      - module.tar.gz
     expire_in: never
 
   script:
@@ -20,3 +17,9 @@ publish:
   - mv -f package.tmp package.json
   - npm install
   - npm run build
+  - mkdir package
+  - cp package.json package/
+  - cp babel.config.json package/
+  - cp -r dist package/
+  - cp -r src package/
+  - tar -czvf module.tar.gz package/
