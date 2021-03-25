@@ -2,7 +2,7 @@ stages:
   - publish
 
 publish:
-  image: uibit/awscli:latest
+  image: node:latest
   stage: publish
   only:
   - tags
