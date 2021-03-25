@@ -19,7 +19,7 @@ publish:
   - npm run build
   - mkdir package
   - cp package.json package/
-  - cp babel.config.json package/
+  - cp babel.config.js package/
   - cp -r dist package/
   - cp -r src package/
   - tar -czvf module.tar.gz package/
