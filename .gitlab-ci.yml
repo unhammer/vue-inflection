@@ -11,7 +11,7 @@ publish:
       - package.json
       - babel.config.js
       - dist/
-      - source/
+      - src/
     expire_in: never
 
   script:
