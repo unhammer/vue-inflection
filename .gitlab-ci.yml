@@ -1,0 +1,18 @@
+publish:
+  image: uibit/awscli:latest
+  stage: publish
+  only:
+  - tags
+  artifacts:
+    paths:
+      - package.json
+      - babel.config.js
+      - dist/
+      - source/
+    expire_in: never
+
+  script:
+  - apt-get update && apt-get install jq
+  - jq ".version = \"$CI_COMMIT_REF_NAME\"" package.json > package.tmp
+  - mv -f package.tmp package.json
+  - npm run build
