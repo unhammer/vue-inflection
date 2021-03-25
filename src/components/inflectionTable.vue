@@ -326,7 +326,7 @@ export default {
                  hasPerfPart: this.hasInflForm(['Adj','<PerfPart>']),
                  hasPerfPartDef: this.hasInflForm(['Adj','<PerfPart>','Def']),
                  hasImp: this.hasInflForm(['Imp']),
-                 isUninflected: !['NOUN','ADJ','VERB'].find(wc=>wc==this.lemmaList && this.lemmaList[0] && this.lemmaList[0] .word_class),
+                 isUninflected: !['NOUN','ADJ','VERB'].find(wc=>wc==(this.lemmaList && this.lemmaList[0] && this.lemmaList[0].word_class)),
                  // genderList:
                  show: true,
                  lemma: this.lemmaList && this.lemmaList[0] ,
