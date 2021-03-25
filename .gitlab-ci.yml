@@ -15,7 +15,7 @@ publish:
     expire_in: never
 
   script:
-  - apt-get update && apt-get install jq
+  - apt-get update && apt-get install -y jq
   - jq ".version = \"$CI_COMMIT_REF_NAME\"" package.json > package.tmp
   - mv -f package.tmp package.json
   - npm run build
