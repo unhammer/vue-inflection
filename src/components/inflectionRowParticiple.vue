@@ -1,6 +1,6 @@
 <template>
 <tr>
-  <td class="infl" :class="mq"
+  <td class="infl"
       v-for="([prefix, [rowspan,rowindex,forms], suffix], index) in rows"
       :key="index"
       :rowspan="rowspan"
@@ -16,7 +16,7 @@
       </nobr>
     </span>
   </td>
-
+  
 </tr>
 </template>
 
@@ -25,20 +25,20 @@
 // needed for hiliting
 import $ from 'jquery'
 
-import { inflectedForm
-       } from './mixins/ordbankUtils.js'
+import { inflectedForm, indefArticle
+       } from './mixins/ordbankUtils.js' 
 
 export default {
     name: 'inflectionRowParticiple',
-    props: ['paradigm','hasPerfPart','language','part', 'mq'],
+    props: ['paradigm','hasPerfPart','language','part'],
     data: function () {
         return { rows: [
             this.hasPerfPart && this.part!=4 ? this.inflForm(['Adj','Masc/Fem'],
-                                             this.language == 'nob' ? 'en/ei' : 'ein/ei',
-                                             '+ substantiv') : null,
+                                                             indefArticle(['Masc/Fem'], this.language),
+                                                             '+ substantiv') : null,
             this.hasPerfPart && this.part!=4 ? this.inflForm(['Adj','Neuter'],
-                                             this.language == 'nob' ? 'et' : 'eit',
-                                             '+ substantiv') : null,
+                                                             indefArticle(['Neuter'], this.language),
+                                                             '+ substantiv') : null,
             this.hasPerfPart && this.part!=4 ? this.inflForm(['Adj','Def'],'den/det', '+ substantiv') : null,
             this.hasPerfPart && this.part!=3 ? this.inflForm(['Adj','Plur'],null,'+ substantiv') : null,
             this.part!=3 ? this.inflForm(['Adj','<PresPart>']) : null
