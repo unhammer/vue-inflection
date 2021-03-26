@@ -49,8 +49,6 @@ export default {
             []
         }
     },
-    computed: {
-    },
     methods: {
         isMasc: function (paradigm) {
             return paradigm.tags.find(tag => tag == 'Masc')

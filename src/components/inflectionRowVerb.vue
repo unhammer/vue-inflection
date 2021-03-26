@@ -1,6 +1,6 @@
 <template>
 <tr>
-  <td class="infl" :class="mq"
+  <td class="infl"
       v-for="([prefix, [rowspan,rowindex,forms], suffix], index) in rows"
       :key="index"
       :rowspan="rowspan"
@@ -23,7 +23,7 @@
 import $ from 'jquery'
 
 import { inflectedForm
-       } from './mixins/ordbankUtils.js'
+       } from './mixins/ordbankUtils.js' 
 
 export default {
     name: 'inflectionRowVerb',

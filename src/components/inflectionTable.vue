@@ -1,42 +1,39 @@
 <template>
 <div @mouseover="unhiliteRows()">
   <div style="overflow-y: hidden">
-  <template v-if="lemma && lemma.word_class=='NOUN'">
-    <table v-if="mq!='xs'"
-           class="infl rounded top"
-           :class="mq"
-           v-show="show || showTable">
-      <tr>
-        <th class="lemma xborder-lemma">
+    <template v-if="lemma && lemma.word_class=='NOUN'">
+    <div v-if="mq!='xs'"
+         class="infl rounded top"
+         :class="mq">
+      <div class="lemma xborder-lemma">
           <span class="infl-lemma">{{lemma.lemma}} </span>
           <span class="sub">{{wordClass}}</span>
           <span class="sub" v-if="nounGender"> {{nounGender}}</span>
-        </th>
-      </tr>
-      <tr>
-        <td>
-          <table class="infl rounded" :class="mq">
+      </div>
+      <div>
+        <table class="infl rounded" :class="mq">
             <tr>
               <th class="infl sub xborder-top-left" :class="mq"
                   v-if="!nounGender"
                   rowspan='2'>kjønn</th>
-              <th class="infl xborder-top" :class="mq" v-if="language=='nob'" colspan='2'>entall</th>
-              <th class="infl xborder-top-right" :class="mq" v-if="language=='nob'" colspan='2'>flertall</th>
-              <th class="infl xborder-top" :class="mq" v-if="language=='nno'" colspan='2'>eintal</th>
-              <th class="infl xborder-top-right" :class="mq" v-if="language=='nno'" colspan='2'>fleirtal</th>
+              <th class="infl xborder-top" :class="mq" colspan='2'>
+                {{tagToName('Sing')}}</th>
+              <th class="infl xborder-top-right" :class="mq" colspan='2'>
+                {{tagToName('Plur')}}
+              </th>
             </tr>
             <tr>
               <th class="infl sub xborder-bottom" :class="mq">
-                ubestemt <span v-if="mq!='xs'">form</span>
+                ubestemt form
               </th>
               <th class="infl sub xborder-bottom" :class="mq">
-                bestemt <span v-if="mq!='xs'">form</span>
+                bestemt form
               </th>
               <th class="infl sub xborder-bottom" :class="mq">
-                ubestemt <span v-if="mq!='xs'">form</span>
+                ubestemt form
               </th>
               <th class="infl sub xborder-bottom" :class="mq">
-                bestemt <span v-if="mq!='xs'">form</span>
+                bestemt form
               </th>
             </tr>
             <inflectionRowNoun v-for="(paradigm, index) in standardParadigms"
@@ -45,42 +42,35 @@
                                :language="language"
                                :paradigm="paradigm"/>
           </table>
-        </td>
-      </tr>
-    </table>
-    <table v-else style="margin: 1em auto"
-      class="infl rounded top" :class="mq" v-show="show || showTable">
-      <tr>
-        <th class="lemma">
-          <span class="infl-lemma">{{lemma.lemma}} </span>
-          <span class="sub">{{wordClass}}</span>
-          <span class="sub" v-if="nounGender"> {{nounGender}}</span>
-        </th>
-      </tr>
-      <tr>
-        <td>
-          <table class="infl" :class="mq">
-            <inflectionRowsNoun v-for="(tags, index) in inflTagsNoun"
-                                :key="index"
-                                :tags="tags"
-                                :language="language"
-                                :paradigms="standardParadigms"/>
-          </table>
-        </td>
-      </tr>
-    </table>
+      </div>
+    </div>
+    <div v-else style="margin: 1em auto"
+         class="infl rounded top"
+         :class="mq">
+      <div class="lemma">
+        <span class="infl-lemma">{{lemma.lemma}} </span>
+        <span class="sub">{{wordClass}}</span>
+        <span class="sub" v-if="nounGender"> {{nounGender}}</span>
+      </div>
+      <div>
+        <table class="infl" :class="mq">
+          <inflectionRowsNoun v-for="(tags, index) in inflTagsNoun"
+                              :key="index"
+                              :tags="tags"
+                              :language="language"
+                              :paradigms="standardParadigms"/>
+        </table>
+      </div>
+    </div>
   </template>
   <template v-if="lemma && lemma.word_class=='VERB'">
-    <table v-if="mq!='xs'"
-           class="infl rounded top" :class="mq" v-show="show || showTable">
-      <tr>
-        <th class="lemma xborder-lemma">
-          <span class="infl-lemma">{{lemma.lemma}} </span>
-          <span class="sub">{{wordClass}}</span>
-        </th>
-      </tr>
-      <tr v-for="i in mq=='xs' ? [1,2] : [0]" :key="i">
-        <td>
+    <div v-if="mq!='xs'"
+           class="infl rounded top" :class="mq">
+      <div class="lemma xborder-lemma">
+        <span class="infl-lemma">{{lemma.lemma}} </span>
+        <span class="sub">{{wordClass}}</span>
+      </div>
+      <div v-for="i in mq=='xs' ? [1,2] : [0]" :key="i">
           <table class="infl rounded" :class="mq">
             <tr>
               <th v-if="!i || i==1" class="infl xborder-top-left" :class="mq">infinitiv</th>
@@ -89,16 +79,13 @@
               <th v-if="!i || i==2" class="infl xborder-top" :class="mq">presens perfektum</th>
               <th v-if="(!i || i==2) && hasImp" class="infl xborder-top-right" :class="mq">imperativ</th>
             </tr>
-            <inflectionRowVerb v-for="(paradigm, index) in standardParadigmsVerb"
+            <inflectionRowVerb v-for="(paradigm, index) in standardParadigms"
                                :key="index"
                                :part="i"
-                               :paradigm="paradigm"
-                               :mq="mq"/>
+                               :paradigm="paradigm"/>
           </table>
-        </td>
-      </tr>
-      <tr v-for="j in mq=='xs' ? [3,4] : [-1]" :key="j">
-        <td>
+      </div>
+      <div v-for="j in mq=='xs' ? [3,4] : [-1]" :key="j">
           <table class="infl rounded" :class="mq">
             <template v-if="hasPerfPart">
               <tr>
@@ -109,18 +96,14 @@
                     rowspan="2">presens partisipp</th>
               </tr>
               <tr>
-                <th v-if="(j<0 || j==3) && hasPerfPartDef && language=='nob'"
-                    class="infl sub xborder-bottom" :class="mq">han-/hunkjønn</th>
-                <th v-if="(j<0 || j==3) && hasPerfPartDef && language=='nno'"
-                    class="infl sub xborder-bottom" :class="mq">hankjønn /<br/>hokjønn</th>
+                <th v-if="(j<0 || j==3) && hasPerfPartDef" class="infl sub xborder-bottom" :class="mq">
+                  {{tagToName('Masc')}} /<br/>{{tagToName('Fem')}}</th>
                 <th class="infl sub xborder-bottom" :class="mq"
-                    v-if="(j<0 || j==3) && language=='nob'">intetkjønn</th>
-                <th class="infl sub xborder-bottom" :class="mq"
-                    v-if="(j<0 || j==3) && language=='nno'">inkjekjønn</th>
+                    v-if="(j<0 || j==3)">{{tagToName('Neuter')}}</th>
                 <th v-if="(j<0 || j==3) && hasPerfPartDef"
                     class="infl sub xborder-bottom" :class="mq">bestemt form</th>
                 <th v-if="(j<0 || j==4) && hasPerfPartDef"
-                    class="infl sub xborder-bottom" :class="mq">flertall</th>
+                    class="infl sub xborder-bottom" :class="mq">{{tagToName('Plur')}}</th>
               </tr>
             </template>
             <template v-else>
@@ -134,22 +117,17 @@
                                      :part="j"
                                      :language="language"
                                      :hasPerfPart="hasPerfPart"
-                                     :paradigm="paradigm"
-                                     :mq="mq"/>
+                                     :paradigm="paradigm"/>
           </table>
-        </td>
-      </tr>
-    </table>
-    <table v-else style="margin: 1em auto"
-      class="infl rounded top" :class="mq" v-show="show || showTable">
-      <tr>
-        <th class="lemma">
+      </div>
+    </div>
+    <div v-else style="margin: 1em auto"
+         class="infl rounded top" :class="mq">
+      <div class="lemma">
           <span class="infl-lemma">{{lemma.lemma}} </span>
           <span class="sub">{{wordClass}}</span>
-        </th>
-      </tr>
-      <tr>
-        <td>
+      </div>
+      <div>
           <table class="infl" :class="mq" >
             <inflectionRowsVerb v-for="(tags, index) in inflTagsVerb"
                                 :key="index"
@@ -157,46 +135,37 @@
                                 :language="language"
                                 :paradigms="standardParadigms"/>
           </table>
-        </td>
-      </tr>
-    </table>
+      </div>
+    </div>
   </template>
   <template v-if="lemma && lemma.word_class=='ADJ'">
-    <table v-if="mq!='xs'"
+    <div v-if="mq!='xs'"
            class="infl rounded top"
-           :class="mq"
-           v-show="show || showTable">
-      <tr>
-        <th class="lemma xborder-lemma">
-          <span class="infl-lemma">{{lemma.lemma}} </span>
-          <span class="sub">{{wordClass}}</span>
-        </th>
-      </tr>
-      <tr>
-        <td>
+           :class="mq">
+      <div class="lemma xborder-lemma">
+        <span class="infl-lemma">{{lemma.lemma}} </span>
+        <span class="sub">{{wordClass}}</span>
+      </div>
+      <div>
           <table class="infl rounded" :class="mq">
             <tr>
-              <th class="infl xborder-top-left" :class="mq"
-                  v-if="language=='nob'" :colspan="hasFem ? 4 : 3">entall</th>
-              <th class="infl xborder-top-right" :class="mq"
-                  v-if="language=='nob'" rowspan="2">flertall</th>
-              <th class="infl xborder-top" :class="mq"
-                  v-if="language=='nno'" :colspan="hasFem ? 4 : 3">eintal</th>
-              <th class="infl xborder" :class="mq"
-                  v-if="language=='nno'" rowspan="2">fleirtal</th>
+              <th class="infl xborder-top-left" :class="mq" :colspan="hasFem ? 4 : 3">
+                {{tagToName('Sing')}}
+              </th>
+              <th class="infl xborder-top-right" :class="mq" rowspan="2">
+                {{tagToName('Plur')}}
+              </th>
             </tr>
             <tr>
-              <th v-if="hasFem" class="infl sub xborder-bottom" :class="mq">hankjønn</th>
-              <th v-if="!hasFem && language=='nob'"
-                  class="infl sub xborder-bottom" :class="mq"><nobr>hankjønn /</nobr><br/>hunkjønn</th>
-              <th v-if="!hasFem && language=='nno'"
-                  class="infl sub xborder-bottom" :class="mq"><nobr>hankjønn /</nobr><br/>hokjønn</th>
-              <th v-if="hasFem && language=='nob'"
-                  class="infl sub xborder-bottom" :class="mq">hunkjønn</th>
-              <th v-if="hasFem && language=='nno'"
-                  class="infl sub xborder-bottom" :class="mq">hokjønn</th>
-              <th class="infl sub xborder-bottom" :class="mq" v-if="language=='nob'">intetkjønn</th>
-              <th class="infl sub xborder-bottom" :class="mq" v-if="language=='nno'">inkjekjønn</th>
+              <th v-if="hasFem" class="infl sub xborder-bottom" :class="mq">
+                hankjønn
+              </th>
+              <th v-if="!hasFem" class="infl sub xborder-bottom" :class="mq">
+                <span class="nobr">hankjønn /</span><br/>{{tagToName('Fem')}}</th>
+              <th v-if="hasFem" class="infl sub xborder-bottom" :class="mq">
+                {{tagToName('Fem')}}
+              </th>
+              <th class="infl sub xborder-bottom" :class="mq">{{tagToName('Fem')}}</th>
               <th class="infl sub xborder-bottom" :class="mq">bestemt form</th>
             </tr>
             <inflectionRowAdj v-for="(paradigm, index) in standardParadigms"
@@ -205,11 +174,9 @@
                               :hasFem="hasFem"
                               :paradigm="paradigm"/>
           </table>
-        </td>
-      </tr>
-      <tr v-if="hasDeg">
-        <td>
-          <table class="infl rounded" :class="mq">
+      </div>
+      <div v-if="hasDeg">
+        <table class="infl rounded" :class="mq">
             <tr>
               <th class="infl xborder-top-left-right" v-if="hasDeg" colspan="3">gradbøying</th>
             </tr>
@@ -218,54 +185,92 @@
               <th class="infl xborder-bottom">superlativ<br/><span class="sub">ubestemt form</span></th>
               <th class="infl xborder-bottom">superlativ<br/><span class="sub">bestemt form</span></th>
             </tr>
-            <inflectionRowAdjDeg v-for="(paradigm, index) in standardParadigmsAdjDeg"
+            <inflectionRowAdjDeg v-for="(paradigm, index) in standardParadigms"
                                  :key="index"
                                  :paradigm="paradigm"/>
           </table>
-        </td>
-      </tr>
-    </table>
-    <table v-else style="margin: 1em auto"
-      class="infl rounded top" :class="mq" v-show="show || showTable">
-      <tr>
-        <th class="lemma">
+      </div>
+    </div>
+    <div v-else style="margin: 1em auto"
+      class="infl rounded top" :class="mq">
+      <div class="lemma">
           <span class="infl-lemma">{{lemma.lemma}} </span>
           <span class="sub">{{wordClass}}</span>
-        </th>
-      </tr>
-      <tr>
-        <td>
-          <table class="infl" :class="mq" >
-            <inflectionRowsAdj v-for="(tags, index) in inflTagsAdj"
-                               :key="index"
-                               :tags="tags"
-                               :language="language"
-                               :paradigms="standardParadigms" />
+      </div>
+      <div>
+        <table class="infl" :class="mq" >
+          <inflectionRowsAdj v-for="(tags, index) in inflTagsAdj"
+                             :key="index"
+                             :tags="tags"
+                             :language="language"
+                               :paradigms="standardParadigms"/>
+        </table>
+      </div>
+    </div>    
+  </template>
+  <template v-if="lemma && lemma.word_class=='PRON'">
+    <div v-if="mq!='xs'"
+         class="infl rounded top"
+         :class="mq">
+      <div class="lemma xborder-lemma">
+          <span class="infl-lemma">{{lemma.lemma}} </span>
+          <span class="sub">{{wordClass}}</span>
+          <!--span class="sub" v-if="nounGender"> {{nounGender}}</span-->
+      </div>
+      <div>
+        <table class="infl rounded" :class="mq">
+          <tr>
+            <th class="infl sub xborder-bottom" :class="mq">
+              subjektsform
+            </th>
+            <th class="infl sub xborder-bottom" :class="mq">
+              objektsform
+            </th>
+          </tr>
+          <inflectionRowPron v-for="(paradigm, index) in standardParadigms"
+                             :key="index"
+                             :language="language"
+                             :paradigm="paradigm"/>
           </table>
-        </td>
-      </tr>
-    </table>
+      </div>
+    </div>
+    <div v-else style="margin: 1em auto"
+         class="infl rounded top"
+         :class="mq">
+      <div class="lemma">
+        <span class="infl-lemma">{{lemma.lemma}} </span>
+        <span class="sub">{{wordClass}}</span>
+        <span class="sub" v-if="nounGender"> {{nounGender}}</span>
+      </div>
+      <div>
+        <table class="infl" :class="mq">
+          <inflectionRowsPron v-for="(tags, index) in inflTagsPron"
+                              :key="index"
+                              :tags="tags"
+                              :lemma="lemma.lemma"
+                              :language="language"
+                              :paradigms="standardParadigms"/>
+        </table>
+      </div>
+    </div>
   </template>
   <template v-if="lemma && isUninflected">
-    <table class="infl" :class="mq" v-show="show || showTable">
-      <tr>
-        <th class="lemma xborder-top">
-          <span class="lemma">{{lemma.lemma}} </span>
-          <span class="sub">{{wordClass}}</span></th>
-      </tr>
-      <tr>
-        <td>
-          <table class="infl" :class="mq">
-            <tr>
-              <th class="infl xborder">ubøyelig</th>
-            </tr>
-            <tr>
-              <td class="infl xborder">{{lemma.lemma}}</td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-    </table>
+    <div class="infl rounded top" :class="mq">
+      <div class="lemma xborder-top">
+        <span class="lemma">{{lemma.lemma}} </span>
+        <span class="sub">{{wordClass}}</span>
+      </div>
+      <div>
+        <table class="infl" :class="mq">
+          <tr>
+            <th class="infl xborder">ubøyelig</th>
+          </tr>
+          <tr>
+            <td class="infl xborder">{{lemma.lemma}}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
   </template>
   </div>
 </div>
@@ -280,16 +285,17 @@ import inflectionRowAdj from './inflectionRowAdj.vue'
 import inflectionRowAdjDeg from './inflectionRowAdjDeg.vue'
 import inflectionRowVerb from './inflectionRowVerb.vue'
 import inflectionRowParticiple from './inflectionRowParticiple.vue'
+import inflectionRowPron from './inflectionRowPron.vue'
 
-// import inflectionHead from './inflectionHead.vue'
 import inflectionRowsNoun from './inflectionRowsNoun.vue'
 import inflectionRowsVerb from './inflectionRowsVerb.vue'
 import inflectionRowsAdj from './inflectionRowsAdj.vue'
+import inflectionRowsPron from './inflectionRowsPron.vue'
 
 
-import { calculateStandardParadigms, // compareParadigms,
+import { calculateStandardParadigms,
          word_formsEqual, hasTags, tagToName
-       } from './mixins/ordbankUtils.js'
+       } from './mixins/ordbankUtils.js' 
 
 const posNames = { NOUN: "substantiv",
                    VERB: "verb",
@@ -312,27 +318,28 @@ export default {
                   inflectionRowAdjDeg,
                   inflectionRowVerb,
                   inflectionRowParticiple,
-                  // inflectionHead,
+                  inflectionRowPron,
                   inflectionRowsNoun,
                   inflectionRowsVerb,
-                  inflectionRowsAdj
+                  inflectionRowsAdj,
+                  inflectionRowsPron
                 },
-    props: ['lemmaList','showTable','inline', 'mq'],
+    props: ['lemmaList','inline','mq'],
     data: function () {
-        return { wordClass: posNames[this.lemmaList && this.lemmaList[0] && this.lemmaList[0] .word_class] || this.lemmaList && this.lemmaList[0] && this.lemmaList[0] .word_class,
-                 language: this.lemmaList && this.lemmaList[0] && this.lemmaList[0] .language,
+        return { wordClass: this.lemmaList ?
+                 posNames[this.lemmaList[0].word_class] || this.lemmaList[0].word_class : null,
+                 language: this.lemmaList ? this.lemmaList[0].language : null,
                  hasFem: this.hasInflForm(['Pos','Fem']),
                  hasDeg: this.hasInflForm(['Cmp']),
                  hasPerfPart: this.hasInflForm(['Adj','<PerfPart>']),
                  hasPerfPartDef: this.hasInflForm(['Adj','<PerfPart>','Def']),
                  hasImp: this.hasInflForm(['Imp']),
-                 isUninflected: !['NOUN','ADJ','VERB'].find(wc=>wc==(this.lemmaList && this.lemmaList[0] && this.lemmaList[0].word_class)),
-                 // genderList:
-                 show: true,
-                 lemma: this.lemmaList && this.lemmaList[0] ,
+                 isUninflected: this.lemmaList && !['NOUN','ADJ','VERB','PRON'].find(wc=>wc==this.lemmaList[0].word_class),
+                 show: false,
+                 lemma: this.lemmaList && this.lemmaList[0],
                  paradigms: null,
                  gender: null, // gender if NOUN and only one gender
-                 inflTagsNounG: [ { tags: ['_gender'] }, // fixme: aspekt
+                 inflTagsNounG: [ { tags: ['_gender'] },
                                   { title: 'Sing' },
                                   { label: 'Ind', tags: ['Sing','Ind'], indefArt: true },
                                   { label: 'Def', tags: ['Sing','Def']},
@@ -357,27 +364,6 @@ export default {
                                 { label: 'SupInd', tags: ['Sup','Ind']},
                                 { label: 'SupDef', tags: ['Sup','Def']}
                               ],
-                 inflTagsVerbOld: [{ label: 'Inf', tags: ['Inf'], excl: ['Pass'], prefix: 'å' },
-                                { label: 'Pres', tags: ['Pres'], excl: ['Pass'] },
-                                { label: 'Past', tags: ['Past'] },
-                                { label: 'PresPerf', tags: ['<PerfPart>'], excl: ['Adj'], prefix: 'har' },
-                                { label: 'Imp', tags: ['Imp'], suffix: '!' },
-                                { title: 'PerfPart' },
-                                { label: 'MascFem', tags: ['Adj','Masc/Fem'],
-                                  prefix: this.language == 'nob' ? 'en/ei' : 'ein/ei',
-                                  suffix: ' + subst.'},
-                                { label: 'Neuter', tags: ['Adj','Neuter'],
-                                  prefix: this.language == 'nob' ? 'et' : 'eit',
-                                  suffix: ' + subst.'},
-                                { label: 'Def', tags: ['Adj','Def'],
-                                  prefix: 'den/det',
-                                  suffix: ' + subst.'},
-                                { label: 'Plur', tags: ['Adj','Plur'],
-                                  suffix: ' + subst.'},
-                                { title: 'PresPart' },
-                                { tags: ['Adj','<PresPart>'] },
-
-                               ],
                  inflTagsVerb: [{ label: 'Inf', tags: ['Inf'], excl: ['Pass'], prefix: 'å' },
                                 { label: 'Pres', tags: ['Pres'], excl: ['Pass'] },
                                 { label: 'Past', tags: ['Past'] },
@@ -389,8 +375,10 @@ export default {
                                 { label: 'Plur', tags: ['Adj','Plur']},
                                 { title: 'PresPart' },
                                 { tags: ['Adj','<PresPart>'] },
-
-                               ]
+                               ],
+                 inflTagsPronNonNeuter: [{ label: 'Nom', tags: ['Nom'] },
+                                         { label: 'Acc', tags: ['Acc'] }],
+                 inflTagsPronNeuter: [{ tags: ['Neuter'] }],
                }
     },
     computed: {
@@ -398,13 +386,8 @@ export default {
         standardParadigms: function () {
             return this.getStandardParadigms()
         },
-        standardParadigmsVerb: function () {
-            return this.removeDuplicates(this.getStandardParadigms(),
-                                         [['Inf'],['Pres'],['Past'],['<PerfPart>'],['Imp']])
-        },
-        standardParadigmsAdjDeg: function () {
-            return this.removeDuplicates(this.getStandardParadigms(),
-                                         [['Cmp'],['Sup']])
+        inflTagsPron: function () {
+            return this.isNeuterPron() ? this.inflTagsPronNeuter : this.inflTagsPronNonNeuter
         },
         inflTagsNoun: function () {
             return this.getGender() == '+' ? this.inflTagsNounG : this.inflTagsNounNG
@@ -418,16 +401,21 @@ export default {
         }
     },
     methods: {
+        tagToName: function (tag) {
+            return tagToName(tag,this.language)
+        },
         hasInflForm: function (tagList) {
-            let info = this.lemmaList && this.lemmaList[0] && this.lemmaList[0] .paradigm_info && this.lemmaList[0] .paradigm_info.find(
-                paradigm => (paradigm.standardisation == 'STANDARD' &&
-                             !paradigm.to &&
-                             paradigm.inflection.find(
-                                 infl => { let found = infl.word_form // there are empty cells!
-                                           tagList.forEach(tag =>
-                                                           { if (!infl.tags.find(t => t == tag)) {
-                                                               found = false }
-                                                           })
+            let info = this.lemmaList &&
+                this.lemmaList[0].paradigm_info &&
+                this.lemmaList[0].paradigm_info.find(
+                    paradigm => (paradigm.standardisation == 'STANDARD' &&
+                                 !paradigm.to &&
+                                 paradigm.inflection.find(
+                                     infl => { let found = infl.word_form // there are empty cells!
+                                               tagList.forEach(tag =>
+                                                               { if (!infl.tags.find(t => t == tag)) {
+                                                                   found = false }
+                                                               })
                                            return found })))
             return !!info
         },
@@ -438,8 +426,9 @@ export default {
                 return this.paradigms
             }
             let paradigms = []
-            this.lemmaList && this.lemmaList.forEach(lemma =>
-                                    paradigms = paradigms.concat(calculateStandardParadigms(lemma, this.edit)))
+            this.lemmaList &&
+                this.lemmaList.forEach(lemma =>
+                                       paradigms = paradigms.concat(calculateStandardParadigms(lemma, this.edit)))
             if (!paradigms.length) {
                 return []
             }
@@ -510,26 +499,15 @@ export default {
             this.paradigms = paradigms
             return paradigms
         },
-        // OBSOLETE because of merging of equal cells
-        // remove duplicate rows
-        // if used: have to adjust rowspans
-        removeDuplicates: function (paradigms, tagLists) {
-            tagLists
-            return paradigms
-            /* let res = []
+        isNeuterPron: function () {
+            let paradigms = this.getStandardParadigms()
+            let neuter = false
             paradigms.forEach(p => {
-                let found = false
-                res.forEach(r => {
-                    if (compareParadigms(p, r, tagLists)) {
-
-                        found = false // true
-                    }
-                })
-                if (!found) {
-                    res.push(p)
+                if (p.tags.find(t => t == 'Neuter')) {
+                    neuter = true
                 }
             })
-            return res */
+            return neuter
         },
         getGender: function () {
             let paradigms = this.getStandardParadigms()
@@ -556,7 +534,6 @@ export default {
 <style>
 
 table.infl {
-    /* border: 2px solid gray; */
     margin: 1em;
 }
 
@@ -571,17 +548,40 @@ table.infl.rounded.top {
     border: 2px solid gray;
 }
 
-table.infl.xs {
-    margin: 0em;
-}
-
 th.infl {
     border: 1px solid lightgray;
     padding: .3em;
     padding-left: .5em;
     padding-right: .5em;
     text-align: center;
-    vertical-align: top;
+    vertical-align: top; 
+    font-weight: normal;
+    font-style: italic;
+}
+
+div.infl.rounded {
+    border-collapse: separate;
+    border-radius: 10px !important;
+    border-spacing: 0;
+    -moz-border-radius:6px !important;
+}
+
+div.infl.rounded.top {
+    display: inline-block;
+    border: 2px solid gray;
+}
+
+table.infl.xs {
+    margin: 0em;
+}
+
+div.infl {
+    border: 1px solid lightgray;
+    padding: .3em;
+    padding-left: .5em;
+    padding-right: .5em;
+    text-align: center;
+    vertical-align: top; 
     font-weight: normal;
     font-style: italic;
 }
@@ -597,6 +597,7 @@ td.infl {
     padding-left: .5em;
     padding-right: .5em;
     font-weight: normal;
+    font-style: normal;
     cursor: arrow
     }
 
@@ -605,19 +606,16 @@ td.infl.xs {
     border-left: 1px solid lightgray;
     border-top: 0;
     border-right: 0;
-    /* font-style: italic;  !! */
-    /* font-weight: normal; !! */
     text-align: center;
     padding: .3em;
 }
 
 td.infl.sub.xs {
-    border-bottom: 0 /* 1px solid lightgray*/;
+    border-bottom: 0;
     border-left: 0;
-    /* font-style: normal; !! */
+    font-style: italic;
     text-align: center;
     padding: .3em;
-    /* font-size: smaller */
 }
 
 td.hilite {
@@ -629,11 +627,10 @@ td.group {
     border-bottom: 0;
     border-right: 0;
     border-left: 0;
-    background-color:  #faf1f0; /* #f7e1ea; */
+    background-color:  #faf1f0;
     text-align: center;
     padding-left: 1em;
-    /* font-weight: bold; */
-    font-style: italic; /* !! */
+    font-style: italic
 }
 
 th.lemma {
@@ -664,38 +661,23 @@ span.word_form {
 .xborder-top {
     border-spacing: 0;
     background-color: #faf1f0;
-    /* background-color: #f7e1ea; */
-    /* border-top: 1px solid gray;
-    border-left: 1px solid gray;
-    border-right: 1px solid gray */
 }
 .xborder-top-right {
     border-top-right-radius: 10px !important;
     border-spacing: 0;
     background-color: #faf1f0;
-    /* background-color: #f7e1ea; */
-    /* border-top: 1px solid gray;
-    border-left: 1px solid gray;
-    border-right: 1px solid gray */
 }
+
 .xborder-top-left {
     border-top-left-radius: 10px !important;
     border-spacing: 0;
     background-color: #faf1f0;
-    /* background-color: #f7e1ea; */
-    /* border-top: 1px solid gray;
-    border-left: 1px solid gray;
-    border-right: 1px solid gray */
 }
 .xborder-top-left-right {
     border-top-left-radius: 10px !important;
     border-top-right-radius: 10px !important;
     border-spacing: 0;
     background-color: #faf1f0;
-    /* background-color: #f7e1ea; */
-    /* border-top: 1px solid gray;
-    border-left: 1px solid gray;
-    border-right: 1px solid gray */
 }
 
 .xborder-lemma {
@@ -706,10 +688,6 @@ span.word_form {
 
 .xborder-bottom {
     background-color: #faf1f0;
-    /* background-color: #f7e1ea; */
-    /* border-bottom: 1px solid gray;
-    border-left: 1px solid gray;
-    border-right: 1px solid gray */
 }
 
 span.comma:empty {
