@@ -184,7 +184,9 @@ export function mergeParadigms (paradigmInfo) {
                      ['Pres'],
                      ['Past'],
                      ['Imp'],
-                     ['Plur','Def']
+                     ['Plur','Def'],
+                     ['Plur','Ind'],
+                     ['Acc']
                    ]
     tagLists.map(tagList => {
         paradigmInfo.map(paradigm => {
@@ -274,7 +276,9 @@ const tagNames_nob = { Sing: "entall",
                        Deg: "gradbøying",
                        Cmp: "komparativ",
                        SupInd: "superlativ ubestemt",
-                       SupDef: "superlativ bestemt"
+                       SupDef: "superlativ bestemt"m
+                       Nom: "subjektsform",
+                       Acc: "objektsform"
                      }
 
 const tagNames_nno = { Sing: "eintal",
@@ -296,7 +300,9 @@ const tagNames_nno = { Sing: "eintal",
                        Deg: "gradbøying",
                        Cmp: "komparativ",
                        SupInd: "superlativ ubestemt",
-                       SupDef: "superlativ bestemt"
+                       SupDef: "superlativ bestemt",
+                       Nom: "subjektsform",
+                       Acc: "objektsform"
                      }
 
 export function tagToName (tag, language) {
@@ -309,10 +315,12 @@ export function tagToName (tag, language) {
 }
 
 const indefArticle_nob = { Masc: "en",
+                           MascFem: "en/ei",
                            Fem: "ei/en",
                            Neuter: "et" }
 
 const indefArticle_nno = { Masc: "ein",
+                           MascFem: "ein/ei",
                            Fem: "ei",
                            Neuter: "eit" }
 
