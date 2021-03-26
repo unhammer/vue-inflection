@@ -276,7 +276,7 @@ const tagNames_nob = { Sing: "entall",
                        Deg: "gradbøying",
                        Cmp: "komparativ",
                        SupInd: "superlativ ubestemt",
-                       SupDef: "superlativ bestemt"m
+                       SupDef: "superlativ bestemt",
                        Nom: "subjektsform",
                        Acc: "objektsform"
                      }
