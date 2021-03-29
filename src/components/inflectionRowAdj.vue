@@ -1,6 +1,6 @@
 <template>
 <tr>
-  <td class="infl-cell" :class="$mq"
+  <td class="infl-cell"
       v-for="([rowspan,rowindex,forms], index) in rows"
       :key="index"
       :rowspan="rowspan"
@@ -19,7 +19,7 @@
 import $ from 'jquery'
 
 import { inflectedForm
-       } from './mixins/ordbankUtils.js' 
+       } from './mixins/ordbankUtils.js'
 
 export default {
     name: 'inflectionRowAdj',
