@@ -1,6 +1,6 @@
 <template>
 <tr>
-  <td class="infl"
+  <td class="infl-cell"
       v-for="([rowspan,rowindex,forms], index) in cells"
       :key="index"
       :rowspan="rowspan"
@@ -9,10 +9,7 @@
     <span class='comma'
           v-for="(form, i) in forms"
           :key="i">
-      <nobr>
-        <span v-if="prefix" class="context">{{prefix}}</span>
-        {{gender ? tagToName(form) : form}}</nobr>
-    </span>
+    {{form}}</span>
   </td>
 </tr>
 </template>
@@ -39,12 +36,7 @@ export default {
     },
     methods: {
         inflForm: function (tagList) {
-            let forms = inflectedForm(this.paradigm, tagList, [])
-            if (forms) {
-                return forms
-            } else {
-                return null
-            }
+            return inflectedForm(this.paradigm, tagList)
         },
         tagToName: function (tag) {
             return tagToName(tag, this.language)

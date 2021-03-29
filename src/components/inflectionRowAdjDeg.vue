@@ -1,6 +1,7 @@
 <template>
 <tr>
-  <td class="infl" v-for="([rowspan,rowindex,forms], index) in rows"
+  <td class="infl-cell"
+      v-for="([rowspan,rowindex,forms], index) in rows"
       :key="index"
       :rowspan="rowspan"
       :index="rowindex"

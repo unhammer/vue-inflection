@@ -1,18 +1,18 @@
 <template>
-<tr>
+<tr class="infl-row">
   <template v-if="tags.tags">
-    <td v-if="tags.label" class="infl sub xs">
+    <td v-if="tags.label" class="infl-label xs">
       {{tagToName(tags.label)}}
     </td>
-    <td class="infl xs"
+    <td class="infl-cell"
         v-for="([rowspan,rowindex,forms], index) in cells"
         :key="index"
         :colspan="rowspan"
         :index="rowindex"
         @mouseover.stop="hiliteRow(rowindex)">
-    <span class='comma'
-          v-for="(form, index) in forms"
-          :key="index">
+      <span class='comma'
+            v-for="(form, index) in forms"
+            :key="index">
         {{form}}</span>
     </td>
   </template>

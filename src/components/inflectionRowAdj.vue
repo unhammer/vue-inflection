@@ -1,6 +1,6 @@
 <template>
 <tr>
-  <td class="infl" :class="$mq"
+  <td class="infl-cell" :class="$mq"
       v-for="([rowspan,rowindex,forms], index) in rows"
       :key="index"
       :rowspan="rowspan"

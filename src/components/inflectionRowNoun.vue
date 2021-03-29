@@ -1,7 +1,6 @@
 <template>
 <tr>
-  <td class="infl"
-      :class="gender ? 'sub':''"
+  <td :class="gender ? 'infl-label':'infl-cell'"
       v-for="([prefix, [rowspan,rowindex,forms], gender], index) in cells"
       :key="index"
       :rowspan="rowspan"

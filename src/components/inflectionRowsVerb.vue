@@ -1,10 +1,10 @@
 <template>
-<tr>
+<tr class="infl-row">
   <template v-if="tags.tags">
-    <td class="infl sub xs">
+    <td class="infl-label xs">
       {{tagToName(tags.label)}}
     </td>
-    <td class="infl xs"
+    <td class="infl-cell"
         v-for="([prefix, [rowspan,rowindex,forms], suffix], index) in cells"
         :key="index"
         :colspan="rowspan"
@@ -20,7 +20,7 @@
     </td>
   </template>
   <template v-else>
-    <td class="infl group"
+    <td class="infl-group"
         :colspan="paradigms.length+1">
       {{tagToName(tags.title)}}
     </td>
