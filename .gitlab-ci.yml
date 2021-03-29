@@ -15,7 +15,7 @@ publish:
   - apt-get update && apt-get install -y jq
   - jq ".version = \"$CI_COMMIT_REF_NAME\"" package.json > package.tmp
   - mv -f package.tmp package.json
-  - npm install
+  - npm install --progress=false
   - npm run build
   - mkdir package
   - cp package.json package/
