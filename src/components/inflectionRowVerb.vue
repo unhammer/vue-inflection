@@ -6,13 +6,11 @@
       :rowspan="rowspan"
       :index="rowindex"
       @mouseover.stop="hiliteRow(rowindex)">
-    <span class='comma'
+    <span class='comma nobr'
           v-for="(form, index) in forms"
           :key="index">
-      <nobr>
-        <span v-if="prefix" class="context">{{prefix}}</span>
-        {{form}}<span v-if="suffix" class="context">{{suffix}}</span>
-      </nobr>
+      <span v-if="prefix" class="context">{{prefix}}</span>
+      {{form}}<span v-if="suffix" class="context">{{suffix}}</span>
     </span>
   </td>
 </tr>

@@ -11,9 +11,7 @@
           :key="index">
       <span v-if="prefix" class="context">{{prefix}}</span>
       {{form}}
-      <nobr>
-        <span v-if="suffix" class="context">{{suffix}}</span>
-      </nobr>
+      <span v-if="suffix" class="context nobr">{{suffix}}</span>
     </span>
   </td>
   
