@@ -206,7 +206,7 @@
                                :paradigms="standardParadigms"/>
         </table>
       </div>
-    </div>    
+    </div>
   </template>
   <template v-if="lemma && lemma.word_class=='PRON'">
     <div v-if="mq!='xs'"
@@ -294,7 +294,7 @@ import inflectionRowsPron from './inflectionRowsPron.vue'
 
 import { calculateStandardParadigms,
          word_formsEqual, hasTags, tagToName
-       } from './mixins/ordbankUtils.js' 
+       } from './mixins/ordbankUtils.js'
 
 const posNames = { NOUN: "substantiv",
                    VERB: "verb",
@@ -532,151 +532,11 @@ export default {
 
 <style>
 
-table.infl-table {
-    margin: 1em;
-    border-collapse: separate;
-    border-radius: 10px !important;
-    border-spacing: 0;
-    -moz-border-radius:6px !important;
-}
-
-table.infl-table.xs {
-    margin: 0em;
-}
-
-.infl-label {
-    border: 1px solid lightgray;
-    padding: .3em;
-    padding-left: .5em;
-    padding-right: .5em;
-    text-align: center;
-    vertical-align: top; 
-    font-weight: normal;
-    font-style: italic;
-}
-
-.infl-label.xs {
-    border: 1px solid lightgray;
-    padding: .3em;
-    vertical-align: middle;
-    text-align: left
-}
-
-div.infl-wrapper {
-    overflow-y: hidden
-}
-
-div.infl-wordclass {
-    border-collapse: separate;
-    border-radius: 10px !important;
-    border-spacing: 0;
-    -moz-border-radius:6px !important;
-    border: 1px solid lightgray;
-    padding: .3em;
-    padding-left: .5em;
-    padding-right: .5em;
-    text-align: center;
-    vertical-align: top; 
-    font-weight: normal;
-    font-style: italic;
-    display: inline-block;
-    border: 2px solid gray;
-}
-
-div.infl-wordclass.xs {
-    margin: 1em auto
-}
-
-td.infl-cell {
-    border: 1px solid lightgray;
-    padding: .3em;
-    padding-left: .5em;
-    padding-right: .5em;
-    font-weight: normal;
-    font-style: normal;
-    cursor: arrow
-    }
-
-td.infl-cell.xs {
-    border-bottom: 1px solid lightgray;
-    border-left: 1px solid lightgray;
-    border-top: 0;
-    border-right: 0;
-    text-align: center;
-    padding: .3em;
-}
-
-td.hilite {
-    background: lightgray
-}
-
-td.infl-group {
-    border-top: 1px solid lightgray;
-    border-bottom: 0;
-    border-right: 0;
-    border-left: 0;
-    background-color:  #faf1f0;
-    text-align: center;
-    padding-left: 1em;
-    font-style: italic
-}
-
-th.lemma {
-    padding: .5em;
-    padding-bottom: 0.5em;
-    text-align: center
-    }
-span.infl-lemma {
-    font-weight: bold;
-    color: #560027;
-    font-size: larger
-}
-span.word_class {
-    font-size: smaller
-}
-span.word_form {
-    font-weight: bold
-}
-
 .sub {
     font-style: italic;
     font-weight: normal
 }
 
-.label-border {
-    border: 1px solid gray
-}
-.label-border-top {
-    border-spacing: 0;
-    background-color: #faf1f0;
-}
-.label-border-top-right {
-    border-top-right-radius: 10px !important;
-    border-spacing: 0;
-    background-color: #faf1f0;
-}
-
-.label-border-top-left {
-    border-top-left-radius: 10px !important;
-    border-spacing: 0;
-    background-color: #faf1f0;
-}
-.label-border-top-left-right {
-    border-top-left-radius: 10px !important;
-    border-top-right-radius: 10px !important;
-    border-spacing: 0;
-    background-color: #faf1f0;
-}
-
-.label-border-lemma {
-    border-top-left-radius: 10px !important;
-    border-top-right-radius: 10px !important;
-    border-spacing: 0;
-}
-
-.label-border-bottom {
-    background-color: #faf1f0;
-}
 
 span.comma:empty {
     display: none;
