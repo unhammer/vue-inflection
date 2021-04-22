@@ -203,7 +203,7 @@
                              :key="index"
                              :tags="tags"
                              :language="language"
-                               :paradigms="standardParadigms"/>
+                             :paradigms="standardParadigms"/>
         </table>
       </div>
     </div>    
@@ -487,7 +487,6 @@ export default {
                         currentInfl[i].rowspan++
                         p.inflection[i].rowspan = 0
                     } else {
-                        // let ind = currentInfl[i].index
                         currentInfl[i] = p.inflection[i]
                         currentInfl[i].index = []
                         currentInfl[i].index.push(index+1) // remember paradigm row, for hiliting
@@ -495,7 +494,6 @@ export default {
                     }
                 }
             })
-            this.paradigms = paradigms
             return paradigms
         },
         isNeuterPron: function () {

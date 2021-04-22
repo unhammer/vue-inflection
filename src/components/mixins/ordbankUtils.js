@@ -67,9 +67,10 @@ export function word_formsEqual (s1, s2, tags1, tags2, checkTags) {
     } else if (typeof s2 == 'string') {
         return false
     } else {
-        s1.forEach(e => { if (!s2.find(v => v == e)) { return false } })
-        s2.forEach(e => { if (!s1.find(v => v == e)) { return false } })
-        return true
+        let res = true
+        s1.forEach(e => { if (!s2.find(v => v == e)) { res = false } })
+        s2.forEach(e => { if (!s1.find(v => v == e)) { res = false } })
+        return res
     }
 }
 
@@ -184,6 +185,7 @@ export function mergeParadigms (paradigmInfo) {
                      ['Pres'],
                      ['Past'],
                      ['Imp'],
+                     ['Inf'], // new
                      ['Plur','Def'],
                      ['Plur','Ind'],
                      ['Acc']
