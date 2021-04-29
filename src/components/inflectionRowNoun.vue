@@ -10,8 +10,7 @@
           v-for="(form, i) in forms"
           :key="i">
       <span v-if="prefix" class="context">{{prefix}}</span>
-      {{gender ? tagToName(form) : form}}
-    </span>
+      {{gender ? tagToName(form) : form}}</span>
   </td>
 </tr>
 </template>

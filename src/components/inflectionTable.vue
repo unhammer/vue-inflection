@@ -165,7 +165,7 @@
               <th v-if="hasFem" class="infl-label sub label-border-bottom" :class="mq">
                 {{tagToName('Fem')}}
               </th>
-              <th class="infl-label sub label-border-bottom" :class="mq">{{tagToName('Fem')}}</th>
+              <th class="infl-label sub label-border-bottom" :class="mq">{{tagToName('Neuter')}}</th>
               <th class="infl-label sub label-border-bottom" :class="mq">bestemt form</th>
             </tr>
             <inflectionRowAdj v-for="(paradigm, index) in standardParadigms"
@@ -297,6 +297,7 @@ import { calculateStandardParadigms,
        } from './mixins/ordbankUtils.js'
 
 const posNames = { NOUN: "substantiv",
+                   PROPN: "prop",
                    VERB: "verb",
                    ADJ: "adjektiv",
                    ADV: "adverb",
@@ -333,7 +334,7 @@ export default {
                  hasPerfPart: this.hasInflForm(['Adj','<PerfPart>']),
                  hasPerfPartDef: this.hasInflForm(['Adj','<PerfPart>','Def']),
                  hasImp: this.hasInflForm(['Imp']),
-                 isUninflected: this.lemmaList && !['NOUN','ADJ','VERB','PRON'].find(wc=>wc==this.lemmaList[0].word_class),
+                 isUninflected: this.lemmaList && !['NOUN','PROPN','ADJ','VERB','PRON'].find(wc=>wc==this.lemmaList[0].word_class),
                  show: false,
                  lemma: this.lemmaList && this.lemmaList[0],
                  paradigms: null,
