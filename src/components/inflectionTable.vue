@@ -106,7 +106,7 @@
                     class="infl-label sub label-border-bottom" :class="mq">{{tagToName('Plur')}}</th>
               </tr>
             </template>
-            <template v-else>
+            <template v-else-if="hasPresPart">
               <tr>
                 <th v-if="j<0 || j==4"
                     class="infl-label label-border-top" :class="mq">presens partisipp</th>
@@ -331,6 +331,7 @@ export default {
                  language: this.lemmaList ? this.lemmaList[0].language : null,
                  hasFem: this.hasInflForm(['Pos','Fem']),
                  hasDeg: this.hasInflForm(['Cmp']),
+                 hasPresPart: this.hasInflForm(['Adj','<PresPart>']),
                  hasPerfPart: this.hasInflForm(['Adj','<PerfPart>']),
                  hasPerfPartDef: this.hasInflForm(['Adj','<PerfPart>','Def']),
                  hasImp: this.hasInflForm(['Imp']),
