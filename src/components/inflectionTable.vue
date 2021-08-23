@@ -439,8 +439,8 @@ export default {
                 isNoun = p1.tags.find(t => t == 'NOUN')
                 let r1 = isNoun ? p1.inflection[1] : p1.inflection[0]
                 let r2 = isNoun ? p2.inflection[1] : p2.inflection[0]
-                r1 = r1 ? r1.word_form : r1
-                r2 = r2 ? r2.word_form : r2
+                r1 = r1 && r1.word_form
+                r2 = r2 && r2.word_form
                 let tags1 = p1.tags
                 let tags2 = p2.tags
                 if ((tags1.find(t => t == 'Masc') &&
