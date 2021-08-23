@@ -11,7 +11,7 @@
   "module": "dist/inflection-tablet.esm.js",
   "unpkg": "dist/inflection-table.min.js",
   "dependencies": {
-    "jquery": "~3.5.1",
+    "jquery": "^3.5.1",
     "core-js": "~3.6.5",
     "vue": "^2.6.11"
   },
