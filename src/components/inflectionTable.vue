@@ -433,10 +433,11 @@ export default {
                 return []
             }
             let isNoun = null
+
             paradigms = paradigms.sort((p1,p2) => {
                 isNoun = p1.tags.find(t => t == 'NOUN')
-                let r1 = isNoun ? p1.inflection[1].word_form : p1.inflection[0].word_form
-                let r2 = isNoun ? p2.inflection[1].word_form : p2.inflection[0].word_form
+                let r1 = isNoun ? p1.inflection[1]?.word_form : p1.inflection[0].word_form
+                let r2 = isNoun ? p2.inflection[1]?.word_form : p2.inflection[0].word_form
                 let tags1 = p1.tags
                 let tags2 = p2.tags
                 if ((tags1.find(t => t == 'Masc') &&
@@ -461,6 +462,7 @@ export default {
                     return r2[0].localeCompare(r1[0])
                 }
             })
+
             let currentTags = paradigms[0].tags
             let currentInfl = paradigms[0].inflection.map(infl => {
                 infl.rowspan = 0
@@ -476,6 +478,11 @@ export default {
                         this.gender = '+'
                     }
                 }
+                // cases like ‘et nynorsk’, see #406
+                if (isNoun && p.tags.find(t=>t=='Uninfl') && p.inflection.length == 1) {
+                    p.inflection.push({ tags: ['Sing', 'Ind'], word_form: this.lemma.lemma })
+                }
+                
                 for (let i = 0; i < p.inflection.length; i++) {
                     if (currentInfl[i].rowspan > 0 &&
                         word_formsEqual(currentInfl[i].word_form,
