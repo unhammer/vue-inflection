@@ -23,7 +23,7 @@ import { inflectedForm, tagToName
 
 export default {
     name: 'inflectionRowPron',
-    props: ['paradigm','language'],
+    props: ['paradigm','language','lemmaId'],
     data: function () {
         return {
             cells: [
@@ -43,7 +43,7 @@ export default {
         },
         hiliteRow: function (rowindex) {
             $('td[index]').removeClass('hilite')
-            rowindex.forEach(i => $('td[index*='+ i + ']').addClass('hilite'))
+            rowindex.forEach(i => $('#lemma' + this.lemmaId + ' td[index*='+ i + ']').addClass('hilite'))
         }
     }
 }

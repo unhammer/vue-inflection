@@ -28,7 +28,7 @@ import { inflectedForm, indefArticle
 
 export default {
     name: 'inflectionRowParticiple',
-    props: ['paradigm','hasPerfPart','language','part'],
+    props: ['paradigm','hasPerfPart','language','part','lemmaId'],
     data: function () {
         return { rows: [
             this.hasPerfPart && this.part!=4 ? this.inflForm(['Adj','Masc/Fem'],
@@ -53,7 +53,7 @@ export default {
         },
         hiliteRow: function (rowindex) {
             $('td[index]').removeClass('hilite')
-            rowindex.forEach(i => $('td[index*='+ i + ']').addClass('hilite'))
+            rowindex.forEach(i => $('#lemma' + this.lemmaId + ' td[index*='+ i + ']').addClass('hilite'))
         }
     }
 }

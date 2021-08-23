@@ -23,7 +23,7 @@ import { inflectedForm
 
 export default {
     name: 'inflectionRowAdjDeg',
-    props: ['paradigm'],
+    props: ['paradigm','lemmaId'],
     data: function () {
         return {
             rows: [ this.inflForm(['Cmp']),
@@ -38,7 +38,7 @@ export default {
         },
         hiliteRow: function (rowindex) {
             $('td[index]').removeClass('hilite')
-            rowindex.forEach(i => $('td[index*='+ i + ']').addClass('hilite'))
+            rowindex.forEach(i => $('#lemma' + this.lemmaId + ' td[index*='+ i + ']').addClass('hilite'))
         }
     }
 }

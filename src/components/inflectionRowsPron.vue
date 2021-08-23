@@ -28,7 +28,7 @@ import { inflectedForm, tagToName
 
 export default {
     name: 'inflectionRowsPron',
-    props: ['paradigms','lemma','tags','language'],
+    props: ['paradigms','lemma','tags','language','lemmaId'],
     data: function () {
         return {
             cells: this.paradigms.map(p => this.inflForm(p, this.tags.tags))
@@ -43,7 +43,7 @@ export default {
         },
         hiliteRow: function (rowindex) {
             $('td[index]').removeClass('hilite')
-            rowindex.forEach(i => $('td[index*='+ i + ']').addClass('hilite'))
+            rowindex.forEach(i => $('#lemma' + this.lemmaId + ' td[index*='+ i + ']').addClass('hilite'))
         },
         tagToName: function (tag) {
             return tagToName(tag, this.language)

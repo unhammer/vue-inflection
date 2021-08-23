@@ -1,5 +1,5 @@
 <template>
-<div @mouseover="unhiliteRows()">
+<div @mouseover="unhiliteRows()" :id="'lemma'+lemma.id">
   <div class="infl-wrapper">
     <template v-if="lemma && lemma.word_class=='NOUN'">
     <div v-if="mq!='xs'"
@@ -40,8 +40,9 @@
                                :key="index"
                                :showGender="!nounGender"
                                :language="language"
+                               :lemmaId="lemma.id"
                                :paradigm="paradigm"/>
-          </table>
+        </table>
       </div>
     </div>
     <div v-else
@@ -58,6 +59,7 @@
                               :key="index"
                               :tags="tags"
                               :language="language"
+                              :lemmaId="lemma.id"                              
                               :paradigms="standardParadigms"/>
         </table>
       </div>
@@ -82,6 +84,7 @@
             <inflectionRowVerb v-for="(paradigm, index) in standardParadigms"
                                :key="index"
                                :part="i"
+                               :lemmaId="lemma.id"
                                :paradigm="paradigm"/>
           </table>
       </div>
@@ -117,6 +120,7 @@
                                      :part="j"
                                      :language="language"
                                      :hasPerfPart="hasPerfPart"
+                                     :lemmaId="lemma.id"
                                      :paradigm="paradigm"/>
           </table>
       </div>
@@ -133,6 +137,7 @@
                                 :key="index"
                                 :tags="tags"
                                 :language="language"
+                                :lemmaId="lemma.id"
                                 :paradigms="standardParadigms"/>
           </table>
       </div>
@@ -172,6 +177,7 @@
                               :key="index"
                               :hasDeg="hasDeg"
                               :hasFem="hasFem"
+                              :lemmaId="lemma.id"
                               :paradigm="paradigm"/>
           </table>
       </div>
@@ -187,6 +193,7 @@
             </tr>
             <inflectionRowAdjDeg v-for="(paradigm, index) in standardParadigms"
                                  :key="index"
+                                 :lemmaId="lemma.id"
                                  :paradigm="paradigm"/>
           </table>
       </div>
@@ -203,6 +210,7 @@
                              :key="index"
                              :tags="tags"
                              :language="language"
+                             :lemmaId="lemma.id"
                              :paradigms="standardParadigms"/>
         </table>
       </div>
@@ -229,6 +237,7 @@
           <inflectionRowPron v-for="(paradigm, index) in standardParadigms"
                              :key="index"
                              :language="language"
+                             :lemmaId="lemma.id"
                              :paradigm="paradigm"/>
           </table>
       </div>
@@ -248,6 +257,7 @@
                               :tags="tags"
                               :lemma="lemma.lemma"
                               :language="language"
+                              :lemmaId="lemma.id"
                               :paradigms="standardParadigms"/>
         </table>
       </div>
