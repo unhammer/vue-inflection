@@ -569,4 +569,19 @@ div.comma:not(:last-child):after {
     content: ", ";
 }
 
+td[class="infl-group"] {
+  background-color: #FDF4F5;
+  font-style: italic;
+  text-align: center;
+}
+
+td[class*="infl-label"] {
+  font-style: italic;
+  text-align: left;
+}
+
+td[class="infl-cell"] {
+  text-align: center;
+}
+
 </style>
