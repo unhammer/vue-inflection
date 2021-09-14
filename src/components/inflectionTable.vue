@@ -166,7 +166,7 @@
                 hankjønn
               </th>
               <th v-if="!hasFem" class="infl-label sub label-border-bottom" :class="mq">
-                <span class="nobr">hankjønn<span style="font-size:0px;">_</span>/</span><br/>{{tagToName('Fem')}}</th>
+                <span class="nobr">hankjønn&nbsp;/</span><br/>{{tagToName('Fem')}}</th>
               <th v-if="hasFem" class="infl-label sub label-border-bottom" :class="mq">
                 {{tagToName('Fem')}}
               </th>
