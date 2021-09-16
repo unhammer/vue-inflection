@@ -8,9 +8,7 @@
       @mouseover.stop="hiliteRow(rowindex)">
     <span class='comma nobr'
           v-for="(form, i) in forms"
-          :key="i">
-      <span v-if="prefix" class="context">{{prefix}}</span>
-      {{gender ? tagToName(form) : form}}</span>
+          :key="i"><span v-if="prefix" class="context">{{prefix}}</span>&nbsp;{{gender ? tagToName(form) : form}}</span>
   </td>
 </tr>
 </template>
