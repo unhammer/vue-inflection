@@ -100,7 +100,7 @@
               </tr>
               <tr>
                 <th v-if="(j<0 || j==3) && hasPerfPartDef" class="infl-label sub label-border-bottom" :class="mq">
-                  {{tagToName('Masc')}} /<br/>{{tagToName('Fem')}}</th>
+                  {{tagToName('Masc')}}&nbsp;/<br/>{{tagToName('Fem')}}</th>
                 <th class="infl-label sub label-border-bottom" :class="mq"
                     v-if="(j<0 || j==3)">{{tagToName('Neuter')}}</th>
                 <th v-if="(j<0 || j==3) && hasPerfPartDef"
