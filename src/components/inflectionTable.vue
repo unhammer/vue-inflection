@@ -2,31 +2,33 @@
 <div @mouseover="unhiliteRows()" :id="'lemma'+lemma.id">
   <div class="infl-wrapper">
     <template v-if="lemma && lemma.word_class=='NOUN'">
-    <div v-if="mq!='xs'"
-         class="infl-wordclass"
-         :class="mq">
-      <div class="lemma label-border-lemma">
+      <div v-if="mq!='xs'"
+           class="infl-wordclass"
+           :class="mq">
+        <div class="lemma label-border-lemma">
           <span class="infl-lemma">{{lemma.lemma}} </span>
           <span class="sub">{{wordClass}}</span>
           <span class="sub" v-if="nounGender"> {{nounGender}}</span>
-      </div>
-      <div>
-        <table class="infl-table" :class="mq">
+        </div>
+        <div>
+          <table class="infl-table" :class="mq">
             <tr>
               <th class="infl-label sub label-border-top-left" :class="mq"
                   v-if="!nounGender"
                   rowspan='2'>kjønn</th>
-              <th class="infl-label label-border-top-left" :class="mq" colspan='2'>
+              <th v-if="hasSing()"
+                  class="infl-label label-border-top-left" :class="mq" colspan='2'>
                 {{tagToName('Sing')}}</th>
               <th class="infl-label label-border-top-right" :class="mq" colspan='2'>
-                {{tagToName('Plur')}}
-              </th>
+                {{tagToName('Plur')}}</th>
             </tr>
             <tr>
-              <th class="infl-label sub label-border-bottom" :class="mq">
+              <th v-if="hasSing()"
+                  class="infl-label sub label-border-bottom" :class="mq">
                 ubestemt form
               </th>
-              <th class="infl-label sub label-border-bottom" :class="mq">
+              <th v-if="hasSing()"
+                  class="infl-label sub label-border-bottom" :class="mq">
                 bestemt form
               </th>
               <th class="infl-label sub label-border-bottom" :class="mq">
@@ -42,8 +44,8 @@
                                :language="language"
                                :lemmaId="lemma.id"
                                :paradigm="paradigm"/>
-        </table>
-      </div>
+          </table>
+        </div>
     </div>
     <div v-else
          class="infl-wordclass"
@@ -363,6 +365,9 @@ export default {
                                   { title: 'Plur'},
                                   { label: 'Ind', tags: ['Plur','Ind']},
                                   { label: 'Def', tags: ['Plur','Def']}],
+                 inflTagsNounPlur: [{ title: 'Plur'},
+                                    { label: 'Ind', tags: ['Plur','Ind']},
+                                    { label: 'Def', tags: ['Plur','Def']}],
                  inflTagsAdj: [ { title: 'Sing' },
                                 { label: 'MascFem', tags: ['Pos',['Masc/Fem','Masc']] },
                                 { label: 'Fem', tags: ['Pos','Fem'] },
@@ -401,7 +406,11 @@ export default {
             return this.isNeuterPron() ? this.inflTagsPronNeuter : this.inflTagsPronNonNeuter
         },
         inflTagsNoun: function () {
-            return this.getGender() == '+' ? this.inflTagsNounG : this.inflTagsNounNG
+            if (this.hasSing()) {
+                return this.getGender() == '+' ? this.inflTagsNounG : this.inflTagsNounNG
+            } else {
+                return this.inflTagsNounPlur
+            }
         },
         nounGender: function () {
             this.getGender()
@@ -427,7 +436,7 @@ export default {
                                                                { if (!infl.tags.find(t => t == tag)) {
                                                                    found = false }
                                                                })
-                                           return found })))
+                                               return found })))
             return !!info
         },
         // the paradigms that should be shown in the table
@@ -444,7 +453,7 @@ export default {
                 return []
             }
             let isNoun = null
-
+            
             paradigms = paradigms.sort((p1,p2) => {
                 isNoun = p1.tags.find(t => t == 'NOUN')
                 let r1 = isNoun ? p1.inflection[1] : p1.inflection[0]
@@ -475,7 +484,7 @@ export default {
                     return r2[0].localeCompare(r1[0])
                 }
             })
-
+            
             let currentTags = paradigms[0].tags
             let currentInfl = paradigms[0].inflection.map(infl => {
                 infl.rowspan = 0
@@ -526,6 +535,18 @@ export default {
                 }
             })
             return neuter
+        },
+        hasSing: function () {
+            let paradigms = this.getStandardParadigms()
+            let sing = false
+            paradigms.forEach(p => {
+                p.inflection.forEach(infl => {
+                    if (infl.tags.find(t => t == 'Sing')) {
+                        sing = true
+                    }
+                })
+            })
+            return sing
         },
         getGender: function () {
             let paradigms = this.getStandardParadigms()
