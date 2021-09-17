@@ -453,11 +453,33 @@ export default {
                 return []
             }
             let isNoun = null
+
+            let concat_wordforms = function (infl) {
+                let chain = ''
+                for (let i = 0; i < infl.length; i++) {
+                    let wf = infl[i].word_form
+                    if (typeof wf == 'string') {
+                        chain += wf + '#'
+                    } else {
+                        chain += wf[0] + '#'
+                    }
+                }
+                return chain
+            }
             
+            paradigms = paradigms.sort((p1,p2) => {
+                let chain1 = concat_wordforms(p1.inflection)
+                let chain2 = concat_wordforms(p2.inflection)
+                return chain2.localeCompare(chain1)
+            })
+
+            /* old way too complicated and buggy code
             paradigms = paradigms.sort((p1,p2) => {
                 isNoun = p1.tags.find(t => t == 'NOUN')
                 let r1 = isNoun ? p1.inflection[1] : p1.inflection[0]
                 let r2 = isNoun ? p2.inflection[1] : p2.inflection[0]
+                console.log(r1)
+                console.log(r2)
                 r1 = r1 && r1.word_form
                 r2 = r2 && r2.word_form
                 let tags1 = p1.tags
@@ -483,7 +505,8 @@ export default {
                 } else {
                     return r2[0].localeCompare(r1[0])
                 }
-            })
+            }) */
+
             
             let currentTags = paradigms[0].tags
             let currentInfl = paradigms[0].inflection.map(infl => {
@@ -511,7 +534,8 @@ export default {
                                         p.inflection[i].word_form,
                                         currentTags,
                                         p.tags,
-                                        hasTags(currentInfl[i], ['Sing','Ind']))
+                                        hasTags(currentInfl[i], ['Sing','Ind']) // no vertical merge
+                                       )
                        ) {
                         currentInfl[i].index.push(index+1) // remember paradigm row, for hiliting
                         currentInfl[i].rowspan++
