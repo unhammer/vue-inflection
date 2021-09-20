@@ -4,8 +4,7 @@
       v-for="([prefix, [rowspan,rowindex,forms], gender], index) in cells"
       :key="index"
       :rowspan="rowspan"
-      :index="rowindex"
-      @mouseover.stop="hiliteRow(rowindex)">
+      :index="rowindex">
     <span class='comma nobr'
           v-for="(form, i) in forms"
           :key="i"><span v-if="prefix" class="context">{{prefix}}</span>&nbsp;{{gender ? tagToName(form) : form}}</span>
@@ -50,10 +49,6 @@ export default {
         },
         tagToName: function (tag) {
             return tagToName(tag, this.language)
-        },
-        hiliteRow: function (rowindex) {
-            $('td[index]').removeClass('hilite')
-            rowindex.forEach(i => $('#lemma' + this.lemmaId + ' td[index*='+ i + ']').addClass('hilite'))
         }
     }
 }

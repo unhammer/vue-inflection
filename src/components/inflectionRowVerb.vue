@@ -4,8 +4,7 @@
       v-for="([prefix, [rowspan,rowindex,forms], suffix], index) in rows"
       :key="index"
       :rowspan="rowspan"
-      :index="rowindex"
-      @mouseover.stop="hiliteRow(rowindex)">
+      :index="rowindex">
     <span class='comma nobr'
           v-for="(form, index) in forms"
           :key="index">
@@ -43,10 +42,6 @@ export default {
             } else {
                 return null
             }
-        },
-        hiliteRow: function (rowindex) {
-            $('td[index]').removeClass('hilite')
-            rowindex.forEach(i => $('#lemma' + this.lemmaId + ' td[index*='+ i + ']').addClass('hilite'))
         }
     }
 }
