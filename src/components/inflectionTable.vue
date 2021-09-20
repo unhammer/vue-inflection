@@ -1,5 +1,5 @@
 <template>
-<div @mouseover="unhiliteRows()" :id="'lemma'+lemma.id">
+<div :id="'lemma'+lemma.id">
   <div class="infl-wrapper">
     <template v-if="lemma && lemma.word_class=='NOUN'">
     <div v-if="mq!='xs'"
