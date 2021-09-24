@@ -4,7 +4,8 @@
       v-for="([rowspan,rowindex,forms], index) in rows"
       :key="index"
       :rowspan="rowspan"
-      :index="rowindex">
+      :index="rowindex"
+      @mouseover.stop="hiliteRow(rowindex)">
     <span class='comma'
           v-for="form in forms"
           :key="form">
@@ -34,6 +35,10 @@ export default {
     methods: {
         inflForm: function (tagList,exclTagList) {
             return inflectedForm(this.paradigm, tagList, exclTagList)
+        },
+        hiliteRow: function (rowindex) {
+            $('td[index]').removeClass('hilite')
+            rowindex.forEach(i => $('#lemma' + this.lemmaId + ' td[index*='+ i + ']').addClass('hilite'))
         }
     }
 }
