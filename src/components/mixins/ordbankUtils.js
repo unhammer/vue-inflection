@@ -218,6 +218,7 @@ export function mergeParadigms (paradigmInfo) {
 }
 
 function inflectedForms (paradigm, tagList, exclTagList) {
+    console.log(paradigm)
     let inflection = paradigm.inflection.filter(
         infl => { let found = infl.word_form
                   tagList.forEach(tag => {
@@ -285,8 +286,8 @@ const tagNames_nob = { Sing: "entall",
 
 const tagNames_nno = { Sing: "eintal",
                        Plur: "fleirtal",
-                       Ind: "ubestemt",
-                       Def: "bestemt",
+                       Ind: "ubunden",
+                       Def: "bunden",
                        Finite: "finitte former",
                        Inf: "infinitiv",
                        Pres: "presens",
@@ -301,8 +302,8 @@ const tagNames_nno = { Sing: "eintal",
                        PresPart: "presens partisipp",
                        Deg: "gradbøying",
                        Cmp: "komparativ",
-                       SupInd: "superlativ ubestemt",
-                       SupDef: "superlativ bestemt",
+                       SupInd: "superlativ ubunden",
+                       SupDef: "superlativ bunden",
                        Nom: "subjektsform",
                        Acc: "objektsform"
                      }

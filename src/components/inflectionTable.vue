@@ -25,17 +25,17 @@
             <tr>
               <th v-if="hasSing()"
                   class="infl-label sub label-border-bottom" :class="mq">
-                ubestemt form
+                {{tagToName('Ind')}} form
               </th>
               <th v-if="hasSing()"
                   class="infl-label sub label-border-bottom" :class="mq">
-                bestemt form
+                {{tagToName('Def')}} form
               </th>
               <th class="infl-label sub label-border-bottom" :class="mq">
-                ubestemt form
+                {{tagToName('Ind')}} form
               </th>
               <th class="infl-label sub label-border-bottom" :class="mq">
-                bestemt form
+                {{tagToName('Def')}} form
               </th>
             </tr>
             <inflectionRowNoun v-for="(paradigm, index) in standardParadigms"
@@ -106,7 +106,7 @@
                 <th class="infl-label sub label-border-bottom" :class="mq"
                     v-if="(j<0 || j==3)">{{tagToName('Neuter')}}</th>
                 <th v-if="(j<0 || j==3) && hasPerfPartDef"
-                    class="infl-label sub label-border-bottom" :class="mq">bestemt form</th>
+                    class="infl-label sub label-border-bottom" :class="mq">{{tagToName('Def')}} form</th>
                 <th v-if="(j<0 || j==4) && hasPerfPartDef"
                     class="infl-label sub label-border-bottom" :class="mq">{{tagToName('Plur')}}</th>
               </tr>
@@ -173,7 +173,7 @@
                 {{tagToName('Fem')}}
               </th>
               <th class="infl-label sub label-border-bottom" :class="mq">{{tagToName('Neuter')}}</th>
-              <th class="infl-label sub label-border-bottom" :class="mq">bestemt form</th>
+              <th class="infl-label sub label-border-bottom" :class="mq">{{tagToName('Def')}} form</th>
             </tr>
             <inflectionRowAdj v-for="(paradigm, index) in standardParadigms"
                               :key="index"
@@ -189,9 +189,15 @@
               <th class="infl-label label-border-top-left-right" v-if="hasDeg" colspan="3">gradbøying</th>
             </tr>
             <tr>
-              <th class="infl-label label-border-bottom">komparativ</th>
-              <th class="infl-label label-border-bottom">superlativ<br/><span class="sub">ubestemt form</span></th>
-              <th class="infl-label label-border-bottom">superlativ<br/><span class="sub">bestemt form</span></th>
+              <th class="infl-label label-border-bottom">
+                komparativ
+              </th>
+              <th class="infl-label label-border-bottom">
+                superlativ<br/><span class="sub">{{tagToName('Ind')}} form</span>
+              </th>
+              <th class="infl-label label-border-bottom">
+                superlativ<br/><span class="sub">{{tagToName('Def')}} form</span>
+              </th>
             </tr>
             <inflectionRowAdjDeg v-for="(paradigm, index) in standardParadigms"
                                  :key="index"
