@@ -218,7 +218,6 @@ export function mergeParadigms (paradigmInfo) {
 }
 
 function inflectedForms (paradigm, tagList, exclTagList) {
-    console.log(paradigm)
     let inflection = paradigm.inflection.filter(
         infl => { let found = infl.word_form
                   tagList.forEach(tag => {
@@ -259,6 +258,17 @@ export function inflectedForm (paradigm, tagList, exclTagList, noVerticalMerge) 
     }
 }
 
+export function hyphenatedForm (form, lemma) {
+    if (lemma && lemma.initial_lexeme && !lemma.neg_junction) {
+        let junction = (lemma.junction && lemma.junction != '-') ? lemma.junction : null
+        return lemma.initial_lexeme
+            + (junction || '')
+            + '­'
+            + form.substring(lemma.initial_lexeme.length + (junction ? junction.length : 0))
+    } else {
+        return form
+    }
+}
 
 const tagNames_nob = { Sing: "entall",
                        Plur: "flertall",

@@ -6,9 +6,9 @@
       :rowspan="rowspan"
       :index="rowindex"
       @mouseover.stop="hiliteRow(rowindex)">
-    <span class='comma nobr'
+    <span class='comma'
           v-for="(form, i) in forms"
-          :key="i"><span v-if="prefix" class="context">{{prefix}}</span>&nbsp;{{gender ? tagToName(form) : form}}</span>
+          :key="i"><span v-if="prefix" class="context">{{prefix}}</span>&nbsp;{{gender ? tagToName(form) : hyphenatedForm(form)}}</span>
   </td>
 </tr>
 </template>
@@ -17,12 +17,12 @@
 
 import $ from 'jquery'
 
-import { inflectedForm, tagToName, indefArticle
+import { inflectedForm, hyphenatedForm, tagToName, indefArticle
        } from './mixins/ordbankUtils.js' 
 
 export default {
     name: 'inflectionRowNoun',
-    props: ['paradigm','language', 'showGender', 'lemmaId'],
+    props: ['paradigm','language', 'showGender', 'lemma'],
     data: function () {
         return {
             cells: [
@@ -34,11 +34,12 @@ export default {
             ].filter(r => r)
         }
     },
-    computed: {
-    },
     methods: {
         indefArticle: function () {
             return indefArticle(this.paradigm.tags, this.language)
+        },
+        hyphenatedForm: function (form) {
+            return hyphenatedForm(form, this.lemma)
         },
         inflForm: function (tagList,prefix) {
             let forms = inflectedForm(this.paradigm, tagList, [])
@@ -53,7 +54,7 @@ export default {
         },
         hiliteRow: function (rowindex) {
             $('td[index]').removeClass('hilite')
-            rowindex.forEach(i => $('#lemma' + this.lemmaId + ' td[index*='+ i + ']').addClass('hilite'))
+            rowindex.forEach(i => $('#lemma' + this.lemma.id + ' td[index*='+ i + ']').addClass('hilite'))
         }
     }
 }

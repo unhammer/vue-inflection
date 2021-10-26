@@ -43,6 +43,7 @@
                                :showGender="!nounGender"
                                :language="language"
                                :lemmaId="lemma.id"
+                               :lemma="lemma"
                                :paradigm="paradigm"/>
           </table>
         </div>
@@ -62,6 +63,7 @@
                               :tags="tags"
                               :language="language"
                               :lemmaId="lemma.id"                              
+                              :lemma="lemma"
                               :paradigms="standardParadigms"/>
         </table>
       </div>
@@ -347,6 +349,7 @@ export default {
         return { wordClass: this.lemmaList ?
                  posNames[this.lemmaList[0].word_class] || this.lemmaList[0].word_class : null,
                  language: this.lemmaList ? this.lemmaList[0].language : null,
+                 // initialLexeme: this.lemmaList ? this.lemmaList[0].initial_lexeme : null,
                  hasFem: this.hasInflForm(['Pos','Fem']),
                  hasDeg: this.hasInflForm(['Cmp']),
                  hasPresPart: this.hasInflForm(['Adj','<PresPart>']),

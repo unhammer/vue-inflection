@@ -1,5 +1,5 @@
 <template>
-<tr class="infl-row" :id="'lemma'+lemmaId">
+<tr class="infl-row" :id="'lemma'+lemma.id">
   <template v-if="tags.tags">
     <td class="infl-label xs">
       {{tagToName(tags.label)}}
@@ -14,7 +14,7 @@
           v-for="(form, index) in forms"
           :key="index">
         <span v-if="prefix" class="context">{{prefix}}</span>
-        {{tags.tags[0]=='_gender' ? tagToName(form) : form}}</span>
+        {{tags.tags[0]=='_gender' ? tagToName(form) : hyphenatedForm(form)}}</span>
   </td>
   </template>
   <template v-if="tags.title">
@@ -30,12 +30,12 @@
 
 import $ from 'jquery'
 
-import { inflectedForm, tagToName
+import { inflectedForm, hyphenatedForm, tagToName
        } from './mixins/ordbankUtils.js' 
 
 export default {
     name: 'inflectionRowsNoun',
-    props: ['paradigms','tags','language','lemmaId'],
+    props: ['paradigms','tags','language','lemma'],
     data: function () {
         return {
             cells: !this.tags.title ?
@@ -95,9 +95,12 @@ export default {
                 return null
             }
         },
+        hyphenatedForm: function (form) {
+            return hyphenatedForm(form, this.lemma)
+        },
         hiliteRow: function (rowindex) {
             $('td[index]').removeClass('hilite')
-            rowindex.forEach(i => $('#lemma' + this.lemmaId + ' td[index*='+ i + ']').addClass('hilite'))
+            rowindex.forEach(i => $('#lemma' + this.lemma.id + ' td[index*='+ i + ']').addClass('hilite'))
         },
         tagToName: function (tag) {
             return tagToName(tag, this.language)
