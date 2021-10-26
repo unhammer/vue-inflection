@@ -259,6 +259,9 @@ export function inflectedForm (paradigm, tagList, exclTagList, noVerticalMerge) 
 }
 
 export function hyphenatedForm (form, lemma) {
+    console.log('form:')
+    console.log(form)
+    console.log(lemma)
     if (lemma && lemma.initial_lexeme && !lemma.neg_junction) {
         let junction = (lemma.junction && lemma.junction != '-') ? lemma.junction : null
         return lemma.initial_lexeme
