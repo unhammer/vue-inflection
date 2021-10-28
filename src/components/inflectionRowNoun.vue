@@ -8,7 +8,7 @@
       @mouseover.stop="hiliteRow(rowindex)">
     <span class='comma'
           v-for="(form, i) in forms"
-          :key="i"><span v-if="prefix" class="context">{{prefix}}</span>&nbsp;{{gender ? tagToName(form) : hyphenatedForm(form)}}</span>
+          :key="i"><span v-if="prefix" class="context">{{prefix}}</span>&nbsp;{{gender ? tagToName(form) : form}}</span>
   </td>
 </tr>
 </template>
@@ -17,7 +17,7 @@
 
 import $ from 'jquery'
 
-import { inflectedForm, hyphenatedForm, tagToName, indefArticle
+import { inflectedForm, tagToName, indefArticle
        } from './mixins/ordbankUtils.js' 
 
 export default {
@@ -37,9 +37,6 @@ export default {
     methods: {
         indefArticle: function () {
             return indefArticle(this.paradigm.tags, this.language)
-        },
-        hyphenatedForm: function (form) {
-            return hyphenatedForm(form, this.lemma)
         },
         inflForm: function (tagList,prefix) {
             let forms = inflectedForm(this.paradigm, tagList, [])

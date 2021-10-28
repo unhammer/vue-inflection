@@ -3,12 +3,15 @@
 
 export function calculateStandardParadigms (lemma,edit) {
     if (lemma.paradigm_info) {
-        return mergeParadigms(
-            lemma.paradigm_info && lemma.paradigm_info.filter(paradigm =>
-                                        paradigm.standardisation=='STANDARD' &&
-                                        !paradigm.to && // we assume this is in the past if not null
-                                    (!edit || !paradigm.exclude)
-                                       ))
+        let paradigms = mergeParadigms(
+            lemma.paradigm_info &&
+                lemma.paradigm_info.filter(paradigm =>
+                                           paradigm.standardisation=='STANDARD' &&
+                                           !paradigm.to && // we assume this is in the past if not null
+                                           (!edit || !paradigm.exclude)
+                                          ))
+        paradigms.forEach(p => p.inflection.forEach(i => i.word_form = hyphenatedForm(i.word_form,lemma)))
+        return paradigms
     } else {
         return []
     }
@@ -258,7 +261,7 @@ export function inflectedForm (paradigm, tagList, exclTagList, noVerticalMerge) 
     }
 }
 
-export function hyphenatedForm (form, lemma) {
+function hyphenatedForm (form, lemma) {
     console.log('form:')
     console.log(form)
     console.log(lemma)

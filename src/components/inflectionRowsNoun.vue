@@ -14,7 +14,7 @@
           v-for="(form, index) in forms"
           :key="index">
         <span v-if="prefix" class="context">{{prefix}}</span>
-        {{tags.tags[0]=='_gender' ? tagToName(form) : hyphenatedForm(form)}}</span>
+        {{tags.tags[0]=='_gender' ? tagToName(form) : form}}</span>
   </td>
   </template>
   <template v-if="tags.title">
@@ -30,7 +30,7 @@
 
 import $ from 'jquery'
 
-import { inflectedForm, hyphenatedForm, tagToName
+import { inflectedForm, tagToName
        } from './mixins/ordbankUtils.js' 
 
 export default {
@@ -94,9 +94,6 @@ export default {
             } else {
                 return null
             }
-        },
-        hyphenatedForm: function (form) {
-            return hyphenatedForm(form, this.lemma)
         },
         hiliteRow: function (rowindex) {
             $('td[index]').removeClass('hilite')

@@ -42,7 +42,6 @@
                                :key="index"
                                :showGender="!nounGender"
                                :language="language"
-                               :lemmaId="lemma.id"
                                :lemma="lemma"
                                :paradigm="paradigm"/>
           </table>
@@ -62,7 +61,6 @@
                               :key="index"
                               :tags="tags"
                               :language="language"
-                              :lemmaId="lemma.id"                              
                               :lemma="lemma"
                               :paradigms="standardParadigms"/>
         </table>
@@ -482,41 +480,6 @@ export default {
                 return chain2.localeCompare(chain1)
             })
 
-            /* old way too complicated and buggy code
-            paradigms = paradigms.sort((p1,p2) => {
-                isNoun = p1.tags.find(t => t == 'NOUN')
-                let r1 = isNoun ? p1.inflection[1] : p1.inflection[0]
-                let r2 = isNoun ? p2.inflection[1] : p2.inflection[0]
-                console.log(r1)
-                console.log(r2)
-                r1 = r1 && r1.word_form
-                r2 = r2 && r2.word_form
-                let tags1 = p1.tags
-                let tags2 = p2.tags
-                if ((tags1.find(t => t == 'Masc') &&
-                     !tags2.find(t => t == 'Masc')) ||
-                    (tags1.find(t => t == 'Fem') &&
-                     !tags2.find(t => t == 'Masc') &&
-                     !tags2.find(t => t == 'Fem'))) {
-                    return -1
-                } else if ((tags2.find(t => t == 'Masc') &&
-                            !tags1.find(t => t == 'Masc')) ||
-                           (tags2.find(t => t == 'Fem') &&
-                            !tags1.find(t => t == 'Masc') &&
-                            !tags1.find(t => t == 'Fem'))) {
-                    return 1
-                } else if (typeof r1 == 'string' && typeof r2 == 'string') {
-                    return r2.localeCompare(r1)
-                } else if (typeof r1 == 'string') {
-                    return r2[0].localeCompare(r1)
-                } else if (typeof r2 == 'string') {
-                    return r2.localeCompare(r1[0])
-                } else {
-                    return r2[0].localeCompare(r1[0])
-                }
-            }) */
-
-            
             let currentTags = paradigms[0].tags
             let currentInfl = paradigms[0].inflection.map(infl => {
                 infl.rowspan = 0
