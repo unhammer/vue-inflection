@@ -271,6 +271,70 @@
       </div>
     </div>
   </template>
+  <template v-if="lemma && lemma.word_class=='DET' && !isUninflected">
+    <div v-if="mq!='xs'"
+         class="infl-wordclass"
+         :class="mq">
+      <div class="lemma label-border-lemma">
+          <span class="infl-lemma">{{lemma.lemma}} </span>
+          <span class="sub">{{wordClass}}</span>
+      </div>
+      <div>
+        <table class="infl-table" :class="mq">
+            <tr>
+              <th class="infl-label label-border-top-left" :class="mq"
+                  :colspan="hasDef ? 4 : 3">
+                {{tagToName('Sing')}}
+              </th>
+              <th v-if="hasPlur"
+                  class="infl-label label-border-top-right" :class="mq"
+                  rowspan="2">
+                {{tagToName('Plur')}}
+              </th>
+            </tr>
+            <tr>
+              <th class="infl-label sub label-border-bottom" :class="mq">
+                hankjønn
+              </th>
+              <th class="infl-label sub label-border-bottom" :class="mq">
+                {{tagToName('Fem')}}
+              </th>
+              <th class="infl-label sub label-border-bottom" :class="mq">
+                {{tagToName('Neuter')}}
+              </th>
+              <th class="infl-label sub label-border-bottom" :class="mq" v-if="hasDef">
+                {{tagToName('Def')}} form
+              </th>
+            </tr>
+          <inflectionRowDet v-for="(paradigm, index) in standardParadigms"
+                             :key="index"
+                             :language="language"
+                             :lemmaId="lemma.id"
+                             :paradigm="paradigm"/>
+          </table>
+      </div>
+    </div>
+    <div v-else
+         class="infl-wordclass"
+         :class="mq">
+      <div class="lemma">
+        <span class="infl-lemma">{{lemma.lemma}} </span>
+        <span class="sub">{{wordClass}}</span>
+        <span class="sub" v-if="nounGender"> {{nounGender}}</span>
+      </div>
+      <div>
+        <table class="infl-table" :class="mq">
+          <inflectionRowsDet v-for="(tags, index) in inflTagsDet"
+                              :key="index"
+                              :tags="tags"
+                              :lemma="lemma.lemma"
+                              :language="language"
+                              :lemmaId="lemma.id"
+                              :paradigms="standardParadigms"/>
+        </table>
+      </div>
+    </div>
+  </template>
   <template v-if="lemma && isUninflected">
     <div class="infl-wordclass" :class="mq">
       <div class="lemma label-border-top">
@@ -303,11 +367,13 @@ import inflectionRowAdjDeg from './inflectionRowAdjDeg.vue'
 import inflectionRowVerb from './inflectionRowVerb.vue'
 import inflectionRowParticiple from './inflectionRowParticiple.vue'
 import inflectionRowPron from './inflectionRowPron.vue'
+import inflectionRowDet from './inflectionRowDet.vue'
 
 import inflectionRowsNoun from './inflectionRowsNoun.vue'
 import inflectionRowsVerb from './inflectionRowsVerb.vue'
 import inflectionRowsAdj from './inflectionRowsAdj.vue'
 import inflectionRowsPron from './inflectionRowsPron.vue'
+import inflectionRowsDet from './inflectionRowsDet.vue'
 
 
 import { calculateStandardParadigms,
@@ -337,10 +403,12 @@ export default {
                   inflectionRowVerb,
                   inflectionRowParticiple,
                   inflectionRowPron,
+                  inflectionRowDet,
                   inflectionRowsNoun,
                   inflectionRowsVerb,
                   inflectionRowsAdj,
-                  inflectionRowsPron
+                  inflectionRowsPron,
+                  inflectionRowsDet
                 },
     props: ['lemmaList','inline','mq'],
     data: function () {
@@ -350,11 +418,16 @@ export default {
                  // initialLexeme: this.lemmaList ? this.lemmaList[0].initial_lexeme : null,
                  hasFem: this.hasInflForm(['Pos','Fem']),
                  hasDeg: this.hasInflForm(['Cmp']),
+                 hasDef: this.hasInflForm(['Def']),
+                 hasPlur: this.hasInflForm(['Plur']),
                  hasPresPart: this.hasInflForm(['Adj','<PresPart>']),
                  hasPerfPart: this.hasInflForm(['Adj','<PerfPart>']),
                  hasPerfPartDef: this.hasInflForm(['Adj','<PerfPart>','Def']),
                  hasImp: this.hasInflForm(['Imp']),
-                 isUninflected: this.lemmaList && !['NOUN','PROPN','ADJ','VERB','PRON'].find(wc=>wc==this.lemmaList[0].word_class),
+                 isUninflected: this.lemmaList && (!['NOUN','PROPN','ADJ','VERB','PRON','DET']
+                                                   .find(wc=>wc==this.lemmaList[0].word_class) ||
+                                                   this.lemmaList[0].paradigm_info[0].inflection_group == 'DET_simple'
+                                                  ),
                  show: false,
                  lemma: this.lemmaList && this.lemmaList[0],
                  paradigms: null,
@@ -402,6 +475,20 @@ export default {
                  inflTagsPronNonNeuter: [{ label: 'Nom', tags: ['Nom'] },
                                          { label: 'Acc', tags: ['Acc'] }],
                  inflTagsPronNeuter: [{ tags: ['Neuter'] }],
+                 inflTagsDetPl: [ { title: 'Sing' },
+                                  { label: 'Masc', tags: ['Masc'] },
+                                  { label: 'Fem', tags: ['Fem'] },
+                                  { label: 'Neuter', tags: ['Neuter']},
+                                  { label: 'Def', tags: ['Def']},
+                                  { title: 'Plur'},
+                                  { tags: ['Plur'] }
+                                ],
+                 inflTagsDetSg: [ { title: 'Sing' },
+                                  { label: 'Masc', tags: ['Masc'] },
+                                  { label: 'Fem', tags: ['Fem'] },
+                                  { label: 'Neuter', tags: ['Neuter']},
+                                  { label: 'Def', tags: ['Def']}
+                              ]
                }
     },
     computed: {
@@ -411,6 +498,9 @@ export default {
         },
         inflTagsPron: function () {
             return this.isNeuterPron() ? this.inflTagsPronNeuter : this.inflTagsPronNonNeuter
+        },
+        inflTagsDet: function () {
+            return this.hasPlur ? this.inflTagsDetPl : this.inflTagsDetSg
         },
         inflTagsNoun: function () {
             if (this.hasSing()) {
@@ -450,6 +540,8 @@ export default {
         // sort Masc < Fem < Neuter, then sort alphabetically by word_form (first elt if it is a list)
         getStandardParadigms: function () {
             if (this.paradigms) {
+                console.log('this.paradigms')
+                console.log(this.paradigms)
                 return this.paradigms
             }
             let paradigms = []

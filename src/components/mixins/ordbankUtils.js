@@ -262,15 +262,15 @@ export function inflectedForm (paradigm, tagList, exclTagList, noVerticalMerge) 
 }
 
 function hyphenatedForm (form, lemma) {
-    console.log('form:')
-    console.log(form)
-    console.log(lemma)
-    if (lemma && lemma.initial_lexeme && !lemma.neg_junction) {
+    if (lemma && lemma.word_class == 'NOUN' && lemma.initial_lexeme && !lemma.neg_junction) {
         let junction = (lemma.junction && lemma.junction != '-') ? lemma.junction : null
-        return lemma.initial_lexeme
-            + (junction || '')
-            + '­'
-            + form.substring(lemma.initial_lexeme.length + (junction ? junction.length : 0))
+        let il = lemma.initial_lexeme + (junction || '') + '­'
+        let pfx_length = lemma.initial_lexeme.length + (junction ? junction.length : 0)
+        if (typeof form === 'string') {
+            return il + form.substring(pfx_length)
+        } else {
+            return form.map(str => il + str.substring(pfx_length))
+        }
     } else {
         return form
     }
