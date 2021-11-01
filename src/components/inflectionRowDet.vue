@@ -1,0 +1,52 @@
+<template>
+<tr>
+  <td class="infl-cell"
+      v-for="([rowspan,rowindex,forms], index) in cells"
+      :key="index"
+      :rowspan="rowspan"
+      :index="rowindex"
+      @mouseover.stop="hiliteRow(rowindex)">
+    <span class='comma'
+          v-for="(form, i) in forms"
+          :key="i">
+    {{form}}</span>
+  </td>
+</tr>
+</template>
+
+<script>
+
+import $ from 'jquery'
+
+import { inflectedForm, tagToName
+       } from './mixins/ordbankUtils.js' 
+
+export default {
+    name: 'inflectionRowPron',
+    props: ['paradigm','language','lemmaId'],
+    data: function () {
+        return {
+            cells: [ this.inflForm(['Masc']),
+                     this.inflForm(['Fem']),
+                     this.inflForm(['Neuter']),
+                     this.inflForm(['Def']),
+                     this.inflForm([ 'Plur'])
+                   ].filter(r => r)
+        }
+    },
+    computed: {
+    },
+    methods: {
+        inflForm: function (tagList) {
+            return inflectedForm(this.paradigm, tagList)
+        },
+        tagToName: function (tag) {
+            return tagToName(tag, this.language)
+        },
+        hiliteRow: function (rowindex) {
+            $('td[index]').removeClass('hilite')
+            rowindex.forEach(i => $('#lemma' + this.lemmaId + ' td[index*='+ i + ']').addClass('hilite'))
+        }
+    }
+}
+</script>
