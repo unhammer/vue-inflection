@@ -262,7 +262,11 @@ export function inflectedForm (paradigm, tagList, exclTagList, noVerticalMerge) 
 }
 
 function hyphenatedForm (form, lemma) {
-    if (lemma && lemma.word_class == 'NOUN' && lemma.initial_lexeme && !lemma.neg_junction) {
+    if (lemma &&
+        lemma.word_class == 'NOUN' &&
+        lemma.lemma.length > 10 &&
+        lemma.initial_lexeme &&
+        !lemma.neg_junction) {
         let junction = (lemma.junction && lemma.junction != '-') ? lemma.junction : null
         let il = lemma.initial_lexeme + (junction || '') + '­'
         let pfx_length = lemma.initial_lexeme.length + (junction ? junction.length : 0)
