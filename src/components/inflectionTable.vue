@@ -460,29 +460,6 @@ export default {
                                 { label: 'SupInd', tags: ['Sup','Ind']},
                                 { label: 'SupDef', tags: ['Sup','Def']}
                               ],
-                 inflTagsVerbNoImp: [{ label: 'Inf', tags: ['Inf'], excl: ['Pass'], prefix: 'å' },
-                                     { label: 'Pres', tags: ['Pres'], excl: ['Pass'] },
-                                     { label: 'Past', tags: ['Past'] },
-                                     { label: 'PresPerf', tags: ['<PerfPart>'], excl: ['Adj'], prefix: 'har' }
-                                    ],
-                 inflTagsVerbNoPart: [{ label: 'Inf', tags: ['Inf'], excl: ['Pass'], prefix: 'å' },
-                                      { label: 'Pres', tags: ['Pres'], excl: ['Pass'] },
-                                      { label: 'Past', tags: ['Past'] },
-                                      { label: 'PresPerf', tags: ['<PerfPart>'], excl: ['Adj'], prefix: 'har' },
-                                      { label: 'Imp', tags: ['Imp'], suffix: '!' }
-                                     ],
-                 inflTagsVerbAll: [{ label: 'Inf', tags: ['Inf'], excl: ['Pass'], prefix: 'å' },
-                                   { label: 'Pres', tags: ['Pres'], excl: ['Pass'] },
-                                   { label: 'Past', tags: ['Past'] },
-                                   { label: 'PresPerf', tags: ['<PerfPart>'], excl: ['Adj'], prefix: 'har' },
-                                   { label: 'Imp', tags: ['Imp'], suffix: '!' },
-                                   { title: 'PerfPart' },
-                                   { label: 'MascFem', tags: ['Adj','Masc/Fem']},
-                                   { label: 'Def', tags: ['Adj','Def']},
-                                   { label: 'Plur', tags: ['Adj','Plur']},
-                                   { title: 'PresPart' },
-                                   { tags: ['Adj','<PresPart>'] },
-                                  ],
                  inflTagsPronNonNeuter: [{ label: 'Nom', tags: ['Nom'] },
                                          { label: 'Acc', tags: ['Acc'] }],
                  inflTagsPronNeuter: [{ tags: ['Neuter'] }],
@@ -499,7 +476,7 @@ export default {
                                   { label: 'Fem', tags: ['Fem'] },
                                   { label: 'Neuter', tags: ['Neuter']},
                                   { label: 'Def', tags: ['Def']}
-                              ]
+                                ]
                }
     },
     computed: {
@@ -519,13 +496,21 @@ export default {
             } else {
                 return this.inflTagsNounPlur
             }
-        },
+        }, // hasImp, hasPerfPart, hasPerfPartDef, has
         inflTagsVerb: function () {
-            if (this.hasImp) {
-                return this.inflTagsVerbAll
-            } else {
-                return this.inflTagsVerbNoImp
-            }
+            return [{ label: 'Inf', tags: ['Inf'], excl: ['Pass'], prefix: 'å' },
+                    { label: 'Pres', tags: ['Pres'], excl: ['Pass'] },
+                    { label: 'Past', tags: ['Past'] },
+                    { label: 'PresPerf', tags: ['<PerfPart>'], excl: ['Adj'], prefix: 'har' },
+                    this.hasImp ? { label: 'Imp', tags: ['Imp'], suffix: '!' } : null,
+                    this.hasPerfPart ? { title: 'PerfPart' } : null,
+                    this.hasPerfPartDef ? { label: 'MascFem', tags: ['Adj','Masc/Fem']} : null,
+                    this.hasPerfPart ? { label: 'Neuter', tags: ['Adj','Neuter']} : null,
+                    this.hasPerfPartDef ? { label: 'Def', tags: ['Adj','Def']} : null,
+                    this.hasPerfPartDef ? { label: 'Plur', tags: ['Adj','Plur']} : null,
+                    this.hasPresPart ? { title: 'PresPart' } : null,
+                    this.hasPresPart ? { tags: ['Adj','<PresPart>'] } : null,
+            ].filter(r => r)
         },
         nounGender: function () {
             this.getGender()
