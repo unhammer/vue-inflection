@@ -377,7 +377,7 @@ import inflectionRowsDet from './inflectionRowsDet.vue'
 
 
 import { calculateStandardParadigms,
-         word_formsEqual, hasTags, tagToName
+         word_formsEqual, hasTags, tagToName, hasInflForm
        } from './mixins/ordbankUtils.js'
 
 const posNames = { NOUN: "substantiv",
@@ -460,18 +460,29 @@ export default {
                                 { label: 'SupInd', tags: ['Sup','Ind']},
                                 { label: 'SupDef', tags: ['Sup','Def']}
                               ],
-                 inflTagsVerb: [{ label: 'Inf', tags: ['Inf'], excl: ['Pass'], prefix: 'å' },
-                                { label: 'Pres', tags: ['Pres'], excl: ['Pass'] },
-                                { label: 'Past', tags: ['Past'] },
-                                { label: 'PresPerf', tags: ['<PerfPart>'], excl: ['Adj'], prefix: 'har' },
-                                { label: 'Imp', tags: ['Imp'], suffix: '!' },
-                                { title: 'PerfPart' },
-                                { label: 'MascFem', tags: ['Adj','Masc/Fem']},
-                                { label: 'Def', tags: ['Adj','Def']},
-                                { label: 'Plur', tags: ['Adj','Plur']},
-                                { title: 'PresPart' },
-                                { tags: ['Adj','<PresPart>'] },
-                               ],
+                 inflTagsVerbNoImp: [{ label: 'Inf', tags: ['Inf'], excl: ['Pass'], prefix: 'å' },
+                                     { label: 'Pres', tags: ['Pres'], excl: ['Pass'] },
+                                     { label: 'Past', tags: ['Past'] },
+                                     { label: 'PresPerf', tags: ['<PerfPart>'], excl: ['Adj'], prefix: 'har' }
+                                    ],
+                 inflTagsVerbNoPart: [{ label: 'Inf', tags: ['Inf'], excl: ['Pass'], prefix: 'å' },
+                                      { label: 'Pres', tags: ['Pres'], excl: ['Pass'] },
+                                      { label: 'Past', tags: ['Past'] },
+                                      { label: 'PresPerf', tags: ['<PerfPart>'], excl: ['Adj'], prefix: 'har' },
+                                      { label: 'Imp', tags: ['Imp'], suffix: '!' }
+                                     ],
+                 inflTagsVerbAll: [{ label: 'Inf', tags: ['Inf'], excl: ['Pass'], prefix: 'å' },
+                                   { label: 'Pres', tags: ['Pres'], excl: ['Pass'] },
+                                   { label: 'Past', tags: ['Past'] },
+                                   { label: 'PresPerf', tags: ['<PerfPart>'], excl: ['Adj'], prefix: 'har' },
+                                   { label: 'Imp', tags: ['Imp'], suffix: '!' },
+                                   { title: 'PerfPart' },
+                                   { label: 'MascFem', tags: ['Adj','Masc/Fem']},
+                                   { label: 'Def', tags: ['Adj','Def']},
+                                   { label: 'Plur', tags: ['Adj','Plur']},
+                                   { title: 'PresPart' },
+                                   { tags: ['Adj','<PresPart>'] },
+                                  ],
                  inflTagsPronNonNeuter: [{ label: 'Nom', tags: ['Nom'] },
                                          { label: 'Acc', tags: ['Acc'] }],
                  inflTagsPronNeuter: [{ tags: ['Neuter'] }],
@@ -509,6 +520,13 @@ export default {
                 return this.inflTagsNounPlur
             }
         },
+        inflTagsVerb: function () {
+            if (this.hasImp) {
+                return this.inflTagsVerbAll
+            } else {
+                return this.inflTagsVerbNoImp
+            }
+        },
         nounGender: function () {
             this.getGender()
             return !this.gender || this.gender=='+' ? null : tagToName(this.gender,this.language)
@@ -525,15 +543,8 @@ export default {
             let info = this.lemmaList &&
                 this.lemmaList[0].paradigm_info &&
                 this.lemmaList[0].paradigm_info.find(
-                    paradigm => (paradigm.standardisation == 'STANDARD' &&
-                                 !paradigm.to &&
-                                 paradigm.inflection.find(
-                                     infl => { let found = infl.word_form // there are empty cells!
-                                               tagList.forEach(tag =>
-                                                               { if (!infl.tags.find(t => t == tag)) {
-                                                                   found = false }
-                                                               })
-                                               return found })))
+                    paradigm => paradigm.standardisation == 'STANDARD' &&
+                        hasInflForm(paradigm, tagList))
             return !!info
         },
         // the paradigms that should be shown in the table

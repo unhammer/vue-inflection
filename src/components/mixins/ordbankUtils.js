@@ -102,6 +102,7 @@ function mergeParadigm(p, tagList, mergedCell) {
              from: p.from,
              to: p.to,
              tags: p.tags,
+             inflection_group: p.inflection_group,
              inflection: p.inflection.map(infl => {
                  if (!hasTags(infl, tagList)) {
                      return infl
@@ -171,7 +172,8 @@ function normalizeInflection(paradigm) {
              from: paradigm.from,
              to: paradigm.to,
              tags: paradigm.tags,
-             inflection: res
+             inflection: res,
+             inflection_group: paradigm.inflection_group,
            }
 }
 
@@ -259,6 +261,19 @@ export function inflectedForm (paradigm, tagList, exclTagList, noVerticalMerge) 
     } else {
         return [ rowspan, index, forms ]
     }
+}
+
+export function hasInflForm (paradigm, tagList) {
+    let res = !paradigm.to &&
+        paradigm.inflection_group != "VERB_sPass" && // fix for bug in paradigm def.
+        paradigm.inflection.find(
+            infl => { let found = infl.word_form // there are empty cells!
+                      tagList.forEach(tag =>
+                                      { if (!infl.tags.find(t => t == tag)) {
+                                          found = false }
+                                      })
+                      return found })
+    return !!res
 }
 
 function hyphenatedForm (form, lemma) {

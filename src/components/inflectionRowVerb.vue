@@ -19,7 +19,7 @@
 
 import $ from 'jquery'
 
-import { inflectedForm
+import { inflectedForm, hasInflForm
        } from './mixins/ordbankUtils.js' 
 
 export default {
@@ -31,7 +31,8 @@ export default {
                     !this.part || this.part==1 ? this.inflForm(['Pres'],['Pass']) : null,
                     !this.part || this.part==1 ? this.inflForm(['Past']) : null,
                     !this.part || this.part==2 ? this.inflForm(['<PerfPart>'],['Adj'],'har') : null,
-                    !this.part || this.part==2 ? this.inflForm(['Imp'],null,null,'!') : null
+                    (!this.part || this.part==2) && hasInflForm(this.paradigm,['Imp']) ?
+                    this.inflForm(['Imp'],null,null,'!') : null
                   ].filter(r => r)
         }
     },
