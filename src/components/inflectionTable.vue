@@ -547,7 +547,7 @@ export default {
             if (!paradigms.length) {
                 return []
             }
-            let isNoun = null
+            let isNoun = paradigms[0].tags.find(t => t == 'NOUN')
 
             let concat_wordforms = function (infl) {
                 let chain = ''
@@ -568,6 +568,15 @@ export default {
                 return chain2.localeCompare(chain1)
             })
 
+            paradigms.forEach((p) => {
+                // cases like ‘et nynorsk’, see #406, #510
+                if (isNoun && p.tags.find(t=>t=='Uninfl') && p.inflection.length == 1) {
+                    p.inflection.push({ tags: ['Sing', 'Ind'], word_form: this.lemma.lemma })
+                    p.inflection.push({ tags: ['Sing', 'Def'], word_form: '–' })
+                    p.inflection.push({ tags: ['Plur', 'Ind'], word_form: '–' })
+                    p.inflection.push({ tags: ['Plur', 'Def'], word_form: '–' })
+                }
+            })
             let currentTags = paradigms[0].tags
             let currentInfl = paradigms[0].inflection.map(infl => {
                 infl.rowspan = 0
@@ -575,23 +584,18 @@ export default {
                 return infl })
             // merge equal cells by setting rowspan
             paradigms.forEach((p,index) => {
-                if (isNoun) {
+                /*if (isNoun) {
                     let gender = p.tags[1]
                     if (!this.gender) {
                         this.gender = gender
                     } else if (this.gender != gender) {
                         this.gender = '+'
                     }
-                }
-                // cases like ‘et nynorsk’, see #406
-                if (isNoun && p.tags.find(t=>t=='Uninfl') && p.inflection.length == 1) {
-                    p.inflection.push({ tags: ['Sing', 'Ind'], word_form: this.lemma.lemma })
-                }
-                
+                }*/
                 for (let i = 0; i < p.inflection.length; i++) {
                     if (currentInfl[i].rowspan > 0 &&
-                        word_formsEqual(currentInfl[i].word_form,
-                                        p.inflection[i].word_form,
+                        word_formsEqual(currentInfl[i]?.word_form,
+                                        p.inflection[i]?.word_form,
                                         currentTags,
                                         p.tags,
                                         hasTags(currentInfl[i], ['Sing','Ind']) // no vertical merge
