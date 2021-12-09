@@ -598,9 +598,11 @@ export default {
                     }
                 }*/
                 for (let i = 0; i < p.inflection.length; i++) {
-                    if (currentInfl[i].rowspan > 0 &&
-                        word_formsEqual(currentInfl[i]?.word_form,
-                                        p.inflection[i]?.word_form,
+                    if (currentInfl[i] &&
+                        p.inflection[i] &&
+                        currentInfl[i].rowspan > 0 &&
+                        word_formsEqual(currentInfl[i].word_form,
+                                        p.inflection[i].word_form,
                                         currentTags,
                                         p.tags,
                                         hasTags(currentInfl[i], ['Sing','Ind']) // no vertical merge
