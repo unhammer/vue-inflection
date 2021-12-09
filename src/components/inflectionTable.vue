@@ -536,8 +536,6 @@ export default {
         // sort Masc < Fem < Neuter, then sort alphabetically by word_form (first elt if it is a list)
         getStandardParadigms: function () {
             if (this.paradigms) {
-                console.log('this.paradigms')
-                console.log(this.paradigms)
                 return this.paradigms
             }
             let paradigms = []
@@ -553,7 +551,13 @@ export default {
                 let chain = ''
                 for (let i = 0; i < infl.length; i++) {
                     let wf = infl[i].word_form
-                    if (typeof wf == 'string') {
+                    if (wf == 'Masc') { // Masc < Fem < Neuter
+                        chain += 'a#'
+                    } else if (wf == 'Fem') {
+                        chain += 'b#'
+                    } else if (wf == 'Neuter') {
+                        chain += 'c#'
+                    } else if (typeof wf == 'string') {
                         chain += wf + '#'
                     } else {
                         chain += wf[0] + '#'
@@ -562,12 +566,6 @@ export default {
                 return chain
             }
             
-            paradigms = paradigms.sort((p1,p2) => {
-                let chain1 = concat_wordforms(p1.inflection)
-                let chain2 = concat_wordforms(p2.inflection)
-                return chain2.localeCompare(chain1)
-            })
-
             paradigms.forEach((p) => {
                 // cases like ‘et nynorsk’, see #406, #510
                 if (isNoun && p.tags.find(t=>t=='Uninfl') && p.inflection.length == 1) {
@@ -577,6 +575,13 @@ export default {
                     p.inflection.push({ tags: ['Plur', 'Def'], word_form: '–' })
                 }
             })
+
+            paradigms = paradigms.sort((p1,p2) => {
+                let chain1 = concat_wordforms(p1.inflection)
+                let chain2 = concat_wordforms(p2.inflection)
+                return chain1.localeCompare(chain2)
+            })
+
             let currentTags = paradigms[0].tags
             let currentInfl = paradigms[0].inflection.map(infl => {
                 infl.rowspan = 0
