@@ -28,17 +28,24 @@ import { inflectedForm, indefArticle
 
 export default {
     name: 'inflectionRowParticiple',
-    props: ['paradigm','hasPerfPart','language','part','lemmaId'],
+    props: ['paradigm','hasPerfPart','language','part','lemmaId', 'context'],
     data: function () {
         return { rows: [
-            this.hasPerfPart && this.part!=4 ? this.inflForm(['Adj','Masc/Fem'],
-                                                             indefArticle(['Masc/Fem'], this.language),
-                                                             '+ substantiv') : null,
-            this.hasPerfPart && this.part!=4 ? this.inflForm(['Adj','Neuter'],
-                                                             indefArticle(['Neuter'], this.language),
-                                                             '+ substantiv') : null,
-            this.hasPerfPart && this.part!=4 ? this.inflForm(['Adj','Def'],'den/det', '+ substantiv') : null,
-            this.hasPerfPart && this.part!=3 ? this.inflForm(['Adj','Plur'],null,'+ substantiv') : null,
+            this.hasPerfPart && this.part!=4 ?
+                this.inflForm(['Adj','Masc/Fem'],
+                              this.context ? indefArticle(['Masc/Fem'], this.language) : null,
+                              this.context ? '+ substantiv' : null ) : null,
+            this.hasPerfPart && this.part!=4 ?
+                this.inflForm(['Adj','Neuter'],
+                              this.context ? indefArticle(['Neuter'], this.language) : null,
+                              this.context ? '+ substantiv' : null) : null,
+            this.hasPerfPart && this.part!=4 ?
+                this.inflForm(['Adj','Def'],
+                              this.context ? 'den/det' : null,
+                              this.context ? '+ substantiv' : null) : null,
+            this.hasPerfPart && this.part!=3 ?
+                this.inflForm(['Adj','Plur'],null,
+                              this.context ? '+ substantiv' : null) : null,
             this.part!=3 ? this.inflForm(['Adj','<PresPart>']) : null
         ].filter(r => r) }
     },

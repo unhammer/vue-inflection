@@ -123,7 +123,8 @@
                                      :language="language"
                                      :hasPerfPart="hasPerfPart"
                                      :lemmaId="lemma.id"
-                                     :paradigm="paradigm"/>
+                                     :paradigm="paradigm"
+                                     :context="context"/>
           </table>
       </div>
     </div>
@@ -410,7 +411,7 @@ export default {
                   inflectionRowsPron,
                   inflectionRowsDet
                 },
-    props: ['lemmaList','inline','mq'],
+    props: ['lemmaList','mq','context'],
     data: function () {
         return { wordClass: this.lemmaList ?
                  posNames[this.lemmaList[0].word_class] || this.lemmaList[0].word_class : null,
