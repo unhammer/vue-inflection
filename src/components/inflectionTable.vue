@@ -16,18 +16,18 @@
               <th class="infl-label sub label-border-top-left" :class="mq"
                   v-if="!nounGender"
                   rowspan='2'>kjønn</th>
-              <th v-if="hasSing()"
+              <th v-if="hasSing"
                   class="infl-label label-border-top-left" :class="mq" colspan='2'>
                 {{tagToName('Sing')}}</th>
               <th class="infl-label label-border-top-right" :class="mq" colspan='2'>
                 {{tagToName('Plur')}}</th>
             </tr>
             <tr>
-              <th v-if="hasSing()"
+              <th v-if="hasSing"
                   class="infl-label sub label-border-bottom" :class="mq">
                 {{tagToName('Ind')}} form
               </th>
-              <th v-if="hasSing()"
+              <th v-if="hasSing"
                   class="infl-label sub label-border-bottom" :class="mq">
                 {{tagToName('Def')}} form
               </th>
@@ -157,14 +157,18 @@
       <div>
           <table class="infl-table" :class="mq">
             <tr>
-              <th class="infl-label label-border-top-left" :class="mq" :colspan="hasFem ? 4 : 3">
+              <th v-if="hasSingAdj"
+                  class="infl-label label-border-top-left"
+                  :class="mq"
+                  :colspan="hasFem ? 4 : 3">
                 {{tagToName('Sing')}}
               </th>
-              <th class="infl-label label-border-top-right" :class="mq" rowspan="2">
+              <th class="infl-label label-border-top-right" :class="mq"
+                  :rowspan="hasSingAdj ? 2 : 1">
                 {{tagToName('Plur')}}
               </th>
             </tr>
-            <tr>
+            <tr v-if="hasSingAdj">
               <th v-if="hasFem" class="infl-label sub label-border-bottom" :class="mq">
                 hankjønn
               </th>
@@ -178,8 +182,8 @@
             </tr>
             <inflectionRowAdj v-for="(paradigm, index) in standardParadigms"
                               :key="index"
-                              :hasDeg="hasDeg"
                               :hasFem="hasFem"
+                              :hasSing="hasSingAdj"
                               :lemmaId="lemma.id"
                               :paradigm="paradigm"/>
           </table>
@@ -218,6 +222,7 @@
           <inflectionRowsAdj v-for="(tags, index) in inflTagsAdj"
                              :key="index"
                              :tags="tags"
+                             :hasSing="hasSingAdj"
                              :language="language"
                              :lemmaId="lemma.id"
                              :paradigms="standardParadigms"/>
@@ -420,6 +425,9 @@ export default {
                  hasFem: this.hasInflForm(['Pos','Fem']),
                  hasDeg: this.hasInflForm(['Cmp']),
                  hasDef: this.hasInflForm(['Def']),
+                 hasSing: this.hasInflForm(['Sing']),
+                 // Ind b/o ‘få’/‘mange’ nno, which has Sing Def, must be bug
+                 hasSingAdj: this.hasInflForm(['Sing','Ind']),
                  hasPlur: this.hasInflForm(['Plur']),
                  hasPresPart: this.hasInflForm(['Adj','<PresPart>']),
                  hasPerfPart: this.hasInflForm(['Adj','<PerfPart>']),
@@ -449,7 +457,7 @@ export default {
                  inflTagsNounPlur: [{ title: 'Plur'},
                                     { label: 'Ind', tags: ['Plur','Ind']},
                                     { label: 'Def', tags: ['Plur','Def']}],
-                 inflTagsAdj: [ { title: 'Sing' },
+                 inflTagsAdj: [ this.hasSingAdj ? { title: 'Sing' } : null,
                                 { label: 'MascFem', tags: ['Pos',['Masc/Fem','Masc']] },
                                 { label: 'Fem', tags: ['Pos','Fem'] },
                                 { label: 'Neuter', tags: ['Pos','Neuter']},
@@ -460,7 +468,7 @@ export default {
                                 { label: 'Cmp', tags: ['Cmp']},
                                 { label: 'SupInd', tags: ['Sup','Ind']},
                                 { label: 'SupDef', tags: ['Sup','Def']}
-                              ],
+                              ].filter(r=>r),
                  inflTagsPronNonNeuter: [{ label: 'Nom', tags: ['Nom'] },
                                          { label: 'Acc', tags: ['Acc'] }],
                  inflTagsPronNeuter: [{ tags: ['Neuter'] }],
@@ -492,7 +500,7 @@ export default {
             return this.hasPlur ? this.inflTagsDetPl : this.inflTagsDetSg
         },
         inflTagsNoun: function () {
-            if (this.hasSing()) {
+            if (this.hasSing) {
                 return this.getGender() == '+' ? this.inflTagsNounG : this.inflTagsNounNG
             } else {
                 return this.inflTagsNounPlur
@@ -532,6 +540,18 @@ export default {
                     paradigm => paradigm.standardisation == 'STANDARD' &&
                         hasInflForm(paradigm, tagList))
             return !!info
+        },
+        hasSing1: function () {
+            let paradigms = this.getStandardParadigms()
+            let sing = false
+            paradigms.forEach(p => {
+                p.inflection.forEach(infl => {
+                    if (infl.tags.find(t => t == 'Sing')) {
+                        sing = true
+                    }
+                })
+            })
+            return sing
         },
         // the paradigms that should be shown in the table
         // sort Masc < Fem < Neuter, then sort alphabetically by word_form (first elt if it is a list)
@@ -631,18 +651,6 @@ export default {
                 }
             })
             return neuter
-        },
-        hasSing: function () {
-            let paradigms = this.getStandardParadigms()
-            let sing = false
-            paradigms.forEach(p => {
-                p.inflection.forEach(infl => {
-                    if (infl.tags.find(t => t == 'Sing')) {
-                        sing = true
-                    }
-                })
-            })
-            return sing
         },
         getGender: function () {
             let paradigms = this.getStandardParadigms()

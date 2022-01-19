@@ -23,13 +23,13 @@ import { inflectedForm
 
 export default {
     name: 'inflectionRowAdj',
-    props: ['paradigm','hasFem','lemmaId'],
+    props: ['paradigm','hasFem','hasSing','lemmaId'],
     data: function () {
         return {
-            rows: [ this.inflForm(['Pos',['Masc/Fem','Masc']]),
-                    this.hasFem ? this.inflForm(['Pos','Fem']) : null,
-                    this.inflForm(['Pos','Neuter']),
-                    this.inflForm(['Pos','Def','Sing']),
+            rows: [ this.hasSing ? this.inflForm(['Pos',['Masc/Fem','Masc']]) : null,
+                    this.hasFem && this.hasSing ? this.inflForm(['Pos','Fem']) : null,
+                    this.hasSing ? this.inflForm(['Pos','Neuter']) : null,
+                    this.hasSing ? this.inflForm(['Pos','Def','Sing']) : null,
                     this.inflForm(['Pos','Plur'])
                   ].filter(r => r)
         }
