@@ -146,7 +146,7 @@
       </div>
     </div>
   </template>
-  <template v-if="lemma && lemma.word_class=='ADJ'">
+  <template v-if="lemma && lemma.word_class=='ADJ' && !isADJ_Adv">
     <div v-if="mq!='xs'"
            class="infl-wordclass"
            :class="mq">
@@ -223,6 +223,52 @@
                              :key="index"
                              :tags="tags"
                              :hasSing="hasSingAdj"
+                             :language="language"
+                             :lemmaId="lemma.id"
+                             :paradigms="standardParadigms"/>
+        </table>
+      </div>
+    </div>
+  </template>
+  <template v-if="lemma && lemma.word_class=='ADJ' && isADJ_Adv">
+    <div v-if="mq!='xs'"
+           class="infl-wordclass"
+           :class="mq">
+      <div class="lemma label-border-lemma">
+        <span class="infl-lemma">{{lemma.lemma}} </span>
+        <span class="sub">{{wordClass}}</span>
+      </div>
+      <div v-if="hasDeg">
+        <table class="infl-table" :class="mq">
+            <tr>
+              <th class="infl-label label-border-bottom">
+                positiv
+              </th>
+              <th class="infl-label label-border-bottom">
+                komparativ
+              </th>
+              <th class="infl-label label-border-bottom">
+                superlativ
+              </th>
+            </tr>
+            <inflectionRowAdjAdv v-for="(paradigm, index) in standardParadigms"
+                                 :key="index"
+                                 :lemmaId="lemma.id"
+                                 :paradigm="paradigm"/>
+          </table>
+      </div>
+    </div>
+    <div v-else
+      class="infl-wordclass" :class="mq">
+      <div class="lemma">
+          <span class="infl-lemma">{{lemma.lemma}} </span>
+          <span class="sub">{{wordClass}}</span>
+      </div>
+      <div>
+        <table class="infl-table" :class="mq" >
+          <inflectionRowsAdj v-for="(tags, index) in inflTagsAdjAdv"
+                             :key="index"
+                             :tags="tags"
                              :language="language"
                              :lemmaId="lemma.id"
                              :paradigms="standardParadigms"/>
@@ -370,6 +416,7 @@ import $ from 'jquery'
 import inflectionRowNoun from './inflectionRowNoun.vue'
 import inflectionRowAdj from './inflectionRowAdj.vue'
 import inflectionRowAdjDeg from './inflectionRowAdjDeg.vue'
+import inflectionRowAdjAdv from './inflectionRowAdjAdv.vue'
 import inflectionRowVerb from './inflectionRowVerb.vue'
 import inflectionRowParticiple from './inflectionRowParticiple.vue'
 import inflectionRowPron from './inflectionRowPron.vue'
@@ -378,6 +425,7 @@ import inflectionRowDet from './inflectionRowDet.vue'
 import inflectionRowsNoun from './inflectionRowsNoun.vue'
 import inflectionRowsVerb from './inflectionRowsVerb.vue'
 import inflectionRowsAdj from './inflectionRowsAdj.vue'
+// import inflectionRowsAdjAdv from './inflectionRowsAdjAdv.vue'
 import inflectionRowsPron from './inflectionRowsPron.vue'
 import inflectionRowsDet from './inflectionRowsDet.vue'
 
@@ -406,6 +454,7 @@ export default {
     components: { inflectionRowNoun,
                   inflectionRowAdj,
                   inflectionRowAdjDeg,
+                  inflectionRowAdjAdv,
                   inflectionRowVerb,
                   inflectionRowParticiple,
                   inflectionRowPron,
@@ -413,14 +462,13 @@ export default {
                   inflectionRowsNoun,
                   inflectionRowsVerb,
                   inflectionRowsAdj,
+                  // inflectionRowsAdjAdv,
                   inflectionRowsPron,
                   inflectionRowsDet
                 },
     props: ['lemmaList','mq','context'],
     data: function () {
-        return { wordClass: this.lemmaList ?
-                 posNames[this.lemmaList[0].word_class] || this.lemmaList[0].word_class : null,
-                 language: this.lemmaList ? this.lemmaList[0].language : null,
+        return { language: this.lemmaList ? this.lemmaList[0].language : null,
                  // initialLexeme: this.lemmaList ? this.lemmaList[0].initial_lexeme : null,
                  hasFem: this.hasInflForm(['Pos','Fem']),
                  hasDeg: this.hasInflForm(['Cmp']),
@@ -469,6 +517,10 @@ export default {
                                 { label: 'SupInd', tags: ['Sup','Ind']},
                                 { label: 'SupDef', tags: ['Sup','Def']}
                               ].filter(r=>r),
+                 inflTagsAdjAdv: [ { label: 'Pos', tags: ['Pos']},
+                                   { label: 'Cmp', tags: ['Cmp']},
+                                   { label: 'Sup', tags: ['Sup']}
+                                 ].filter(r=>r),
                  inflTagsPronNonNeuter: [{ label: 'Nom', tags: ['Nom'] },
                                          { label: 'Acc', tags: ['Acc'] }],
                  inflTagsPronNeuter: [{ tags: ['Neuter'] }],
@@ -489,9 +541,24 @@ export default {
                }
     },
     computed: {
+        wordClass: function () {
+            if (this.lemmaList) {
+                if (this.isADJ_Adv) {
+                    return posNames['ADV']
+                } else {
+                    return posNames[this.lemmaList[0].word_class]
+                        || this.lemmaList[0].word_class
+                }
+            } else {
+                return null
+            }
+        },
         // the paradigms that should be shown in the table
         standardParadigms: function () {
             return this.getStandardParadigms()
+        },
+        isADJ_Adv: function () {
+            return this.lemmaList && this.lemmaList[0].paradigm_info[0].inflection_group == 'ADJ_adv'
         },
         inflTagsPron: function () {
             return this.isNeuterPron() ? this.inflTagsPronNeuter : this.inflTagsPronNonNeuter
