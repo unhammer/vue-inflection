@@ -146,7 +146,7 @@
       </div>
     </div>
   </template>
-  <template v-if="lemma && lemma.word_class=='ADJ' && !isADJ_Adv">
+  <template v-if="lemma && lemma.word_class=='ADJ'">
     <div v-if="mq!='xs'"
            class="infl-wordclass"
            :class="mq">
@@ -230,7 +230,7 @@
       </div>
     </div>
   </template>
-  <template v-if="lemma && lemma.word_class=='ADJ' && isADJ_Adv">
+  <template v-if="lemma && lemma.word_class=='ADV' && isADJ_Adv">
     <div v-if="mq!='xs'"
            class="infl-wordclass"
            :class="mq">
@@ -387,7 +387,7 @@
       </div>
     </div>
   </template>
-  <template v-if="lemma && isUninflected">
+  <template v-if="lemma && isUninflected && !isADJ_Adv">
     <div class="infl-wordclass" :class="mq">
       <div class="lemma label-border-top">
         <span class="lemma">{{lemma.lemma}} </span>
@@ -396,7 +396,7 @@
       <div>
         <table class="infl-table" :class="mq">
           <tr>
-            <th class="infl-label label-border">ubøyelig</th>
+            <th class="infl-label label-border">{{language=='nob'?'ubøyelig':'ubøyeleg'}}</th>
           </tr>
           <tr>
             <td class="infl-cell label-border">{{lemma.lemma}}</td>
