@@ -269,7 +269,8 @@ export function hasInflForm (paradigm, tagList) {
         paradigm.inflection.find(
             infl => { let found = infl.word_form // there are empty cells!
                       tagList.forEach(tag =>
-                                      { if (!infl.tags.find(t => t == tag)) {
+                                      { if (!infl.tags.find(t => t == tag) && // have to include common tags!
+                                            !paradigm.tags.find(t => t == tag)) {
                                           found = false }
                                       })
                       return found })

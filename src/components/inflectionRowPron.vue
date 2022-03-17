@@ -28,11 +28,10 @@ export default {
         return {
             cells: [
                 this.inflForm(['Nom']),
-                this.inflForm(['Acc'])
+                this.inflForm(['Acc']),
+                this.inflForm(['Neuter'])
             ].filter(r => r)
         }
-    },
-    computed: {
     },
     methods: {
         inflForm: function (tagList) {

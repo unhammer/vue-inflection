@@ -276,7 +276,7 @@
       </div>
     </div>
   </template>
-  <template v-if="lemma && lemma.word_class=='PRON'">
+  <template v-if="lemma && lemma.word_class=='PRON' && standardParadigms[0].inflection">
     <div v-if="mq!='xs'"
          class="infl-wordclass"
          :class="mq">
@@ -287,11 +287,14 @@
       <div>
         <table class="infl-table" :class="mq">
           <tr>
-            <th class="infl-label sub label-border-top-left">
+            <th v-if="hasNom" class="infl-label sub label-border-top-left">
               subjektsform
             </th>
-            <th class="infl-label sub label-border-top-right">
+            <th v-if="hasAcc" class="infl-label sub label-border-top-right">
               objektsform
+            </th>
+            <th v-if="hasNeuter" class="infl-label sub label-border-top-right">
+              {{tagToName('Neuter')}}
             </th>
           </tr>
           <inflectionRowPron v-for="(paradigm, index) in standardParadigms"
@@ -334,8 +337,9 @@
       <div>
         <table class="infl-table" :class="mq">
             <tr>
-              <th class="infl-label label-border-top-left" :class="mq"
-                  :colspan="hasDef ? 4 : 3">
+              <th v-if="hasSing"
+                  class="infl-label label-border-top-left" :class="mq"
+                  :colspan="DETColspan">
                 {{tagToName('Sing')}}
               </th>
               <th v-if="hasPlur"
@@ -344,14 +348,15 @@
                 {{tagToName('Plur')}}
               </th>
             </tr>
-            <tr>
+            <tr v-if="hasSing">
               <th class="infl-label sub label-border-bottom" :class="mq">
-                hankjønn
+                {{tagToName('Masc')}}
               </th>
               <th class="infl-label sub label-border-bottom" :class="mq">
                 {{tagToName('Fem')}}
               </th>
-              <th class="infl-label sub label-border-bottom" :class="mq">
+              <th v-if="hasNeuter"
+                  class="infl-label sub label-border-bottom" :class="mq">
                 {{tagToName('Neuter')}}
               </th>
               <th class="infl-label sub label-border-bottom" :class="mq" v-if="hasDef">
@@ -471,6 +476,7 @@ export default {
         return { language: this.lemmaList ? this.lemmaList[0].language : null,
                  // initialLexeme: this.lemmaList ? this.lemmaList[0].initial_lexeme : null,
                  hasFem: this.hasInflForm(['Pos','Fem']),
+                 hasNeuter: this.hasInflForm(['Neuter']),
                  hasDeg: this.hasInflForm(['Cmp']),
                  hasDef: this.hasInflForm(['Def']),
                  hasSing: this.hasInflForm(['Sing']),
@@ -481,6 +487,9 @@ export default {
                  hasPerfPart: this.hasInflForm(['Adj','<PerfPart>']),
                  hasPerfPartDef: this.hasInflForm(['Adj','<PerfPart>','Def']),
                  hasImp: this.hasInflForm(['Imp']),
+                 hasNom: this.hasInflForm(['Nom']),
+                 hasAcc: this.hasInflForm(['Acc']),
+                 DETColspan: 2 + (this.hasDef ? 1 : 0) + (this.hasNeuter ? 1 : 0),
                  isUninflected: this.lemmaList && (!['NOUN','PROPN','ADJ','VERB','PRON','DET']
                                                    .find(wc=>wc==this.lemmaList[0].word_class) ||
                                                    this.lemmaList[0].paradigm_info[0].inflection_group == 'DET_simple'
@@ -636,6 +645,8 @@ export default {
             let isNoun = paradigms[0].tags.find(t => t == 'NOUN')
 
             let concat_wordforms = function (infl) {
+                console.log('infl')
+                console.log(infl)
                 let chain = ''
                 for (let i = 0; i < infl.length; i++) {
                     let wf = infl[i].word_form
@@ -721,7 +732,7 @@ export default {
         },
         getGender: function () {
             let paradigms = this.getStandardParadigms()
-            let isNoun = paradigms[0].tags.find(t => t == 'NOUN')
+            let isNoun = paradigms[0]?.tags.find(t => t == 'NOUN')
             paradigms.forEach(p => {
                 if (isNoun) {
                     let gender = p.tags[1]
