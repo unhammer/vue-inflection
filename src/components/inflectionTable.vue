@@ -732,7 +732,7 @@ export default {
         },
         getGender: function () {
             let paradigms = this.getStandardParadigms()
-            let isNoun = paradigms[0]?.tags.find(t => t == 'NOUN')
+            let isNoun = paradigms[0] ? paradigms[0].tags.find(t => t == 'NOUN') : null
             paradigms.forEach(p => {
                 if (isNoun) {
                     let gender = p.tags[1]
