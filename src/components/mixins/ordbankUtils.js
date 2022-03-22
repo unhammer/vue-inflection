@@ -282,18 +282,18 @@ function hyphenatedForm (form, lemma) {
         lemma.word_class == 'NOUN' &&
         lemma.lemma.length > 10 &&
         lemma.initial_lexeme &&
+        form.length >= lemma.initial_lexeme.length && // excludes _gender virtal tag!
         !lemma.neg_junction) {
         let junction = (lemma.junction && lemma.junction != '-') ? lemma.junction : null
         let il = lemma.initial_lexeme + (junction || '') + '­'
         let pfx_length = lemma.initial_lexeme.length + (junction ? junction.length : 0)
         if (typeof form === 'string') {
-            return il + form.substring(pfx_length)
+            form = il + form.substring(pfx_length)
         } else {
-            return form.map(str => il + str.substring(pfx_length))
+            form = form.map(str => il + str.substring(pfx_length))
         }
-    } else {
-        return form
     }
+    return form
 }
 
 const tagNames_nob = { Sing: "entall",

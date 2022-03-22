@@ -645,8 +645,6 @@ export default {
             let isNoun = paradigms[0].tags.find(t => t == 'NOUN')
 
             let concat_wordforms = function (infl) {
-                console.log('infl')
-                console.log(infl)
                 let chain = ''
                 for (let i = 0; i < infl.length; i++) {
                     let wf = infl[i].word_form
