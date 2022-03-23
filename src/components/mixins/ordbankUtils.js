@@ -375,3 +375,37 @@ export function indefArticle (tagList, language) {
         return indefArticle_nno[tagList[1]]
     }
 }
+
+export function markdownToHTML (str) {
+    [ ['_','sub'],
+      ['^','sup']
+    ].map(pair => str = markdownCharToHTML(str,...pair))
+    return str
+}
+
+function markdownCharToHTML (str,c,e,whole) {
+    let html = ""
+    let start = true
+    let pos = 0
+    for (let i = str.indexOf(c,0);
+         i >= 0;
+         i = str.indexOf(c,i+1)) {
+        if (start || whole) {
+            html += str.substring(pos,i) + '<' + e + '>'
+            if (c == '^') { // fraction
+                let slash = str.indexOf('/', i+1)
+                let end = str.indexOf(c,i+1)
+                if (slash > -1 && slash < end) {
+                    html += str.substring(i+1,slash) + '</sup>/<sub>'
+                    i = slash
+                    e = 'sub'
+                }
+            }
+        } else {
+            html += str.substring(pos,i) + '</' + e + '>'
+        }
+        start = !start
+        pos = i + c.length
+    }
+    return html + str.substring(pos)
+}

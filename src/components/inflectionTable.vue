@@ -6,8 +6,8 @@
            class="infl-wordclass"
            :class="mq">
         <div class="lemma label-border-lemma">
-          <span class="infl-lemma">{{lemma.lemma}} </span>
-          <span class="sub">{{wordClass}}</span>
+          <span class="infl-lemma" v-html="formattedLemma"/>
+          <span class="sub"> {{wordClass}}</span>
           <span class="sub" v-if="nounGender"> {{nounGender}}</span>
         </div>
         <div>
@@ -436,7 +436,7 @@ import inflectionRowsDet from './inflectionRowsDet.vue'
 
 
 import { calculateStandardParadigms,
-         word_formsEqual, hasTags, tagToName, hasInflForm
+         word_formsEqual, hasTags, tagToName, hasInflForm, markdownToHTML
        } from './mixins/ordbankUtils.js'
 
 const posNames = { NOUN: "substantiv",
@@ -561,6 +561,9 @@ export default {
             } else {
                 return null
             }
+        },
+        formattedLemma: function () {
+            return markdownToHTML(this.lemma.lemma)
         },
         // the paradigms that should be shown in the table
         standardParadigms: function () {

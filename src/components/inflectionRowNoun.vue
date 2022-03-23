@@ -8,7 +8,7 @@
       @mouseover.stop="hiliteRow(rowindex)">
     <span class='comma'
           v-for="(form, i) in forms"
-          :key="i"><span v-if="prefix" class="context">{{prefix}}</span>&nbsp;{{gender ? tagToName(form) : form}}</span>
+          :key="i"><span v-if="prefix" class="context">{{prefix}}</span>&nbsp;<span v-if="gender">tagToName(form)</span><span v-else v-html="formattedForm(form)"/></span>
   </td>
 </tr>
 </template>
@@ -17,7 +17,7 @@
 
 import $ from 'jquery'
 
-import { inflectedForm, tagToName, indefArticle
+import { inflectedForm, tagToName, indefArticle, markdownToHTML
        } from './mixins/ordbankUtils.js' 
 
 export default {
@@ -34,6 +34,8 @@ export default {
             ].filter(r => r)
         }
     },
+    computed: {
+    },
     methods: {
         indefArticle: function () {
             return indefArticle(this.paradigm.tags, this.language)
@@ -45,6 +47,9 @@ export default {
             } else {
                 return null
             }
+        },
+        formattedForm: function (form) {
+            return markdownToHTML(form)
         },
         tagToName: function (tag) {
             return tagToName(tag, this.language)
