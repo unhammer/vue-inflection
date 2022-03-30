@@ -563,7 +563,7 @@ export default {
             }
         },
         formattedLemma: function () {
-            return markdownToHTML(this.lemma.lemma)
+            return markdownToHTML(this.lemma.markdown_lemma || this.lemma.lemma)
         },
         // the paradigms that should be shown in the table
         standardParadigms: function () {

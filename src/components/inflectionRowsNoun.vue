@@ -13,8 +13,9 @@
     <span class='comma'
           v-for="(form, index) in forms"
           :key="index">
-        <span v-if="prefix" class="context">{{prefix}}</span>
-        {{tags.tags[0]=='_gender' ? tagToName(form) : form}}</span>
+        <span v-if="prefix" class="context">{{prefix}} </span>
+        <span v-html="formattedForm(tags,form)"/>
+    </span>
   </td>
   </template>
   <template v-if="tags.title">
@@ -30,7 +31,7 @@
 
 import $ from 'jquery'
 
-import { inflectedForm, tagToName
+import { inflectedForm, tagToName, markdownToHTML
        } from './mixins/ordbankUtils.js' 
 
 export default {
@@ -101,6 +102,9 @@ export default {
         },
         tagToName: function (tag) {
             return tagToName(tag, this.language)
+        },
+        formattedForm: function (tags,form) {
+            return tags.tags[0]=='_gender' ? tagToName(form) : markdownToHTML(form)
         }
     }
 }

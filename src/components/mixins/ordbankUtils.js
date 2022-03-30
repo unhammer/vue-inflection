@@ -10,7 +10,9 @@ export function calculateStandardParadigms (lemma,edit) {
                                            !paradigm.to && // we assume this is in the past if not null
                                            (!edit || !paradigm.exclude)
                                           ))
-        paradigms.forEach(p => p.inflection.forEach(i => i.word_form = hyphenatedForm(i.word_form,lemma)))
+        paradigms.forEach(p => p.inflection.forEach(i => i.markdown_word_form ?
+                                                    i.markdown_word_form = hyphenatedForm(i.markdown_word_form,lemma) :
+                                                    i.word_form = hyphenatedForm(i.word_form,lemma)))
         return paradigms
     } else {
         return []
@@ -26,6 +28,9 @@ function appendWordForms(wf) {
 }
 
 function appendTwoWordForms (wf1, wf2) {
+    if (!wf1) {
+        return null
+    }
     let res
     if (wf1 == wf2) {
         res = wf1
@@ -79,19 +84,25 @@ export function word_formsEqual (s1, s2, tags1, tags2, checkTags) {
 
 // false if equal
 function mergeCells(infl1, infl2, tagList) {
-    let wf1 = null, wf2 = null
+    let wf1 = null, wf2 = null, mwf1 = null, mwf2 = null
     for (let i = 0; i < infl1.length; i++) {
+        let mf1 = infl1[i].markdown_word_form
+        let f1 = infl1[i].word_form
+        let mf2 = infl2[i].markdown_word_form
+        let f2 = infl2[i].word_form
         if (hasTags(infl1[i], tagList)) {
-            if (!word_formsEqual(infl1[i].word_form, infl2[i].word_form)) {
-                wf1 = infl1[i].word_form
-                wf2 = infl2[i].word_form
+            if (!word_formsEqual(f1, f2)) {
+                wf1 = f1
+                wf2 = f2
+                mwf1 = mf1
+                mwf2 = mf2
             }
-        } else if (!word_formsEqual(infl1[i].word_form, infl2[i].word_form)) { // difference in different tag list
+        } else if (!word_formsEqual(f1, f2)) { // difference in different tag list
             return true
         }
     }
     if (wf1) {
-        return appendTwoWordForms(wf1,wf2)
+        return [ appendTwoWordForms(wf1,wf2), mwf1 ? appendTwoWordForms(mwf1,mwf2) : null ]
     } else {
         return false
     }
@@ -108,7 +119,8 @@ function mergeParadigm(p, tagList, mergedCell) {
                      return infl
                  } else {
                      return { tags: infl.tags,
-                              word_form: mergedCell,
+                              word_form: mergedCell[0],
+                              markdown_word_form: mergedCell[1],
                               rowspan: infl.rowspan
                             }
                  }
@@ -160,10 +172,12 @@ function normalizeInflection(paradigm) {
             i
         } else if (tagsEqual(tags, infl[i].tags)) {
             res[res.length-1].word_form = appendTwoWordForms(res[res.length-1].word_form, infl[i].word_form)
+            res[res.length-1].merged_word_form = appendTwoWordForms(res[res.length-1].markdown_word_form, infl[i].markdown_word_form)
         } else {
             tags = infl[i].tags
             res.push( { tags: tags,
                         word_form: infl[i].word_form,
+                        markdown_word_form: infl[i].markdown_word_form,
                         rowspan: 1
                       } )
         }
@@ -224,7 +238,7 @@ export function mergeParadigms (paradigmInfo) {
 
 function inflectedForms (paradigm, tagList, exclTagList) {
     let inflection = paradigm.inflection.filter(
-        infl => { let found = infl.word_form
+        infl => { let found = infl.markdown_word_form || infl.word_form
                   tagList.forEach(tag => {
                       if (typeof tag == 'string') {
                           if (!infl.tags.find(t => t == tag)) {
@@ -244,7 +258,7 @@ function inflectedForms (paradigm, tagList, exclTagList) {
                 })
     return [inflection[0] && inflection[0].rowspan,
             inflection[0] && inflection[0].index,
-            appendWordForms(inflection.map(i => i.word_form))]
+            appendWordForms(inflection.map(i => i.markdown_word_form || i.word_form))]
 }
 
 // Calculate inflection table cell. If cells are vertically merged rowspan is the number of cells merged.
