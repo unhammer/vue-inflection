@@ -344,7 +344,7 @@
               </th>
               <th v-if="hasPlur"
                   class="infl-label label-border-top-right" :class="mq"
-                  rowspan="2">
+                  rowspan="1">
                 {{tagToName('Plur')}}
               </th>
             </tr>
@@ -475,7 +475,7 @@ export default {
     data: function () {
         return { language: this.lemmaList ? this.lemmaList[0].language : null,
                  // initialLexeme: this.lemmaList ? this.lemmaList[0].initial_lexeme : null,
-                 hasFem: this.hasInflForm(['Pos','Fem']),
+                 hasFem: this.hasInflForm(['Fem']),
                  hasNeuter: this.hasInflForm(['Neuter']),
                  hasDeg: this.hasInflForm(['Cmp']),
                  hasDef: this.hasInflForm(['Def']),
@@ -489,7 +489,6 @@ export default {
                  hasImp: this.hasInflForm(['Imp']),
                  hasNom: this.hasInflForm(['Nom']),
                  hasAcc: this.hasInflForm(['Acc']),
-                 DETColspan: 2 + (this.hasDef ? 1 : 0) + (this.hasNeuter ? 1 : 0),
                  isUninflected: this.lemmaList && (!['NOUN','PROPN','ADJ','VERB','PRON','DET']
                                                    .find(wc=>wc==this.lemmaList[0].word_class) ||
                                                    this.lemmaList[0].paradigm_info[0].inflection_group == 'DET_simple'
@@ -568,6 +567,9 @@ export default {
         // the paradigms that should be shown in the table
         standardParadigms: function () {
             return this.getStandardParadigms()
+        },
+        DETColspan: function () {
+            return 2 + (this.hasDef ? 1 : 0) + (this.hasNeuter ? 1 : 0)
         },
         isADJ_Adv: function () {
             return this.lemmaList && this.lemmaList[0].paradigm_info[0].inflection_group == 'ADJ_adv'

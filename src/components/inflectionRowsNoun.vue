@@ -104,7 +104,7 @@ export default {
             return tagToName(tag, this.language)
         },
         formattedForm: function (tags,form) {
-            return tags.tags[0]=='_gender' ? tagToName(form) : markdownToHTML(form)
+            return tags.tags[0]=='_gender' ? this.tagToName(form) : markdownToHTML(form)
         }
     }
 }
