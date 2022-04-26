@@ -1,10 +1,11 @@
 <template>
 <tr>
   <td class="infl-cell"
-      v-for="([rowspan,rowindex,forms], index) in cells"
+      v-for="([[rowspan,rowindex,forms],headers], index) in cells"
       :key="index"
       :rowspan="rowspan"
       :index="rowindex"
+      :headers="headers"
       @mouseover.stop="hiliteRow(rowindex)">
     <span class='comma'
           v-for="(form, i) in forms"
@@ -26,19 +27,19 @@ export default {
     props: ['paradigm','language','lemmaId'],
     data: function () {
         return {
-            cells: [ this.inflForm(['Masc']),
-                     this.inflForm(['Fem']),
-                     this.inflForm(['Neuter']),
-                     this.inflForm(['Def']),
-                     this.inflForm([ 'Plur'])
-                   ].filter(r => r)
+            cells: [ this.inflForm(['Masc'],'Sing Masc'),
+                     this.inflForm(['Fem'],'Sing Frem'),
+                     this.inflForm(['Neuter'],'Sing Neuter'),
+                     this.inflForm(['Def'],'Sing Def'),
+                     this.inflForm([ 'Plur'],'Plur')
+                   ].filter(r => r[0])
         }
     },
     computed: {
     },
     methods: {
-        inflForm: function (tagList) {
-            return inflectedForm(this.paradigm, tagList)
+        inflForm: function (tagList, headers) {
+            return [inflectedForm(this.paradigm, tagList), headers]
         },
         tagToName: function (tag) {
             return tagToName(tag, this.language)

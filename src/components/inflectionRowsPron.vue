@@ -1,7 +1,10 @@
 <template>
 <tr class="infl-row">
   <template v-if="tags.tags">
-    <th v-if="tags.label" class="infl-label xs">
+    <th v-if="tags.label"
+        class="infl-label xs"
+        :id="tags.label"
+        scope="row">
       {{tagToName(tags.label)}}
     </th>
     <td class="infl-cell"

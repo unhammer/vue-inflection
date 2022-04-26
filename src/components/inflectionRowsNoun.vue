@@ -2,7 +2,8 @@
 <tr class="infl-row" :id="'lemma'+lemma.id">
   <template v-if="tags.tags">
     <th class="infl-label xs"
-        :id="tags.tags.join('')">
+        :id="tags.tags.join('')"
+        scope="row">
       {{tagToName(tags.label)}}
     </th>
     <template v-for="([prefix, [rowspan,rowindex,forms], headers], index) in cells">
@@ -10,6 +11,7 @@
           class="infl-label"
           :id="forms[0]"
           :key="index"
+          scope="row"
           :colspan="rowspan"
           :index="rowindex"
           @mouseover.stop="hiliteRow(rowindex)">
@@ -34,6 +36,7 @@
   <template v-if="tags.title">
     <th class="infl-group"
         :colspan="paradigms.length+1"
+        scope="col"
         :id="tags.title">
       {{tagToName(tags.title)}}
     </th>

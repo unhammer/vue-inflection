@@ -2,7 +2,8 @@
 <tr class="infl-row">
   <template v-if="tags.tags">
     <th class="infl-label xs"
-        :id="tags.label">
+        :id="tags.label"
+        scope="row">
       {{tagToName(tags.label)}}
     </th>
     <td class="infl-cell"
@@ -23,6 +24,7 @@
   <template v-else>
     <th class="infl-group"
         :id="tags.title"
+        scope="col"
         :colspan="paradigms.length+1">
       {{tagToName(tags.title)}}
     </th>

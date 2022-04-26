@@ -107,24 +107,31 @@
                 <th class="infl-label label-border-top-left"
                     :class="mq"
                     id="PerfPart"
+                    scope="col"
                     :colspan="hasPerfPartDef ? (j<0?4:(j==3?3:1)) : 1">perfektum partisipp</th>
                 <th v-if="j<0 || j==4"
                     class="infl-label label-border-top-right" :class="mq"
                     id="PresPart"
+                    scope="col"
                     rowspan="2">presens partisipp</th>
               </tr>
               <tr>
                 <th v-if="(j<0 || j==3) && hasPerfPartDef"
                     id="Masc"
+                    scope="col"
                     class="infl-label sub label-border-bottom" :class="mq">
                   {{tagToName('Masc')}}&nbsp;/<br/>{{tagToName('Fem')}}</th>
-                <th id="Neuter" class="infl-label sub label-border-bottom" :class="mq"
+                <th id="Neuter"
+                    scope="col"
+                    class="infl-label sub label-border-bottom" :class="mq"
                     v-if="(j<0 || j==3)">{{tagToName('Neuter')}}</th>
                 <th v-if="(j<0 || j==3) && hasPerfPartDef"
                     id="Def"
+                    scope="col"
                     class="infl-label sub label-border-bottom" :class="mq">{{tagToName('Def')}} form</th>
                 <th v-if="(j<0 || j==4) && hasPerfPartDef"
                     id="Plur"
+                    scope="col"
                     class="infl-label sub label-border-bottom" :class="mq">{{tagToName('Plur')}}</th>
               </tr>
             </template>
@@ -178,11 +185,13 @@
                   class="infl-label label-border-top-left"
                   :class="mq"
                   id="Sing"
+                  scope="col"
                   :colspan="hasFem ? 4 : 3">
                 {{tagToName('Sing')}}
               </th>
               <th class="infl-label label-border-top-right" :class="mq"
                   id="Plur"
+                  scope="col"
                   :rowspan="hasSingAdj ? 2 : 1">
                 {{tagToName('Plur')}}
               </th>
@@ -191,28 +200,33 @@
               <th v-if="hasFem"
                   class="infl-label sub label-border-bottom"
                   id="Masc"
+                  scope="col"
                   :class="mq">
                 hankjønn
               </th>
               <th v-if="!hasFem"
                   class="infl-label sub label-border-bottom"
                   id="Masc"
+                  scope="col"
                   :class="mq">
                 <span class="nobr">hankjønn&nbsp;/</span><br/>{{tagToName('Fem')}}</th>
               <th v-if="hasFem"
                   class="infl-label sub label-border-bottom"
                   id="Fem"
+                  scope="col"
                   :class="mq">
                 {{tagToName('Fem')}}
               </th>
               <th class="infl-label sub label-border-bottom"
                   id="Neuter"
+                  scope="col"
                   :class="mq">
                 {{tagToName('Neuter')}}
               </th>
               <th class="infl-label sub label-border-bottom"
                   id="Def"
-                  :class="mq">
+                  scope="col"
+                 :class="mq">
                 {{tagToName('Def')}} form
               </th>
             </tr>
@@ -230,18 +244,25 @@
               <th class="infl-label label-border-top-left-right"
                   v-if="hasDeg"
                   id="Deg"
+                  scope="col"
                   colspan="3">
                 gradbøying
               </th>
             </tr>
             <tr>
-              <th id ="Cmp" class="infl-label label-border-bottom">
+              <th id ="Cmp"
+                  scope="col"
+                  class="infl-label label-border-bottom">
                 komparativ
               </th>
-              <th id="SupInd" class="infl-label label-border-bottom">
+              <th id="SupInd"
+                  scope="col"
+                  class="infl-label label-border-bottom">
                 superlativ<br/><span class="sub">{{tagToName('Ind')}} form</span>
               </th>
-              <th id="SupDef" class="infl-label label-border-bottom">
+              <th id="SupDef"
+                  scope="col"
+                  class="infl-label label-border-bottom">
                 superlativ<br/><span class="sub">{{tagToName('Def')}} form</span>
               </th>
             </tr>
@@ -379,27 +400,39 @@
             <tr>
               <th v-if="hasSing"
                   class="infl-label label-border-top-left" :class="mq"
+                  id="Sing"
+                  scope="col"
                   :colspan="DETColspan">
                 {{tagToName('Sing')}}
               </th>
               <th v-if="hasPlur"
                   class="infl-label label-border-top-right" :class="mq"
+                  id="Plur"
+                  scope="col"
                   rowspan="1">
                 {{tagToName('Plur')}}
               </th>
             </tr>
             <tr v-if="hasSing">
-              <th class="infl-label sub label-border-bottom" :class="mq">
+              <th class="infl-label sub label-border-bottom" :class="mq"
+                  id="Masc"
+                  scope="col">
                 {{tagToName('Masc')}}
               </th>
-              <th class="infl-label sub label-border-bottom" :class="mq">
+              <th class="infl-label sub label-border-bottom" :class="mq"
+                  id="Fem"
+                  scope="col">
                 {{tagToName('Fem')}}
               </th>
               <th v-if="hasNeuter"
-                  class="infl-label sub label-border-bottom" :class="mq">
+                  class="infl-label sub label-border-bottom" :class="mq"
+                  id="Neuter"
+                  scope="col">
                 {{tagToName('Neuter')}}
               </th>
-              <th class="infl-label sub label-border-bottom" :class="mq" v-if="hasDef">
+              <th class="infl-label sub label-border-bottom" :class="mq" v-if="hasDef"
+                  id="Def"
+                  scope="col">
                 {{tagToName('Def')}} form
               </th>
             </tr>
