@@ -1,14 +1,16 @@
 <template>
 <tr class="infl-row">
   <template v-if="tags.tags">
-    <td class="infl-label xs">
+    <th class="infl-label xs"
+        :id="tags.label">
       {{tagToName(tags.label)}}
-    </td>
+    </th>
     <td class="infl-cell"
         v-for="([prefix, [rowspan,rowindex,forms], suffix], index) in cells"
         :key="index"
         :colspan="rowspan"
         :index="rowindex"
+        :headers="(tags.block || '') + ' ' + (tags.label || '')"
         @mouseover.stop="hiliteRow(rowindex)">
       <span class='comma'
             v-for="(form, index) in forms"
@@ -19,10 +21,11 @@
     </td>
   </template>
   <template v-else>
-    <td class="infl-group"
+    <th class="infl-group"
+        :id="tags.title"
         :colspan="paradigms.length+1">
       {{tagToName(tags.title)}}
-    </td>
+    </th>
   </template>
 </tr>
 </template>

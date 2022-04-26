@@ -1,10 +1,11 @@
 <template>
 <tr>
   <td class="infl-cell"
-      v-for="([rowspan,rowindex,forms], index) in rows"
+      v-for="([[rowspan,rowindex,forms], headers], index) in rows"
       :key="index"
       :rowspan="rowspan"
       :index="rowindex"
+      :headers="headers"
       @mouseover.stop="hiliteRow(rowindex)">
     <span class='comma'
           v-for="form in forms"
@@ -26,15 +27,15 @@ export default {
     props: ['paradigm','lemmaId'],
     data: function () {
         return {
-            rows: [ this.inflForm(['Cmp']),
-                    this.inflForm(['Sup','Ind']),
-                    this.inflForm(['Sup','Def'])
+            rows: [ this.inflForm(['Cmp'],'Deg Cmp'),
+                    this.inflForm(['Sup','Ind'], 'Deg SupInd'),
+                    this.inflForm(['Sup','Def'], 'Deg SupDef')
                   ].filter(r => r)
                }
     },
     methods: {
-        inflForm: function (tagList,exclTagList) {
-            return inflectedForm(this.paradigm, tagList, exclTagList)
+        inflForm: function (tagList, headers) {
+            return [inflectedForm(this.paradigm, tagList), headers]
         },
         hiliteRow: function (rowindex) {
             $('td[index]').removeClass('hilite')

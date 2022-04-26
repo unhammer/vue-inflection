@@ -1,28 +1,42 @@
 <template>
 <tr class="infl-row" :id="'lemma'+lemma.id">
   <template v-if="tags.tags">
-    <td class="infl-label xs">
+    <th class="infl-label xs"
+        :id="tags.tags.join('')">
       {{tagToName(tags.label)}}
-    </td>
-    <td :class="tags.tags[0]=='_gender' ? 'infl-label':'infl-cell'"
-        v-for="([prefix, [rowspan,rowindex,forms]], index) in cells"
-        :key="index"
-        :colspan="rowspan"
-        :index="rowindex"
-        @mouseover.stop="hiliteRow(rowindex)">
-    <span class='comma'
-          v-for="(form, index) in forms"
-          :key="index">
-        <span v-if="prefix" class="context">{{prefix}} </span>
-        <span v-html="formattedForm(tags,form)"/>
-    </span>
-  </td>
+    </th>
+    <template v-for="([prefix, [rowspan,rowindex,forms], headers], index) in cells">
+      <th v-if="tags.tags[0]=='_gender'"
+          class="infl-label"
+          :id="forms[0]"
+          :key="index"
+          :colspan="rowspan"
+          :index="rowindex"
+          @mouseover.stop="hiliteRow(rowindex)">
+        <span v-html="formattedForm(tags,forms[0])"/>
+      </th>
+      <td v-else
+          class="infl-cell"
+          :key="index"
+          :colspan="rowspan"
+          :index="rowindex"
+          :headers="headers"
+          @mouseover.stop="hiliteRow(rowindex)">
+        <span class='comma'
+              v-for="(form, index) in forms"
+              :key="index">
+          <span v-if="prefix" class="context">{{prefix}} </span>
+          <span v-html="formattedForm(tags,form)"/>
+        </span>
+      </td>
+    </template>
   </template>
   <template v-if="tags.title">
-    <td class="infl-group"
-        :colspan="paradigms.length+1">
+    <th class="infl-group"
+        :colspan="paradigms.length+1"
+        :id="tags.title">
       {{tagToName(tags.title)}}
-    </td>
+    </th>
   </template>
 </tr>
 </template>
@@ -36,7 +50,7 @@ import { inflectedForm, tagToName, markdownToHTML
 
 export default {
     name: 'inflectionRowsNoun',
-    props: ['paradigms','tags','language','lemma'],
+    props: ['paradigms','tags','language','lemma', 'showGender'],
     data: function () {
         return {
             cells: !this.tags.title ?
@@ -90,10 +104,11 @@ export default {
         },
         inflForm: function (paradigm, tagList, prefix) {
             let forms = inflectedForm(paradigm, tagList, [])
-            if (forms) {
-                return [prefix, forms]
-            } else {
+            if (!forms) {
                 return null
+            } else {
+                let gender = (this.showGender && forms[3]) ? forms[3].join(' ') + ' ' : ''
+                return [prefix, forms, gender + tagList[0] +  ' ' + tagList[0] + tagList[1]]
             }
         },
         hiliteRow: function (rowindex) {

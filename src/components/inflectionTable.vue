@@ -15,26 +15,35 @@
             <tr>
               <th class="infl-label sub label-border-top-left" :class="mq"
                   v-if="!nounGender"
+                  id="gender"
+                  scope="col"
                   rowspan='2'>kjønn</th>
               <th v-if="hasSing"
-                  class="infl-label label-border-top-left" :class="mq" colspan='2'>
+                  id="Sing"
+                  class="infl-label label-border-top-left" :class="mq" scope="col" colspan='2'>
                 {{tagToName('Sing')}}</th>
-              <th class="infl-label label-border-top-right" :class="mq" colspan='2'>
+              <th id="Plur" class="infl-label label-border-top-right" :class="mq" scope="col" colspan='2'>
                 {{tagToName('Plur')}}</th>
             </tr>
             <tr>
               <th v-if="hasSing"
-                  class="infl-label sub label-border-bottom" :class="mq">
+                  id="SingInd"
+                  class="infl-label sub label-border-bottom" scope="col" :class="mq">
                 {{tagToName('Ind')}} form
               </th>
               <th v-if="hasSing"
-                  class="infl-label sub label-border-bottom" :class="mq">
+                  id="SingDef"
+                  class="infl-label sub label-border-bottom" scope="col" :class="mq">
                 {{tagToName('Def')}} form
               </th>
-              <th class="infl-label sub label-border-bottom" :class="mq">
+              <th class="infl-label sub label-border-bottom"
+                  id="PlurInd"
+                  scope="col" :class="mq">
                 {{tagToName('Ind')}} form
               </th>
-              <th class="infl-label sub label-border-bottom" :class="mq">
+              <th class="infl-label sub label-border-bottom"
+                  id="PlurDef"
+                  scope="col" :class="mq">
                 {{tagToName('Def')}} form
               </th>
             </tr>
@@ -51,14 +60,15 @@
          class="infl-wordclass"
          :class="mq">
       <div class="lemma">
-        <span class="infl-lemma">{{lemma.lemma}} </span>
-        <span class="sub">{{wordClass}}</span>
+        <span class="infl-lemma" v-html="formattedLemma"/>
+        <span class="sub"> {{wordClass}}</span>
         <span class="sub" v-if="nounGender"> {{nounGender}}</span>
       </div>
       <div>
         <table class="infl-table" :class="mq">
           <inflectionRowsNoun v-for="(tags, index) in inflTagsNoun"
                               :key="index"
+                              :showGender="!nounGender"
                               :tags="tags"
                               :language="language"
                               :lemma="lemma"
@@ -94,20 +104,27 @@
           <table class="infl-table" :class="mq">
             <template v-if="hasPerfPart">
               <tr>
-                <th class="infl-label label-border-top-left" :class="mq"
+                <th class="infl-label label-border-top-left"
+                    :class="mq"
+                    id="PerfPart"
                     :colspan="hasPerfPartDef ? (j<0?4:(j==3?3:1)) : 1">perfektum partisipp</th>
                 <th v-if="j<0 || j==4"
                     class="infl-label label-border-top-right" :class="mq"
+                    id="PresPart"
                     rowspan="2">presens partisipp</th>
               </tr>
               <tr>
-                <th v-if="(j<0 || j==3) && hasPerfPartDef" class="infl-label sub label-border-bottom" :class="mq">
+                <th v-if="(j<0 || j==3) && hasPerfPartDef"
+                    id="Masc"
+                    class="infl-label sub label-border-bottom" :class="mq">
                   {{tagToName('Masc')}}&nbsp;/<br/>{{tagToName('Fem')}}</th>
-                <th class="infl-label sub label-border-bottom" :class="mq"
+                <th id="Neuter" class="infl-label sub label-border-bottom" :class="mq"
                     v-if="(j<0 || j==3)">{{tagToName('Neuter')}}</th>
                 <th v-if="(j<0 || j==3) && hasPerfPartDef"
+                    id="Def"
                     class="infl-label sub label-border-bottom" :class="mq">{{tagToName('Def')}} form</th>
                 <th v-if="(j<0 || j==4) && hasPerfPartDef"
+                    id="Plur"
                     class="infl-label sub label-border-bottom" :class="mq">{{tagToName('Plur')}}</th>
               </tr>
             </template>
@@ -160,25 +177,44 @@
               <th v-if="hasSingAdj"
                   class="infl-label label-border-top-left"
                   :class="mq"
+                  id="Sing"
                   :colspan="hasFem ? 4 : 3">
                 {{tagToName('Sing')}}
               </th>
               <th class="infl-label label-border-top-right" :class="mq"
+                  id="Plur"
                   :rowspan="hasSingAdj ? 2 : 1">
                 {{tagToName('Plur')}}
               </th>
             </tr>
             <tr v-if="hasSingAdj">
-              <th v-if="hasFem" class="infl-label sub label-border-bottom" :class="mq">
+              <th v-if="hasFem"
+                  class="infl-label sub label-border-bottom"
+                  id="Masc"
+                  :class="mq">
                 hankjønn
               </th>
-              <th v-if="!hasFem" class="infl-label sub label-border-bottom" :class="mq">
+              <th v-if="!hasFem"
+                  class="infl-label sub label-border-bottom"
+                  id="Masc"
+                  :class="mq">
                 <span class="nobr">hankjønn&nbsp;/</span><br/>{{tagToName('Fem')}}</th>
-              <th v-if="hasFem" class="infl-label sub label-border-bottom" :class="mq">
+              <th v-if="hasFem"
+                  class="infl-label sub label-border-bottom"
+                  id="Fem"
+                  :class="mq">
                 {{tagToName('Fem')}}
               </th>
-              <th class="infl-label sub label-border-bottom" :class="mq">{{tagToName('Neuter')}}</th>
-              <th class="infl-label sub label-border-bottom" :class="mq">{{tagToName('Def')}} form</th>
+              <th class="infl-label sub label-border-bottom"
+                  id="Neuter"
+                  :class="mq">
+                {{tagToName('Neuter')}}
+              </th>
+              <th class="infl-label sub label-border-bottom"
+                  id="Def"
+                  :class="mq">
+                {{tagToName('Def')}} form
+              </th>
             </tr>
             <inflectionRowAdj v-for="(paradigm, index) in standardParadigms"
                               :key="index"
@@ -191,16 +227,21 @@
       <div v-if="hasDeg">
         <table class="infl-table" :class="mq">
             <tr>
-              <th class="infl-label label-border-top-left-right" v-if="hasDeg" colspan="3">gradbøying</th>
+              <th class="infl-label label-border-top-left-right"
+                  v-if="hasDeg"
+                  id="Deg"
+                  colspan="3">
+                gradbøying
+              </th>
             </tr>
             <tr>
-              <th class="infl-label label-border-bottom">
+              <th id ="Cmp" class="infl-label label-border-bottom">
                 komparativ
               </th>
-              <th class="infl-label label-border-bottom">
+              <th id="SupInd" class="infl-label label-border-bottom">
                 superlativ<br/><span class="sub">{{tagToName('Ind')}} form</span>
               </th>
-              <th class="infl-label label-border-bottom">
+              <th id="SupDef" class="infl-label label-border-bottom">
                 superlativ<br/><span class="sub">{{tagToName('Def')}} form</span>
               </th>
             </tr>
@@ -218,11 +259,10 @@
           <span class="sub">{{wordClass}}</span>
       </div>
       <div>
-        <table class="infl-table" :class="mq" >
+        <table class="infl-table" :class="mq" >{{hasSingAdj}}
           <inflectionRowsAdj v-for="(tags, index) in inflTagsAdj"
                              :key="index"
                              :tags="tags"
-                             :hasSing="hasSingAdj"
                              :language="language"
                              :lemmaId="lemma.id"
                              :paradigms="standardParadigms"/>
@@ -513,18 +553,6 @@ export default {
                  inflTagsNounPlur: [{ title: 'Plur'},
                                     { label: 'Ind', tags: ['Plur','Ind']},
                                     { label: 'Def', tags: ['Plur','Def']}],
-                 inflTagsAdj: [ this.hasSingAdj ? { title: 'Sing' } : null,
-                                { label: 'MascFem', tags: ['Pos',['Masc/Fem','Masc']] },
-                                { label: 'Fem', tags: ['Pos','Fem'] },
-                                { label: 'Neuter', tags: ['Pos','Neuter']},
-                                { label: 'Def', tags: ['Pos','Def','Sing']},
-                                { title: 'Plur'},
-                                { tags: ['Pos','Plur']},
-                                { title: 'Deg'},
-                                { label: 'Cmp', tags: ['Cmp']},
-                                { label: 'SupInd', tags: ['Sup','Ind']},
-                                { label: 'SupDef', tags: ['Sup','Def']}
-                              ].filter(r=>r),
                  inflTagsAdjAdv: [ { label: 'Pos', tags: ['Pos']},
                                    { label: 'Cmp', tags: ['Cmp']},
                                    { label: 'Sup', tags: ['Sup']}
@@ -533,22 +561,23 @@ export default {
                                          { label: 'Acc', tags: ['Acc'] }],
                  inflTagsPronNeuter: [{ tags: ['Neuter'] }],
                  inflTagsDetPl: [ { title: 'Sing' },
-                                  { label: 'Masc', tags: ['Masc'] },
-                                  { label: 'Fem', tags: ['Fem'] },
-                                  { label: 'Neuter', tags: ['Neuter']},
-                                  { label: 'Def', tags: ['Def']},
+                                  { block: 'Sing', label: 'Masc', tags: ['Masc'] },
+                                  { block: 'Sing', label: 'Fem', tags: ['Fem'] },
+                                  { block: 'Sing', label: 'Neuter', tags: ['Neuter']},
+                                  { block: 'Sing', label: 'Def', tags: ['Def']},
                                   { title: 'Plur'},
-                                  { tags: ['Plur'] }
+                                  { block: 'Plur', tags: ['Plur'] }
                                 ],
                  inflTagsDetSg: [ { title: 'Sing' },
-                                  { label: 'Masc', tags: ['Masc'] },
-                                  { label: 'Fem', tags: ['Fem'] },
-                                  { label: 'Neuter', tags: ['Neuter']},
-                                  { label: 'Def', tags: ['Def']}
+                                  { block: 'Sing', label: 'Masc', tags: ['Masc'] },
+                                  { block: 'Sing', label: 'Fem', tags: ['Fem'] },
+                                  { block: 'Sing', label: 'Neuter', tags: ['Neuter']},
+                                  { block: 'Sing', label: 'Def', tags: ['Def']}
                                 ]
                }
     },
     computed: {
+        // hasSingAdj: function () { return this.hasInflForm(['Sing','Ind']) },
         wordClass: function () {
             if (this.lemmaList) {
                 if (this.isADJ_Adv) {
@@ -594,14 +623,28 @@ export default {
                     { label: 'PresPerf', tags: ['<PerfPart>'], excl: ['Adj'], prefix: 'har' },
                     this.hasImp ? { label: 'Imp', tags: ['Imp'], suffix: '!' } : null,
                     this.hasPerfPart ? { title: 'PerfPart' } : null,
-                    this.hasPerfPartDef ? { label: 'MascFem', tags: ['Adj','Masc/Fem']} : null,
-                    this.hasPerfPart ? { label: 'Neuter', tags: ['Adj','Neuter']} : null,
-                    this.hasPerfPartDef ? { label: 'Def', tags: ['Adj','Def']} : null,
-                    this.hasPerfPartDef ? { label: 'Plur', tags: ['Adj','Plur']} : null,
+                    this.hasPerfPartDef ? { block: 'PerfPart', label: 'MascFem', tags: ['Adj','Masc/Fem']} : null,
+                    this.hasPerfPart ? { block: 'PerfPart', label: 'Neuter', tags: ['Adj','Neuter']} : null,
+                    this.hasPerfPartDef ? { block: 'PerfPart', label: 'Def', tags: ['Adj','Def']} : null,
+                    this.hasPerfPartDef ? { block: 'PerfPart', label: 'Plur', tags: ['Adj','Plur']} : null,
                     this.hasPresPart ? { title: 'PresPart' } : null,
-                    this.hasPresPart ? { tags: ['Adj','<PresPart>'] } : null,
-            ].filter(r => r)
+                    this.hasPresPart ? { block: 'PresPart', tags: ['Adj','<PresPart>'] } : null,
+                   ].filter(r => r)
         },
+        inflTagsAdj: function () {
+            return [ this.hasSingAdj ? { title: 'Sing' } : null,
+                     { block: 'Sing', label: 'MascFem', tags: ['Pos',['Masc/Fem','Masc']] },
+                     { block: 'Sing', label: 'Fem', tags: ['Pos','Fem'] },
+                     { block: 'Sing', label: 'Neuter', tags: ['Pos','Neuter']},
+                     { block: 'Sing', label: 'Def', tags: ['Pos','Def','Sing']},
+                     { title: 'Plur'},
+                     { block: 'Plur', tags: ['Pos','Plur']},
+                     { title: 'Deg'},
+                     { block: 'Deg', label: 'Cmp', tags: ['Cmp']},
+                     { block: 'Deg', label: 'SupInd', tags: ['Sup','Ind']},
+                     { block: 'Deg', label: 'SupDef', tags: ['Sup','Def']}
+                   ].filter(r=>r)
+            },
         nounGender: function () {
             this.getGender()
             return !this.gender || this.gender=='+' ? null : tagToName(this.gender,this.language)
@@ -691,14 +734,6 @@ export default {
                 return infl })
             // merge equal cells by setting rowspan
             paradigms.forEach((p,index) => {
-                /*if (isNoun) {
-                    let gender = p.tags[1]
-                    if (!this.gender) {
-                        this.gender = gender
-                    } else if (this.gender != gender) {
-                        this.gender = '+'
-                    }
-                }*/
                 for (let i = 0; i < p.inflection.length; i++) {
                     if (currentInfl[i] &&
                         p.inflection[i] &&
@@ -712,12 +747,22 @@ export default {
                        ) {
                         currentInfl[i].index.push(index+1) // remember paradigm row, for hiliting
                         currentInfl[i].rowspan++
+                        if (isNoun) {
+                            let gender = p.tags[1]
+                            if (!currentInfl[i].gender.find(g=>g==gender)) {
+                                currentInfl[i].gender.push(gender)
+                            }
+                        }
                         p.inflection[i].rowspan = 0
                     } else {
                         currentInfl[i] = p.inflection[i]
                         currentInfl[i].index = []
                         currentInfl[i].index.push(index+1) // remember paradigm row, for hiliting
                         currentInfl[i].rowspan = 1
+                        if (isNoun) {
+                            let gender = p.tags[1]
+                            currentInfl[i].gender = [gender]
+                        }
                     }
                 }
             })

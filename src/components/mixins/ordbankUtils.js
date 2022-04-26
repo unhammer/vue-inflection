@@ -130,6 +130,7 @@ function mergeParadigm(p, tagList, mergedCell) {
 
 // returns true if the paradigms are equal on tagLists
 // OBSOLETE?
+/*
 export function compareParadigms(p1, p2, tagLists) {
     let equal = true
     tagLists.map(tagList => {
@@ -143,6 +144,7 @@ export function compareParadigms(p1, p2, tagLists) {
     })
     return equal
 }
+*/
 
 function tagsEqual (tl1, tl2) {
     if (tl1.length != tl2.length) {
@@ -193,7 +195,7 @@ function normalizeInflection(paradigm) {
 
 // Iterate through tagList list and merge paradigms that are equal except on tagList,
 // merging their word forms into an array
-export function mergeParadigms (paradigmInfo) {
+function mergeParadigms (paradigmInfo) {
     paradigmInfo = paradigmInfo.map(paradigm => normalizeInflection(paradigm))
     let PI = []
     let tagLists = [ ['Masc/Fem'],
@@ -256,24 +258,25 @@ function inflectedForms (paradigm, tagList, exclTagList) {
                   }
                   return found
                 })
-    return [inflection[0] && inflection[0].rowspan,
-            inflection[0] && inflection[0].index,
-            appendWordForms(inflection.map(i => i.markdown_word_form || i.word_form))]
+    return [ inflection[0] && inflection[0].rowspan,
+             inflection[0] && inflection[0].index,
+             appendWordForms(inflection.map(i => i.markdown_word_form || i.word_form)),
+             inflection[0] && inflection[0].gender ]
 }
 
 // Calculate inflection table cell. If cells are vertically merged rowspan is the number of cells merged.
 // noVerticalMerge is used for nouns
 // see inflectionTable.vue for vertical merging
 export function inflectedForm (paradigm, tagList, exclTagList, noVerticalMerge) {
-    let [rowspan, index, forms] = inflectedForms(paradigm,tagList,exclTagList)
+    let [rowspan, index, forms, gender] = inflectedForms(paradigm,tagList,exclTagList)
     if (!rowspan && !noVerticalMerge) {
         return null
     } else if (!forms) {
         return [ rowspan, index, [ '-' ] ]
     } else if (typeof forms == 'string') {
-        return [ rowspan, index, [ forms ] ]
+        return [ rowspan, index, [ forms ], gender ]
     } else {
-        return [ rowspan, index, forms ]
+        return [ rowspan, index, forms, gender ]
     }
 }
 

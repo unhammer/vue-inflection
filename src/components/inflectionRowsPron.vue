@@ -1,9 +1,9 @@
 <template>
 <tr class="infl-row">
   <template v-if="tags.tags">
-    <td v-if="tags.label" class="infl-label xs">
+    <th v-if="tags.label" class="infl-label xs">
       {{tagToName(tags.label)}}
-    </td>
+    </th>
     <td class="infl-cell"
         v-for="([rowspan,rowindex,forms], index) in cells"
         :key="index"

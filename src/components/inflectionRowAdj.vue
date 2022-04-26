@@ -1,8 +1,9 @@
 <template>
 <tr>
   <td class="infl-cell"
-      v-for="([rowspan,rowindex,forms], index) in rows"
+      v-for="([[rowspan,rowindex,forms], headers], index) in rows"
       :key="index"
+      :headers="headers"
       :rowspan="rowspan"
       :index="rowindex"
       @mouseover.stop="hiliteRow(rowindex)">
@@ -26,17 +27,17 @@ export default {
     props: ['paradigm','hasFem','hasSing','lemmaId'],
     data: function () {
         return {
-            rows: [ this.hasSing ? this.inflForm(['Pos',['Masc/Fem','Masc']]) : null,
-                    this.hasFem && this.hasSing ? this.inflForm(['Pos','Fem']) : null,
-                    this.hasSing ? this.inflForm(['Pos','Neuter']) : null,
-                    this.hasSing ? this.inflForm(['Pos','Def','Sing']) : null,
-                    this.inflForm(['Pos','Plur'])
+            rows: [ this.hasSing ? this.inflForm(['Pos',['Masc/Fem','Masc']], 'Sing Masc') : null,
+                    this.hasFem && this.hasSing ? this.inflForm(['Pos','Fem'], 'Sing Fem') : null,
+                    this.hasSing ? this.inflForm(['Pos','Neuter'], 'Sing Neuter') : null,
+                    this.hasSing ? this.inflForm(['Pos','Def','Sing'],'Sing Def') : null,
+                    this.inflForm(['Pos','Plur'], 'Plur')
                   ].filter(r => r)
         }
     },
     methods: {
-        inflForm: function (tagList,exclTagList) {
-            return inflectedForm(this.paradigm, tagList, exclTagList)
+        inflForm: function (tagList,headers) {
+            return [inflectedForm(this.paradigm, tagList, []), headers]
         },
         hiliteRow: function (rowindex) {
             $('td[index]').removeClass('hilite')

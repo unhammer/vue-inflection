@@ -1,15 +1,31 @@
 <template>
 <tr>
-  <td :class="gender ? 'infl-label':'infl-cell'"
-      v-for="([prefix, [rowspan,rowindex,forms], gender], index) in cells"
-      :key="index"
-      :rowspan="rowspan"
-      :index="rowindex"
-      @mouseover.stop="hiliteRow(rowindex)">
-    <span class='comma'
-          v-for="(form, i) in forms"
-          :key="i"><span v-if="prefix" class="context">{{prefix}}</span>&nbsp;<span v-if="gender">{{tagToName(form)}}</span><span v-else v-html="formattedForm(form)"/></span>
-  </td>
+  <template v-for="([prefix, [rowspan,rowindex,forms], gender, colref], index) in cells"> 
+    <th v-if="gender"
+        class="infl-label"
+        :id="colref"
+        scope="row"
+        headers="gender"
+        :key="index"
+        :rowspan="rowspan"
+        :index="rowindex"
+        @mouseover.stop="hiliteRow(rowindex)">
+      <span class='comma'
+            v-for="(form, i) in forms"
+            :key="i">{{tagToName(form)}}</span>
+    </th>
+    <td v-else
+        class="infl-cell"
+        :headers="colref"
+        :key="index"
+        :rowspan="rowspan"
+        :index="rowindex"
+        @mouseover.stop="hiliteRow(rowindex)">
+      <span class='comma'
+            v-for="(form, i) in forms"
+            :key="i"><span v-if="prefix" class="context">{{prefix}}</span>&nbsp;<span v-html="formattedForm(form)"/></span>
+    </td>
+  </template>
 </tr>
 </template>
 
@@ -34,19 +50,20 @@ export default {
             ].filter(r => r)
         }
     },
-    computed: {
-    },
     methods: {
         indefArticle: function () {
             return indefArticle(this.paradigm.tags, this.language)
         },
         inflForm: function (tagList,prefix) {
             let forms = inflectedForm(this.paradigm, tagList, [])
-            if (forms) {
-                return [prefix, forms, tagList[0]=='_gender']
-            } else {
+            if (!forms) {
                 return null
-            }
+            } else if (tagList[0]=='_gender') {
+                return [prefix, forms, true, forms[2]]
+            } else {
+                let gender = (this.showGender && forms[3]) ? forms[3].join(' ') + ' ' : ''
+                return [prefix, forms, false, gender + tagList[0] +  ' ' + tagList[0] + tagList[1]]
+            } 
         },
         formattedForm: function (form) {
             return markdownToHTML(form)
