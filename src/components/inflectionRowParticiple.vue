@@ -52,7 +52,10 @@ export default {
                               null,
                               this.context ? '+ substantiv' : null,
                               'PerfPart Plur') : null,
-            this.part!=3 ? this.inflForm(['Adj','<PresPart>'], null, 'PresPart') : null
+            this.part!=3 ? this.inflForm(['Adj','<PresPart>'],
+                                         null,
+                                         null,
+                                         'PresPart') : null
         ].filter(r => r) }
     },
     methods: {
