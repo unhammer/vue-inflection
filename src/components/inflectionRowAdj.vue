@@ -32,7 +32,7 @@ export default {
                     this.hasSing ? this.inflForm(['Pos','Neuter'], 'Sing Neuter') : null,
                     this.hasSing ? this.inflForm(['Pos','Def','Sing'],'Sing Def') : null,
                     this.inflForm(['Pos','Plur'], 'Plur')
-                  ].filter(r => r)
+                  ].filter(r => r && r[0])
         }
     },
     methods: {

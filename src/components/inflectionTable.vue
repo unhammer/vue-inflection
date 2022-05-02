@@ -280,7 +280,7 @@
           <span class="sub">{{wordClass}}</span>
       </div>
       <div>
-        <table class="infl-table" :class="mq" >{{hasSingAdj}}
+        <table class="infl-table" :class="mq" >
           <inflectionRowsAdj v-for="(tags, index) in inflTagsAdj"
                              :key="index"
                              :tags="tags"

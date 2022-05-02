@@ -30,7 +30,7 @@ export default {
             rows: [ this.inflForm(['Cmp'],'Deg Cmp'),
                     this.inflForm(['Sup','Ind'], 'Deg SupInd'),
                     this.inflForm(['Sup','Def'], 'Deg SupDef')
-                  ].filter(r => r)
+                  ].filter(r => r && r[0])
                }
     },
     methods: {
