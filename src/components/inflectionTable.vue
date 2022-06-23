@@ -14,7 +14,7 @@
           <table class="infl-table" :class="mq">
             <tr>
               <th class="infl-label sub label-border-top-left" :class="mq"
-                  v-if="!nounGender"
+                  v-if="!nounGender && hasGender"
                   id="gender"
                   scope="col"
                   rowspan='2'>kjønn</th>
@@ -41,7 +41,8 @@
                   scope="col" :class="mq">
                 {{tagToName('Ind')}} form
               </th>
-              <th class="infl-label sub label-border-bottom"
+              <th v-if="hasDef"
+                  class="infl-label sub label-border-bottom"
                   id="PlurDef"
                   scope="col" :class="mq">
                 {{tagToName('Def')}} form
@@ -556,6 +557,7 @@ export default {
                  // Ind b/o ‘få’/‘mange’ nno, which has Sing Def, must be bug
                  hasSingAdj: this.hasInflForm(['Sing','Ind']),
                  hasPlur: this.hasInflForm(['Plur']),
+                 hasGender: this.hasInflForm(['Masc']) || this.hasInflForm(['Fem']) || this.hasInflForm(['Neuter']),
                  hasPresPart: this.hasInflForm(['Adj','<PresPart>']),
                  hasPerfPart: this.hasInflForm(['Adj','<PerfPart>']),
                  hasPerfPartDef: this.hasInflForm(['Adj','<PerfPart>','Def']),
@@ -586,6 +588,8 @@ export default {
                  inflTagsNounPlur: [{ title: 'Plur'},
                                     { label: 'Ind', tags: ['Plur','Ind']},
                                     { label: 'Def', tags: ['Plur','Def']}],
+                 inflTagsNounPlurInd: [{ title: 'Plur'},
+                                       { label: 'Ind', tags: ['Plur','Ind']}],
                  inflTagsAdjAdv: [ { label: 'Pos', tags: ['Pos']},
                                    { label: 'Cmp', tags: ['Cmp']},
                                    { label: 'Sup', tags: ['Sup']}
@@ -645,8 +649,10 @@ export default {
         inflTagsNoun: function () {
             if (this.hasSing) {
                 return this.getGender() == '+' ? this.inflTagsNounG : this.inflTagsNounNG
-            } else {
+            } else if (this.hasDef) {
                 return this.inflTagsNounPlur
+            } else {
+                return this.inflTagsNounPlurInd
             }
         }, // hasImp, hasPerfPart, hasPerfPartDef, has
         inflTagsVerb: function () {
