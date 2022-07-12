@@ -12,48 +12,54 @@
         </div>
         <div>
           <table class="infl-table" :class="mq">
-            <tr>
-              <th class="infl-label sub label-border-top-left" :class="mq"
-                  v-if="!nounGender && hasGender"
-                  id="gender"
-                  scope="col"
-                  rowspan='2'>kjønn</th>
-              <th v-if="hasSing"
-                  id="Sing"
-                  class="infl-label label-border-top-left" :class="mq" scope="col" colspan='2'>
-                {{tagToName('Sing')}}</th>
-              <th id="Plur" class="infl-label label-border-top-right" :class="mq" scope="col" colspan='2'>
-                {{tagToName('Plur')}}</th>
-            </tr>
-            <tr>
-              <th v-if="hasSing"
-                  id="SingInd"
-                  class="infl-label sub label-border-bottom" scope="col" :class="mq">
-                {{tagToName('Ind')}} form
-              </th>
-              <th v-if="hasSing"
-                  id="SingDef"
-                  class="infl-label sub label-border-bottom" scope="col" :class="mq">
-                {{tagToName('Def')}} form
-              </th>
-              <th class="infl-label sub label-border-bottom"
-                  id="PlurInd"
-                  scope="col" :class="mq">
-                {{tagToName('Ind')}} form
-              </th>
-              <th v-if="hasDef"
-                  class="infl-label sub label-border-bottom"
-                  id="PlurDef"
-                  scope="col" :class="mq">
-                {{tagToName('Def')}} form
-              </th>
-            </tr>
-            <inflectionRowNoun v-for="(paradigm, index) in standardParadigms"
-                               :key="index"
-                               :showGender="!nounGender"
-                               :language="language"
-                               :lemma="lemma"
-                               :paradigm="paradigm"/>
+            <caption class="caption" v-if="language=='nob'">Bøyingsparadigme for substantiv</caption>
+            <caption class="caption" v-else>Bøyningsparadigme for substantiv</caption>
+            <thead>
+              <tr>
+                <th class="infl-label sub label-border-top-left" :class="mq"
+                    v-if="!nounGender && hasGender"
+                    id="gender"
+                    scope="col"
+                    rowspan='2'>kjønn</th>
+                <th v-if="hasSing"
+                    id="Sing"
+                    class="infl-label label-border-top-left" :class="mq" scope="col" colspan='2'>
+                  {{tagToName('Sing')}}</th>
+                <th id="Plur" class="infl-label label-border-top-right" :class="mq" scope="col" colspan='2'>
+                  {{tagToName('Plur')}}</th>
+              </tr>
+              <tr>
+                <th v-if="hasSing"
+                    id="SingInd"
+                    class="infl-label sub label-border-bottom" scope="col" :class="mq">
+                  {{tagToName('Ind')}} form
+                </th>
+                <th v-if="hasSing"
+                    id="SingDef"
+                    class="infl-label sub label-border-bottom" scope="col" :class="mq">
+                  {{tagToName('Def')}} form
+                </th>
+                <th class="infl-label sub label-border-bottom"
+                    id="PlurInd"
+                    scope="col" :class="mq">
+                  {{tagToName('Ind')}} form
+                </th>
+                <th v-if="hasDef"
+                    class="infl-label sub label-border-bottom"
+                    id="PlurDef"
+                    scope="col" :class="mq">
+                  {{tagToName('Def')}} form
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <inflectionRowNoun v-for="(paradigm, index) in standardParadigms"
+                                 :key="index"
+                                 :showGender="!nounGender"
+                                 :language="language"
+                                 :lemma="lemma"
+                                 :paradigm="paradigm"/>
+            </tbody>
           </table>
         </div>
     </div>
@@ -86,7 +92,10 @@
         <span class="sub">{{wordClass}}</span>
       </div>
       <div v-for="i in mq=='xs' ? [1,2] : [0]" :key="i">
-          <table class="infl-table" :class="mq">
+        <table class="infl-table" :class="mq">
+          <caption class="caption" v-if="language=='nob'">Bøyingsparadigme for verb</caption>
+          <caption class="caption" v-else>Bøyningsparadigme for verb</caption>
+          <thead>
             <tr>
               <th v-if="!i || i==1" class="infl-label label-border-top-left" :class="mq">infinitiv</th>
               <th v-if="!i || i==1" class="infl-label label-border-top" :class="mq">presens</th>
@@ -94,15 +103,21 @@
               <th v-if="!i || i==2" class="infl-label label-border-top" :class="mq">presens perfektum</th>
               <th v-if="(!i || i==2) && hasImp" class="infl-label label-border-top-right" :class="mq">imperativ</th>
             </tr>
+          </thead>
+          <tbody>
             <inflectionRowVerb v-for="(paradigm, index) in standardParadigms"
                                :key="index"
                                :part="i"
                                :lemmaId="lemma.id"
                                :paradigm="paradigm"/>
-          </table>
+          </tbody>
+        </table>
       </div>
       <div v-for="j in mq=='xs' ? [3,4] : [-1]" :key="j">
-          <table class="infl-table" :class="mq">
+        <table class="infl-table" :class="mq">
+          <caption class="caption" v-if="language=='nob'">Bøyingsparadigme for partisipp</caption>
+          <caption class="caption" v-else>Bøyningsparadigme for partisipp</caption>
+          <thead>
             <template v-if="hasPerfPart">
               <tr>
                 <th class="infl-label label-border-top-left"
@@ -142,6 +157,8 @@
                     class="infl-label label-border-top" :class="mq">presens partisipp</th>
               </tr>
             </template>
+          </thead>
+          <tbody>
             <inflectionRowParticiple v-for="(paradigm, index) in standardParadigms"
                                      :key="index"
                                      :part="j"
@@ -150,7 +167,8 @@
                                      :lemmaId="lemma.id"
                                      :paradigm="paradigm"
                                      :context="context"/>
-          </table>
+          </tbody>
+        </table>
       </div>
     </div>
     <div v-else
@@ -160,14 +178,14 @@
           <span class="sub">{{wordClass}}</span>
       </div>
       <div>
-          <table class="infl-table" :class="mq" >
-            <inflectionRowsVerb v-for="(tags, index) in inflTagsVerb"
-                                :key="index"
-                                :tags="tags"
-                                :language="language"
-                                :lemmaId="lemma.id"
-                                :paradigms="standardParadigms"/>
-          </table>
+        <table class="infl-table" :class="mq" >
+          <inflectionRowsVerb v-for="(tags, index) in inflTagsVerb"
+                              :key="index"
+                              :tags="tags"
+                              :language="language"
+                              :lemmaId="lemma.id"
+                              :paradigms="standardParadigms"/>
+        </table>
       </div>
     </div>
   </template>
@@ -180,7 +198,10 @@
         <span class="sub">{{wordClass}}</span>
       </div>
       <div>
-          <table class="infl-table" :class="mq">
+        <table class="infl-table" :class="mq">
+          <caption class="caption" v-if="language=='nob'">Bøyingsparadigme for adjektiv</caption>
+          <caption class="caption" v-else>Bøyningsparadigme for adjektiv</caption>
+          <thead>
             <tr>
               <th v-if="hasSingAdj"
                   class="infl-label label-border-top-left"
@@ -231,16 +252,22 @@
                 {{tagToName('Def')}} form
               </th>
             </tr>
+          </thead>
+          <tbody>
             <inflectionRowAdj v-for="(paradigm, index) in standardParadigms"
                               :key="index"
                               :hasFem="hasFem"
                               :hasSing="hasSingAdj"
                               :lemmaId="lemma.id"
                               :paradigm="paradigm"/>
-          </table>
+          </tbody>
+        </table>
       </div>
       <div v-if="hasDeg">
         <table class="infl-table" :class="mq">
+          <caption class="caption" v-if="language=='nob'">Bøyingsparadigme for gradbøying</caption>
+          <caption class="caption" v-else>Bøyningsparadigme for gradbøying</caption>
+          <thead>
             <tr>
               <th class="infl-label label-border-top-left-right"
                   v-if="hasDeg"
@@ -267,11 +294,14 @@
                 superlativ<br/><span class="sub">{{tagToName('Def')}} form</span>
               </th>
             </tr>
+          </thead>
+          <tbody>
             <inflectionRowAdjDeg v-for="(paradigm, index) in standardParadigms"
                                  :key="index"
                                  :lemmaId="lemma.id"
                                  :paradigm="paradigm"/>
-          </table>
+          </tbody>
+        </table>
       </div>
     </div>
     <div v-else
@@ -302,6 +332,9 @@
       </div>
       <div v-if="hasDeg">
         <table class="infl-table" :class="mq">
+          <caption class="caption" v-if="language=='nob'">Bøyingsparadigme for adverb</caption>
+          <caption class="caption" v-else>Bøyningsparadigme for adverb</caption>
+          <thead>
             <tr>
               <th class="infl-label label-border-bottom">
                 positiv
@@ -313,11 +346,14 @@
                 superlativ
               </th>
             </tr>
+          </thead>
+          <tbody>
             <inflectionRowAdjAdv v-for="(paradigm, index) in standardParadigms"
                                  :key="index"
                                  :lemmaId="lemma.id"
                                  :paradigm="paradigm"/>
-          </table>
+          </tbody>
+        </table>
       </div>
     </div>
     <div v-else
@@ -348,23 +384,29 @@
       </div>
       <div>
         <table class="infl-table" :class="mq">
-          <tr>
-            <th v-if="hasNom" class="infl-label sub label-border-top-left">
-              subjektsform
-            </th>
-            <th v-if="hasAcc" class="infl-label sub label-border-top-right">
-              objektsform
-            </th>
-            <th v-if="hasNeuter" class="infl-label sub label-border-top-right">
-              {{tagToName('Neuter')}}
-            </th>
-          </tr>
-          <inflectionRowPron v-for="(paradigm, index) in standardParadigms"
-                             :key="index"
-                             :language="language"
-                             :lemmaId="lemma.id"
-                             :paradigm="paradigm"/>
-          </table>
+          <caption class="caption" v-if="language=='nob'">Bøyingsparadigme for pronomen</caption>
+          <caption class="caption" v-else>Bøyningsparadigme for pronomen</caption>
+          <thead>
+            <tr>
+              <th v-if="hasNom" class="infl-label sub label-border-top-left">
+                subjektsform
+              </th>
+              <th v-if="hasAcc" class="infl-label sub label-border-top-right">
+                objektsform
+              </th>
+              <th v-if="hasNeuter" class="infl-label sub label-border-top-right">
+                {{tagToName('Neuter')}}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <inflectionRowPron v-for="(paradigm, index) in standardParadigms"
+                               :key="index"
+                               :language="language"
+                               :lemmaId="lemma.id"
+                               :paradigm="paradigm"/>
+          </tbody>
+        </table>
       </div>
     </div>
     <div v-else
@@ -398,6 +440,9 @@
       </div>
       <div>
         <table class="infl-table" :class="mq">
+          <caption class="caption" v-if="language=='nob'">Bøyingsparadigme for determinativ</caption>
+          <caption class="caption" v-else>Bøyningsparadigme for determinativ</caption>
+          <thead>
             <tr>
               <th v-if="hasSing"
                   class="infl-label label-border-top-left" :class="mq"
@@ -437,12 +482,15 @@
                 {{tagToName('Def')}} form
               </th>
             </tr>
-          <inflectionRowDet v-for="(paradigm, index) in standardParadigms"
-                             :key="index"
-                             :language="language"
-                             :lemmaId="lemma.id"
-                             :paradigm="paradigm"/>
-          </table>
+          </thead>
+          <tbody>
+            <inflectionRowDet v-for="(paradigm, index) in standardParadigms"
+                              :key="index"
+                              :language="language"
+                              :lemmaId="lemma.id"
+                              :paradigm="paradigm"/>
+          </tbody>
+        </table>
       </div>
     </div>
     <div v-else
@@ -474,12 +522,18 @@
       </div>
       <div>
         <table class="infl-table" :class="mq">
-          <tr>
-            <th class="infl-label label-border">{{language=='nob'?'ubøyelig':'ubøyeleg'}}</th>
-          </tr>
-          <tr>
-            <td class="infl-cell label-border">{{lemma.lemma}}</td>
-          </tr>
+          <caption class="caption" v-if="language=='nob'">Bøyingsparadigme for adverb</caption>
+          <caption class="caption" v-else>Bøyningsparadigme for adverb</caption>
+          <thead>
+            <tr>
+              <th class="infl-label label-border">{{language=='nob'?'ubøyelig':'ubøyeleg'}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="infl-cell label-border">{{lemma.lemma}}</td>
+            </tr>
+          </tbody>
         </table>
       </div>
     </div>
@@ -872,6 +926,10 @@ td[class*="infl-label"] {
 
 td[class="infl-cell"] {
   text-align: center;
+}
+
+.context {
+    color: #666666;
 }
 
 </style>

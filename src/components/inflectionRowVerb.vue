@@ -9,7 +9,7 @@
     <span class='comma nobr'
           v-for="(form, index) in forms"
           :key="index">
-      <span v-if="prefix" class="context">{{prefix}}</span>&nbsp;{{form}}<span v-if="suffix" class="context">{{suffix}}</span>
+      <em v-if="prefix" class="context">{{prefix}}</em>&nbsp;{{form}}<em v-if="suffix" class="context">{{suffix}}</em>
     </span>
   </td>
 </tr>

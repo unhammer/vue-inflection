@@ -16,8 +16,8 @@
       <span class='comma'
             v-for="(form, index) in forms"
             :key="index">
-        <span v-if="prefix" class="context">{{prefix}}</span>
-        {{form}}<span v-if="suffix!='!'"> </span><span v-if="suffix" class="context nobr">{{suffix}}</span>
+        <em v-if="prefix" class="context">{{prefix}}</em>
+        {{form}}<span v-if="suffix!='!'"> </span><em v-if="suffix" class="context nobr">{{suffix}}</em>
       </span>
     </td>
   </template>

@@ -27,7 +27,7 @@
         <span class='comma'
               v-for="(form, index) in forms"
               :key="index">
-          <span v-if="prefix" class="context">{{prefix}} </span>
+          <em v-if="prefix" class="context">{{prefix}} </em>
           <span v-html="formattedForm(tags,form)"/>
         </span>
       </td>

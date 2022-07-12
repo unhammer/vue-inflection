@@ -23,7 +23,7 @@
         @mouseover.stop="hiliteRow(rowindex)">
       <span class='comma'
             v-for="(form, i) in forms"
-            :key="i"><span v-if="prefix" class="context">{{prefix}}</span>&nbsp;<span v-html="formattedForm(form)"/></span>
+            :key="i"><em v-if="prefix" class="context">{{prefix}}</em>&nbsp;<span v-html="formattedForm(form)"/></span>
     </td>
   </template>
 </tr>
