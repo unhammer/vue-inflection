@@ -900,7 +900,6 @@ export default {
     font-weight: normal
 }
 
-
 span.comma:empty {
     display: none;
 }
