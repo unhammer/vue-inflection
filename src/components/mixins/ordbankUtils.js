@@ -336,7 +336,8 @@ const tagNames_nob = { Sing: "entall",
                        SupInd: "superlativ ubestemt",
                        SupDef: "superlativ bestemt",
                        Nom: "subjektsform",
-                       Acc: "objektsform"
+                       Acc: "objektsform",
+                       Uninfl: "ubøyelig"
                      }
 
 const tagNames_nno = { Sing: "eintal",
@@ -362,7 +363,35 @@ const tagNames_nno = { Sing: "eintal",
                        SupInd: "superlativ ubunden",
                        SupDef: "superlativ bunden",
                        Nom: "subjektsform",
-                       Acc: "objektsform"
+                       Acc: "objektsform",
+                       Uninfl: "ubøyeleg"
+                     }
+
+const tagNames_eng = { Sing: "singular",
+                       Plur: "plural",
+                       Ind: "indefinite",
+                       Def: "definite",
+                       Finite: "finite forms",
+                       Inf: "infinitive",
+                       Pres: "present",
+                       Past: "past",
+                       PresPerf: "present perfect",
+                       Imp: "imperative",
+                       PerfPart: "perfect participle",
+                       Fem: "feminine",
+                       Masc: "masculine",
+                       MascFem: "masculine/ feminine",
+                       Neuter: "neuter",
+                       PresPart: "present participle",
+                       Deg: "degrees of comparison",
+                       Pos: "positive",
+                       Cmp: "comparative",
+                       Sup: "superlative",
+                       SupInd: "superlative indefinite",
+                       SupDef: "superlative definite",
+                       Nom: "subject form",
+                       Acc: "object form",
+                       Uninfl: "uninflected"
                      }
 
 export function tagToName (tag, language) {
@@ -371,6 +400,48 @@ export function tagToName (tag, language) {
         return tagNames_nob[tag]
     case 'nno':
         return tagNames_nno[tag]
+    case 'eng':
+        return tagNames_eng[tag]
+    }
+}
+
+const posNames_nor = { NOUN: "substantiv",
+                       PROPN: "prop",
+                       VERB: "verb",
+                       ADJ: "adjektiv",
+                       ADV: "adverb",
+                       ADP: "preposisjon",
+                       INTJ: "interjeksjon",
+                       DET: "determinativ",
+                       PRON: "pronomen",
+                       CCONJ: "konjunksjon",
+                       SCONJ: "subjunksjon",
+                       SYM: "symbol",
+                       INFM: "infinitivsmerke"
+                     }
+
+const posNames_eng = { NOUN: "noun",
+                       PROPN: "proper noun",
+                       VERB: "verb",
+                       ADJ: "adjektive",
+                       ADV: "adverb",
+                       ADP: "preposition",
+                       INTJ: "interjection",
+                       DET: "determinative",
+                       PRON: "pronoun",
+                       CCONJ: "conjunction",
+                       SCONJ: "subjunction",
+                       SYM: "symbol",
+                       INFM: "infinitive marker"
+                     }
+
+export function posName (pos, language) {
+    switch (language) {
+    case 'nob':
+    case 'nno':
+        return posNames_nor[pos]
+    case 'eng':
+        return posNames_eng[pos]
     }
 }
 

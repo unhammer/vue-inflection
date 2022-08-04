@@ -12,8 +12,9 @@
         </div>
         <div>
           <table class="infl-table" :class="mq">
-            <caption class="caption" v-if="language=='nob'">Bøyingsparadigme for substantiv</caption>
-            <caption class="caption" v-else>Bøyningsparadigme for substantiv</caption>
+            <caption class="caption" v-if="language=='nob'">Bøyingstabell for dette substantivet</caption>
+            <caption class="caption" v-if="language=='nno'">Bøyningstabell for dette substantivet</caption>
+            <caption class="caption" v-else>Inflection table for this noun</caption>
             <thead>
               <tr>
                 <th class="infl-label sub label-border-top-left" :class="mq"
@@ -93,15 +94,16 @@
       </div>
       <div v-for="i in mq=='xs' ? [1,2] : [0]" :key="i">
         <table class="infl-table" :class="mq">
-          <caption class="caption" v-if="language=='nob'">Bøyingsparadigme for verb</caption>
-          <caption class="caption" v-else>Bøyningsparadigme for verb</caption>
+          <caption class="caption" v-if="language=='nob'">Bøyingstabell for dette verbet</caption>
+          <caption class="caption" v-if="language=='nno'">Bøyningstabell for dette verbet</caption>
+          <caption class="caption" v-else>Inflection table for this verb</caption>
           <thead>
             <tr>
-              <th v-if="!i || i==1" class="infl-label label-border-top-left" :class="mq">infinitiv</th>
-              <th v-if="!i || i==1" class="infl-label label-border-top" :class="mq">presens</th>
-              <th v-if="!i || i==1" class="infl-label label-border-top" :class="mq">preteritum</th>
-              <th v-if="!i || i==2" class="infl-label label-border-top" :class="mq">presens perfektum</th>
-              <th v-if="(!i || i==2) && hasImp" class="infl-label label-border-top-right" :class="mq">imperativ</th>
+              <th v-if="!i || i==1" class="infl-label label-border-top-left" :class="mq">{{tagToName('Inf')}}</th>
+              <th v-if="!i || i==1" class="infl-label label-border-top" :class="mq">{{tagToName('Pres')}}</th>
+              <th v-if="!i || i==1" class="infl-label label-border-top" :class="mq">{{tagToName('Past')}}</th>
+              <th v-if="!i || i==2" class="infl-label label-border-top" :class="mq">{{tagToName('PresPerf')}}</th>
+              <th v-if="(!i || i==2) && hasImp" class="infl-label label-border-top-right" :class="mq">{{tagToName('Imp')}}</th>
             </tr>
           </thead>
           <tbody>
@@ -115,8 +117,9 @@
       </div>
       <div v-for="j in mq=='xs' ? [3,4] : [-1]" :key="j">
         <table class="infl-table" :class="mq">
-          <caption class="caption" v-if="language=='nob'">Bøyingsparadigme for partisipp</caption>
-          <caption class="caption" v-else>Bøyningsparadigme for partisipp</caption>
+          <caption class="caption" v-if="language=='nob'">Bøyingstabell for dette verbet (partisippformer)</caption>
+          <caption class="caption" v-if="language=='nno'">Bøyningstabell for dette verbet (partisippformer)</caption>
+          <caption class="caption" v-else>Inflection table for the participles of this verb</caption>
           <thead>
             <template v-if="hasPerfPart">
               <tr>
@@ -124,12 +127,12 @@
                     :class="mq"
                     id="PerfPart"
                     scope="col"
-                    :colspan="hasPerfPartDef ? (j<0?4:(j==3?3:1)) : 1">perfektum partisipp</th>
+                    :colspan="hasPerfPartDef ? (j<0?4:(j==3?3:1)) : 1">{{tagToName('PerfPart')}}</th>
                 <th v-if="j<0 || j==4"
                     class="infl-label label-border-top-right" :class="mq"
                     id="PresPart"
                     scope="col"
-                    rowspan="2">presens partisipp</th>
+                    rowspan="2">{{tagToName('PresPart')}}</th>
               </tr>
               <tr>
                 <th v-if="(j<0 || j==3) && hasPerfPartDef"
@@ -154,7 +157,7 @@
             <template v-else-if="hasPresPart">
               <tr>
                 <th v-if="j<0 || j==4"
-                    class="infl-label label-border-top" :class="mq">presens partisipp</th>
+                    class="infl-label label-border-top" :class="mq">{{tagToName('PresPart')}}</th>
               </tr>
             </template>
           </thead>
@@ -199,8 +202,9 @@
       </div>
       <div>
         <table class="infl-table" :class="mq">
-          <caption class="caption" v-if="language=='nob'">Bøyingsparadigme for adjektiv</caption>
-          <caption class="caption" v-else>Bøyningsparadigme for adjektiv</caption>
+          <caption class="caption" v-if="language=='nob'">Bøyingstabell for dette adjektivet</caption>
+          <caption class="caption" v-if="language=='nno'">Bøyningstabell for dette adjektivet</caption>
+          <caption class="caption" v-else>Inflection table for this adjective</caption>
           <thead>
             <tr>
               <th v-if="hasSingAdj"
@@ -265,8 +269,9 @@
       </div>
       <div v-if="hasDeg">
         <table class="infl-table" :class="mq">
-          <caption class="caption" v-if="language=='nob'">Bøyingsparadigme for gradbøying</caption>
-          <caption class="caption" v-else>Bøyningsparadigme for gradbøying</caption>
+          <caption class="caption" v-if="language=='nob'">Bøyingstabell for dette adjektivet (gradbøying)</caption>
+          <caption class="caption" v-if="language=='nno'">Bøyningstabell for dette adjektivet (gradbøyning)</caption>
+          <caption class="caption" v-else>Inflection table for this adjective (comparative, superlative)</caption>
           <thead>
             <tr>
               <th class="infl-label label-border-top-left-right"
@@ -274,24 +279,24 @@
                   id="Deg"
                   scope="col"
                   colspan="3">
-                gradbøying
+                {{tagToName('Deg')}}
               </th>
             </tr>
             <tr>
               <th id ="Cmp"
                   scope="col"
                   class="infl-label label-border-bottom">
-                komparativ
+                {{tagToName('Cmp')}}
               </th>
               <th id="SupInd"
                   scope="col"
                   class="infl-label label-border-bottom">
-                superlativ<br/><span class="sub">{{tagToName('Ind')}} form</span>
+                {{tagToName('Sup')}}<br/><span class="sub">{{tagToName('Ind')}} form</span>
               </th>
               <th id="SupDef"
                   scope="col"
                   class="infl-label label-border-bottom">
-                superlativ<br/><span class="sub">{{tagToName('Def')}} form</span>
+                {{tagToName('Sup')}}<br/><span class="sub">{{tagToName('Def')}} form</span>
               </th>
             </tr>
           </thead>
@@ -332,18 +337,19 @@
       </div>
       <div v-if="hasDeg">
         <table class="infl-table" :class="mq">
-          <caption class="caption" v-if="language=='nob'">Bøyingsparadigme for adverb</caption>
-          <caption class="caption" v-else>Bøyningsparadigme for adverb</caption>
+          <caption class="caption" v-if="language=='nob'">Bøyingstabell for dette adverbet</caption>
+          <caption class="caption" v-if="language=='nno'">Bøyningstabell for dette adverbet</caption>
+          <caption class="caption" v-else>Inflection table for this adverb</caption>
           <thead>
             <tr>
               <th class="infl-label label-border-bottom">
-                positiv
+                {{tagToName('Pos')}}
               </th>
               <th class="infl-label label-border-bottom">
-                komparativ
+                {{tagToName('Cmp')}}
               </th>
               <th class="infl-label label-border-bottom">
-                superlativ
+                {{tagToName('Sup')}}
               </th>
             </tr>
           </thead>
@@ -384,15 +390,16 @@
       </div>
       <div>
         <table class="infl-table" :class="mq">
-          <caption class="caption" v-if="language=='nob'">Bøyingsparadigme for pronomen</caption>
-          <caption class="caption" v-else>Bøyningsparadigme for pronomen</caption>
+          <caption class="caption" v-if="language=='nob'">Bøyingstabell for dette pronomenet</caption>
+          <caption class="caption" v-if="language=='nno'">Bøyningstabell for dette pronomenet</caption>
+          <caption class="caption" v-else>Inflection table for this pronoun</caption>
           <thead>
             <tr>
               <th v-if="hasNom" class="infl-label sub label-border-top-left">
-                subjektsform
+                {{tagToName('Nom')}}
               </th>
               <th v-if="hasAcc" class="infl-label sub label-border-top-right">
-                objektsform
+                {{tagToName('Acc')}}
               </th>
               <th v-if="hasNeuter" class="infl-label sub label-border-top-right">
                 {{tagToName('Neuter')}}
@@ -440,8 +447,9 @@
       </div>
       <div>
         <table class="infl-table" :class="mq">
-          <caption class="caption" v-if="language=='nob'">Bøyingsparadigme for determinativ</caption>
-          <caption class="caption" v-else>Bøyningsparadigme for determinativ</caption>
+          <caption class="caption" v-if="language=='nob'">Bøyingstabell for dette determinativet</caption>
+          <caption class="caption" v-if="language=='nno'">Bøyningstabell for dette determinativet</caption>
+          <caption class="caption" v-else>Inflection table for this determinative</caption>
           <thead>
             <tr>
               <th v-if="hasSing"
@@ -522,11 +530,12 @@
       </div>
       <div>
         <table class="infl-table" :class="mq">
-          <caption class="caption" v-if="language=='nob'">Bøyingsparadigme for adverb</caption>
-          <caption class="caption" v-else>Bøyningsparadigme for adverb</caption>
+          <caption class="caption" v-if="language=='nob'">Bøyingstabell for dette adverbet</caption>
+          <caption class="caption" v-if="language=='nno'">Bøyningstabell for dette adverbet</caption>
+          <caption class="caption" v-else>Inflection table for this adverb</caption>
           <thead>
             <tr>
-              <th class="infl-label label-border">{{language=='nob'?'ubøyelig':'ubøyeleg'}}</th>
+              <th class="infl-label label-border">{{tagToName('Uninfl')}}</th>
             </tr>
           </thead>
           <tbody>
@@ -564,9 +573,10 @@ import inflectionRowsDet from './inflectionRowsDet.vue'
 
 
 import { calculateStandardParadigms,
-         word_formsEqual, hasTags, tagToName, hasInflForm, markdownToHTML
+         word_formsEqual, hasTags, tagToName, posName, hasInflForm, markdownToHTML
        } from './mixins/ordbankUtils.js'
 
+/*
 const posNames = { NOUN: "substantiv",
                    PROPN: "prop",
                    VERB: "verb",
@@ -581,6 +591,7 @@ const posNames = { NOUN: "substantiv",
                    SYM: "symbol",
                    INFM: "infinitivsmerke"
                  }
+*/
 
 export default {
     name: 'inflectionTable',
@@ -599,9 +610,9 @@ export default {
                   inflectionRowsPron,
                   inflectionRowsDet
                 },
-    props: ['lemmaList','mq','context'],
+    props: ['lemmaList','mq','context','eng'],
     data: function () {
-        return { language: this.lemmaList ? this.lemmaList[0].language : null,
+        return { language: this.eng ? 'eng' : (this.lemmaList ? this.lemmaList[0].language : null),
                  // initialLexeme: this.lemmaList ? this.lemmaList[0].initial_lexeme : null,
                  hasFem: this.hasInflForm(['Fem']),
                  hasNeuter: this.hasInflForm(['Neuter']),
@@ -672,9 +683,9 @@ export default {
         wordClass: function () {
             if (this.lemmaList) {
                 if (this.isADJ_Adv) {
-                    return posNames['ADV']
+                    return posName['ADV', this.language]
                 } else {
-                    return posNames[this.lemmaList[0].word_class]
+                    return posName[this.lemmaList[0].word_class, this.language]
                         || this.lemmaList[0].word_class
                 }
             } else {
