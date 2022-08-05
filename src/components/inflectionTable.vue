@@ -13,7 +13,7 @@
         <div>
           <table class="infl-table" :class="mq">
             <caption class="caption" v-if="language=='nob'">Bøyingstabell for dette substantivet</caption>
-            <caption class="caption" v-if="language=='nno'">Bøyningstabell for dette substantivet</caption>
+            <caption class="caption" v-else-if="language=='nno'">Bøyningstabell for dette substantivet</caption>
             <caption class="caption" v-else>Inflection table for this noun</caption>
             <thead>
               <tr>
@@ -95,7 +95,7 @@
       <div v-for="i in mq=='xs' ? [1,2] : [0]" :key="i">
         <table class="infl-table" :class="mq">
           <caption class="caption" v-if="language=='nob'">Bøyingstabell for dette verbet</caption>
-          <caption class="caption" v-if="language=='nno'">Bøyningstabell for dette verbet</caption>
+          <caption class="caption" v-else-if="language=='nno'">Bøyningstabell for dette verbet</caption>
           <caption class="caption" v-else>Inflection table for this verb</caption>
           <thead>
             <tr>
@@ -118,7 +118,7 @@
       <div v-for="j in mq=='xs' ? [3,4] : [-1]" :key="j">
         <table class="infl-table" :class="mq">
           <caption class="caption" v-if="language=='nob'">Bøyingstabell for dette verbet (partisippformer)</caption>
-          <caption class="caption" v-if="language=='nno'">Bøyningstabell for dette verbet (partisippformer)</caption>
+          <caption class="caption" v-else-if="language=='nno'">Bøyningstabell for dette verbet (partisippformer)</caption>
           <caption class="caption" v-else>Inflection table for the participles of this verb</caption>
           <thead>
             <template v-if="hasPerfPart">
@@ -203,7 +203,7 @@
       <div>
         <table class="infl-table" :class="mq">
           <caption class="caption" v-if="language=='nob'">Bøyingstabell for dette adjektivet</caption>
-          <caption class="caption" v-if="language=='nno'">Bøyningstabell for dette adjektivet</caption>
+          <caption class="caption" v-else-if="language=='nno'">Bøyningstabell for dette adjektivet</caption>
           <caption class="caption" v-else>Inflection table for this adjective</caption>
           <thead>
             <tr>
@@ -270,7 +270,7 @@
       <div v-if="hasDeg">
         <table class="infl-table" :class="mq">
           <caption class="caption" v-if="language=='nob'">Bøyingstabell for dette adjektivet (gradbøying)</caption>
-          <caption class="caption" v-if="language=='nno'">Bøyningstabell for dette adjektivet (gradbøyning)</caption>
+          <caption class="caption" v-else-if="language=='nno'">Bøyningstabell for dette adjektivet (gradbøyning)</caption>
           <caption class="caption" v-else>Inflection table for this adjective (comparative, superlative)</caption>
           <thead>
             <tr>
@@ -338,7 +338,7 @@
       <div v-if="hasDeg">
         <table class="infl-table" :class="mq">
           <caption class="caption" v-if="language=='nob'">Bøyingstabell for dette adverbet</caption>
-          <caption class="caption" v-if="language=='nno'">Bøyningstabell for dette adverbet</caption>
+          <caption class="caption" v-else-if="language=='nno'">Bøyningstabell for dette adverbet</caption>
           <caption class="caption" v-else>Inflection table for this adverb</caption>
           <thead>
             <tr>
@@ -391,7 +391,7 @@
       <div>
         <table class="infl-table" :class="mq">
           <caption class="caption" v-if="language=='nob'">Bøyingstabell for dette pronomenet</caption>
-          <caption class="caption" v-if="language=='nno'">Bøyningstabell for dette pronomenet</caption>
+          <caption class="caption" v-else-if="language=='nno'">Bøyningstabell for dette pronomenet</caption>
           <caption class="caption" v-else>Inflection table for this pronoun</caption>
           <thead>
             <tr>
@@ -448,7 +448,7 @@
       <div>
         <table class="infl-table" :class="mq">
           <caption class="caption" v-if="language=='nob'">Bøyingstabell for dette determinativet</caption>
-          <caption class="caption" v-if="language=='nno'">Bøyningstabell for dette determinativet</caption>
+          <caption class="caption" v-else-if="language=='nno'">Bøyningstabell for dette determinativet</caption>
           <caption class="caption" v-else>Inflection table for this determinative</caption>
           <thead>
             <tr>
@@ -531,7 +531,7 @@
       <div>
         <table class="infl-table" :class="mq">
           <caption class="caption" v-if="language=='nob'">Bøyingstabell for dette adverbet</caption>
-          <caption class="caption" v-if="language=='nno'">Bøyningstabell for dette adverbet</caption>
+          <caption class="caption" v-else-if="language=='nno'">Bøyningstabell for dette adverbet</caption>
           <caption class="caption" v-else>Inflection table for this adverb</caption>
           <thead>
             <tr>
