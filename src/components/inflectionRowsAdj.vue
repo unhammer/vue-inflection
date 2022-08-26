@@ -15,7 +15,8 @@
         @mouseover.stop="hiliteRow(rowindex)">
       <span class='comma'
             v-for="(form, index) in forms"
-            :key="index">{{form}}</span>
+            :key="index"
+            v-html="formattedForm(form)"/>
     </td>
   </template>
   <template v-if="tags.title">
@@ -33,7 +34,7 @@
 
 import $ from 'jquery'
 
-import { inflectedForm, tagToName
+import { inflectedForm, markdownToHTML, tagToName
        } from './mixins/ordbankUtils.js' 
 
 export default {
@@ -53,6 +54,9 @@ export default {
     methods: {
         inflForm: function (paradigm, tagList, exclTagList) {
             return inflectedForm(paradigm, tagList, exclTagList)
+        },
+        formattedForm: function (form) {
+            return markdownToHTML(form)
         },
         hiliteRow: function (rowindex) {
             $('td[index]').removeClass('hilite')

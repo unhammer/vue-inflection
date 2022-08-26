@@ -9,8 +9,8 @@
       @mouseover.stop="hiliteRow(rowindex)">
     <span class='comma'
           v-for="form in forms"
-          :key="form">
-      {{form}}</span>
+          :key="form"
+          v-html="formattedForm(form)"/>
   </td>
 </tr>
 </template>
@@ -19,7 +19,7 @@
 
 import $ from 'jquery'
 
-import { inflectedForm
+import { inflectedForm, markdownToHTML
        } from './mixins/ordbankUtils.js'
 
 export default {
@@ -38,6 +38,9 @@ export default {
     methods: {
         inflForm: function (tagList,headers) {
             return [inflectedForm(this.paradigm, tagList, []), headers]
+        },
+        formattedForm: function (form) {
+            return markdownToHTML(form)
         },
         hiliteRow: function (rowindex) {
             $('td[index]').removeClass('hilite')
