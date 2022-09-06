@@ -84,27 +84,31 @@ export function word_formsEqual (s1, s2, tags1, tags2, checkTags) {
 
 // false if equal
 function mergeCells(infl1, infl2, tagList) {
-    let wf1 = null, wf2 = null, mwf1 = null, mwf2 = null
-    for (let i = 0; i < infl1.length; i++) {
-        let mf1 = infl1[i].markdown_word_form
-        let f1 = infl1[i].word_form
-        let mf2 = infl2[i].markdown_word_form
-        let f2 = infl2[i].word_form
-        if (hasTags(infl1[i], tagList)) {
-            if (!word_formsEqual(f1, f2)) {
-                wf1 = f1
-                wf2 = f2
-                mwf1 = mf1
-                mwf2 = mf2
-            }
-        } else if (!word_formsEqual(f1, f2)) { // difference in different tag list
-            return true
-        }
-    }
-    if (wf1) {
-        return [ appendTwoWordForms(wf1,wf2), mwf1 ? appendTwoWordForms(mwf1,mwf2) : null ]
+    if (!infl1.length || !infl2.length) {
+        return true
     } else {
-        return false
+        let wf1 = null, wf2 = null, mwf1 = null, mwf2 = null
+        for (let i = 0; i < infl1.length; i++) {
+            let mf1 = infl1[i].markdown_word_form
+            let f1 = infl1[i].word_form
+            let mf2 = infl2[i].markdown_word_form
+            let f2 = infl2[i].word_form
+            if (hasTags(infl1[i], tagList)) {
+                if (!word_formsEqual(f1, f2)) {
+                    wf1 = f1
+                    wf2 = f2
+                    mwf1 = mf1
+                    mwf2 = mf2
+                }
+            } else if (!word_formsEqual(f1, f2)) { // difference in different tag list
+                return true
+            }
+        }
+        if (wf1) {
+            return [ appendTwoWordForms(wf1,wf2), mwf1 ? appendTwoWordForms(mwf1,mwf2) : null ]
+        } else {
+            return false
+        }
     }
 }
 
@@ -196,7 +200,9 @@ function normalizeInflection(paradigm) {
 // Iterate through tagList list and merge paradigms that are equal except on tagList,
 // merging their word forms into an array
 function mergeParadigms (paradigmInfo) {
-    paradigmInfo = paradigmInfo.map(paradigm => normalizeInflection(paradigm))
+    console.log(paradigmInfo)
+    paradigmInfo = paradigmInfo.filter(p=>p.code.substring(0,2) != 'MO')
+        .map(p => normalizeInflection(p))
     let PI = []
     let tagLists = [ ['Masc/Fem'],
                      ['Fem'],
