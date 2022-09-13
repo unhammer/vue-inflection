@@ -576,23 +576,6 @@ import { calculateStandardParadigms,
          word_formsEqual, hasTags, tagToName, posName, hasInflForm, markdownToHTML
        } from './mixins/ordbankUtils.js'
 
-/*
-const posNames = { NOUN: "substantiv",
-                   PROPN: "prop",
-                   VERB: "verb",
-                   ADJ: "adjektiv",
-                   ADV: "adverb",
-                   ADP: "preposisjon",
-                   INTJ: "interjeksjon",
-                   DET: "determinativ",
-                   PRON: "pronomen",
-                   CCONJ: "konjunksjon",
-                   SCONJ: "subjunksjon",
-                   SYM: "symbol",
-                   INFM: "infinitivsmerke"
-                 }
-*/
-
 export default {
     name: 'inflectionTable',
     components: { inflectionRowNoun,
@@ -613,13 +596,11 @@ export default {
     props: ['lemmaList','mq','context','eng'],
     data: function () {
         return { language: this.eng ? 'eng' : (this.lemmaList ? this.lemmaList[0].language : null),
-                 // initialLexeme: this.lemmaList ? this.lemmaList[0].initial_lexeme : null,
                  hasFem: this.hasInflForm(['Fem']),
                  hasNeuter: this.hasInflForm(['Neuter']),
                  hasDeg: this.hasInflForm(['Cmp']),
                  hasDef: this.hasInflForm(['Def']),
                  hasSing: this.hasInflForm(['Sing']),
-                 // Ind b/o ‘få’/‘mange’ nno, which has Sing Def, must be bug
                  hasSingAdj: this.hasInflForm(['Sing','Ind']),
                  hasPlur: this.hasInflForm(['Plur']),
                  hasGender: this.hasInflForm(['Masc']) || this.hasInflForm(['Fem']) || this.hasInflForm(['Neuter']),
@@ -679,7 +660,6 @@ export default {
                }
     },
     computed: {
-        // hasSingAdj: function () { return this.hasInflForm(['Sing','Ind']) },
         wordClass: function () {
             if (this.lemmaList) {
                 if (this.isADJ_Adv) {

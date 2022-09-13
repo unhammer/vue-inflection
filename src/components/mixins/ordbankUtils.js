@@ -132,24 +132,6 @@ function mergeParadigm(p, tagList, mergedCell) {
            }
 }
 
-// returns true if the paradigms are equal on tagLists
-// OBSOLETE?
-/*
-export function compareParadigms(p1, p2, tagLists) {
-    let equal = true
-    tagLists.map(tagList => {
-        let infl1 = p1.inflection.find(infl => hasTags(infl, tagList))
-        let infl2 = p2.inflection.find(infl => hasTags(infl, tagList))
-        if ((infl1 && !infl2) ||
-            (!infl1 && infl2) ||
-            (infl1 && infl2 && !word_formsEqual(infl1.word_form, infl2.word_form))) {
-            equal = false
-        }
-    })
-    return equal
-}
-*/
-
 function tagsEqual (tl1, tl2) {
     if (tl1.length != tl2.length) {
         return false
