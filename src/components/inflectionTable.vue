@@ -589,11 +589,15 @@ export default {
                   inflectionRowsNoun,
                   inflectionRowsVerb,
                   inflectionRowsAdj,
-                  // inflectionRowsAdjAdv,
                   inflectionRowsPron,
                   inflectionRowsDet
                 },
-    props: ['lemmaList','mq','context','eng'],
+    props: ['lemmaList', // list of JSON objects as returned from Ordbank API call, e.g.
+                         // https://clarino.uib.no/ordbank-api-prod/lemmas?query=<lemma_id>&stubs=false&language=nob
+            'mq',        // media query screen size
+            'context',   // show participle context?
+            'eng'        // is localization language English?
+           ],
     data: function () {
         return { language: this.eng ? 'eng' : (this.lemmaList ? this.lemmaList[0].language : null),
                  hasFem: this.hasInflForm(['Fem']),
