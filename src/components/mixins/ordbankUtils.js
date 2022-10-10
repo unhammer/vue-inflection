@@ -182,8 +182,7 @@ function normalizeInflection(paradigm) {
 // Iterate through tagList list and merge paradigms that are equal except on tagList,
 // merging their word forms into an array
 function mergeParadigms (paradigmInfo) {
-    console.log(paradigmInfo)
-    paradigmInfo = paradigmInfo.filter(p=>p.code.substring(0,2) != 'MO')
+    paradigmInfo = paradigmInfo.filter(p=>p.code.charAt(0) != 'M')
         .map(p => normalizeInflection(p))
     let PI = []
     let tagLists = [ ['Masc/Fem'],
