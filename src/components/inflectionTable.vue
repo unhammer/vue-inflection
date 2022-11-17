@@ -596,7 +596,8 @@ export default {
                          // https://clarino.uib.no/ordbank-api-prod/lemmas?query=<lemma_id>&stubs=false&language=nob
             'mq',        // media query screen size
             'context',   // show participle context?
-            'eng'        // is localization language English?
+            'eng',       // is localization language English?
+            'includeNonStandard'
            ],
     data: function () {
         return { language: this.eng ? 'eng' : (this.lemmaList ? this.lemmaList[0].language : null),
@@ -749,7 +750,7 @@ export default {
             let info = this.lemmaList &&
                 this.lemmaList[0].paradigm_info &&
                 this.lemmaList[0].paradigm_info.find(
-                    paradigm => paradigm.standardisation == 'STANDARD' &&
+                    paradigm => (this.includeNonStandard || paradigm.standardisation == 'STANDARD') &&
                         hasInflForm(paradigm, tagList))
             return !!info
         },
@@ -773,11 +774,14 @@ export default {
             }
             let paradigms = []
             this.lemmaList &&
-                this.lemmaList.forEach(lemma =>
-                                       paradigms = paradigms.concat(calculateStandardParadigms(lemma, this.edit)))
+                this.lemmaList.
+                forEach(lemma =>
+                        paradigms = paradigms.concat(
+                            calculateStandardParadigms(lemma, this.edit, this.includeNonStandard)))
             if (!paradigms.length) {
                 return []
             }
+
             let isNoun = paradigms[0].tags.find(t => t == 'NOUN')
 
             let concat_wordforms = function (infl) {
@@ -792,6 +796,8 @@ export default {
                         chain += 'c#'
                     } else if (typeof wf == 'string') {
                         chain += wf + '#'
+                    } else if (!wf) {
+                        null
                     } else {
                         chain += wf[0] + '#'
                     }

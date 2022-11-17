@@ -1,13 +1,13 @@
 
 // functions for calculating and merging inflection table cells
 
-export function calculateStandardParadigms (lemma,edit) {
+export function calculateStandardParadigms (lemma,edit,all) {
     if (lemma.paradigm_info) {
         let paradigms = mergeParadigms(
             lemma.paradigm_info &&
                 lemma.paradigm_info.filter(paradigm =>
-                                           paradigm.standardisation=='STANDARD' &&
-                                           !paradigm.to && // we assume this is in the past if not null
+                                           (all || (paradigm.standardisation=='STANDARD' &&
+                                                    !paradigm.to)) && // we assume this is in the past if not null
                                            (!edit || !paradigm.exclude)
                                           ))
         paradigms.forEach(p => p.inflection.forEach(i => i.markdown_word_form ?
@@ -28,11 +28,12 @@ function appendWordForms(wf) {
 }
 
 function appendTwoWordForms (wf1, wf2) {
-    if (!wf1) {
-        return null
-    }
     let res
-    if (wf1 == wf2) {
+    if (!wf1) {
+        res = wf2
+    } else if (!wf2) {
+        res = wf1
+    } else if (wf1 == wf2) {
         res = wf1
     } else if (typeof wf1 == 'string') {
         if (typeof wf2 == 'string') {
@@ -55,7 +56,7 @@ function appendTwoWordForms (wf1, wf2) {
     return res
 }
 
-// check if  infl has all tags in tagList
+// check if infl has all tags in tagList
 export function hasTags (infl, tagList) {
     let found = true
     tagList.forEach(tag => { if (!infl.tags.find(t => t == tag)) { found = false } })
@@ -83,7 +84,7 @@ export function word_formsEqual (s1, s2, tags1, tags2, checkTags) {
 }
 
 // false if equal
-function mergeCells(infl1, infl2, tagList) {
+function mergeCells(infl1, infl2, tagList, exclTagList) {
     if (!infl1.length || !infl2.length) {
         return true
     } else {
@@ -93,7 +94,7 @@ function mergeCells(infl1, infl2, tagList) {
             let f1 = infl1[i].word_form
             let mf2 = infl2[i].markdown_word_form
             let f2 = infl2[i].word_form
-            if (hasTags(infl1[i], tagList)) {
+            if (hasTags(infl1[i], tagList) && (!exclTagList || !hasTags(infl1[i], exclTagList))) {
                 if (!word_formsEqual(f1, f2)) {
                     wf1 = f1
                     wf2 = f2
@@ -112,7 +113,7 @@ function mergeCells(infl1, infl2, tagList) {
     }
 }
 
-function mergeParadigm(p, tagList, mergedCell) {
+function mergeParadigm (p, tagList, mergedCell) {
     return { exclude: p.exclude,
              from: p.from,
              to: p.to,
@@ -185,26 +186,28 @@ function mergeParadigms (paradigmInfo) {
     paradigmInfo = paradigmInfo.filter(p=>p.code.charAt(0) != 'M')
         .map(p => normalizeInflection(p))
     let PI = []
-    let tagLists = [ ['Masc/Fem'],
-                     ['Fem'],
-                     ['Neuter'],
-                     ['Pos','Def','Sing'],
-                     ['Pos','Plur'],
-                     ['Pres'],
-                     ['Past'],
-                     ['Imp'],
-                     ['Inf'], // new
-                     ['Plur','Def'],
-                     ['Plur','Ind'],
-                     ['Acc']
+    let tagLists = [ [['Imp'], null],
+                     [['Masc/Fem'], null],
+                     [['Fem'], null],
+                     [['Neuter'], null],
+                     [['Pos','Def','Sing'], null],
+                     [['Pos','Plur'], null],
+                     [['Pres'], null],
+                     [['Past'], null],
+                     [['Inf'], ['Pass']],
+                     [['<PerfPart>', 'Plur'], null],
+                     [['<PresPart>'], null],
+                     [['Plur','Def'], null],
+                     [['Plur','Ind'], null],
+                     [['Acc'], null],
                    ]
     tagLists.map(tagList => {
         paradigmInfo.map(paradigm => {
             let found = false
             let mergedCell = null
             let mergeRow = null
-            PI.forEach((p,i) => {
-                let merged = mergeCells(p.inflection, paradigm.inflection, tagList)
+            PI.forEach((p,i) => { // try to merge cells from p and paradigm corresponding to tagList
+                let merged = mergeCells(p.inflection, paradigm.inflection, tagList[0], tagList[1])
                 if (!merged) {
                     found = true // equal one found
                 } else if (merged != true) { // merged cell
@@ -212,8 +215,8 @@ function mergeParadigms (paradigmInfo) {
                     mergeRow = i
                 }
             })
-            if (mergedCell) {
-                let p = mergeParadigm(paradigm, tagList, mergedCell)
+            if (mergedCell) { // replace cell by merged cell (by updating word form), update paradigm in PI
+                let p = mergeParadigm(paradigm, tagList[0], mergedCell)
                 PI[mergeRow] = p
             } else if (!found) {
                 PI.push(paradigm)
@@ -253,7 +256,7 @@ function inflectedForms (paradigm, tagList, exclTagList) {
 
 // Calculate inflection table cell. If cells are vertically merged rowspan is the number of cells merged.
 // noVerticalMerge is used for nouns
-// see inflectionTable.vue for vertical merging
+// see inflectionTable.vue for vertical merging and setting final rowspan
 export function inflectedForm (paradigm, tagList, exclTagList, noVerticalMerge) {
     let [rowspan, index, forms, gender] = inflectedForms(paradigm,tagList,exclTagList)
     if (!rowspan && !noVerticalMerge) {
