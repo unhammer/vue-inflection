@@ -3,6 +3,7 @@
 
 export function calculateStandardParadigms (lemma,edit,all) {
     if (lemma.paradigm_info) {
+        console.log(lemma.paradigm_info)
         let paradigms = mergeParadigms(
             lemma.paradigm_info &&
                 lemma.paradigm_info.filter(paradigm =>
@@ -13,6 +14,8 @@ export function calculateStandardParadigms (lemma,edit,all) {
         paradigms.forEach(p => p.inflection.forEach(i => i.markdown_word_form ?
                                                     i.markdown_word_form = hyphenatedForm(i.markdown_word_form,lemma) :
                                                     i.word_form = hyphenatedForm(i.word_form,lemma)))
+        console.log(paradigms.map(p=>p.standardisation))
+        console.log(paradigms)
         return paradigms
     } else {
         return []
@@ -113,20 +116,24 @@ function mergeCells(infl1, infl2, tagList, exclTagList) {
     }
 }
 
-function mergeParadigm (p, tagList, mergedCell) {
+function mergeParadigm (p, tagList, mergedCell, standardisation) {
+    // console.log(p)
     return { exclude: p.exclude,
              from: p.from,
              to: p.to,
+             standardisation: p.standardisation,
              tags: p.tags,
              inflection_group: p.inflection_group,
              inflection: p.inflection.map(infl => {
                  if (!hasTags(infl, tagList)) {
                      return infl
                  } else {
+                     console.log('infl.st: ' + infl.standardisation + ' st: ' + standardisation)
                      return { tags: infl.tags,
                               word_form: mergedCell[0],
                               markdown_word_form: mergedCell[1],
-                              rowspan: infl.rowspan
+                              rowspan: infl.rowspan,
+                              standardisation: infl.standardisation // : p.standardisation
                             }
                  }
              })
@@ -167,13 +174,15 @@ function normalizeInflection(paradigm) {
             res.push( { tags: tags,
                         word_form: infl[i].word_form,
                         markdown_word_form: infl[i].markdown_word_form,
-                        rowspan: 1
+                        rowspan: 1,
+                        standardisation: paradigm.standardisation
                       } )
         }
     }
     return { exclude: paradigm.exclude,
              from: paradigm.from,
              to: paradigm.to,
+             standardisation: paradigm.standardisation,
              tags: paradigm.tags,
              inflection: res,
              inflection_group: paradigm.inflection_group,
@@ -206,31 +215,58 @@ function mergeParadigms (paradigmInfo) {
             let found = false
             let mergedCell = null
             let mergeRow = null
+            let standardisation = null
+            console.log(paradigm)
             PI.forEach((p,i) => { // try to merge cells from p and paradigm corresponding to tagList
                 let merged = mergeCells(p.inflection, paradigm.inflection, tagList[0], tagList[1])
                 if (!merged) {
+                    console.log('equal:')
+                    console.log(paradigm)
+                    console.log(p)
+                    console.log(tagList[0] + ' ' + p.standardisation + ' ' + paradigm.standardisation)
+                    p.standardisation == 'STANDARD' || paradigm.standardisation == 'STANDARD' ?
+                        standardisation = 'STANDARD' : standardisation = 'NON-STANDARD'
+                    if (standardisation) {
+                        p.standardisation = standardisation
+                        // todo: has to be spread to inflection!
+                    }
                     found = true // equal one found
                 } else if (merged != true) { // merged cell
                     mergedCell = merged
+                    // console.log(mergedCell)
                     mergeRow = i
+                    // console.log(mergedCell)
+                    console.log(p.standardisation + ' ' + paradigm.standardisation)
+                    p.standardisation == 'STANDARD' || paradigm.standardisation == 'STANDARD' ?
+                        standardisation = 'STANDARD' : standardisation = 'NON-STANDARD'
                 }
             })
             if (mergedCell) { // replace cell by merged cell (by updating word form), update paradigm in PI
-                let p = mergeParadigm(paradigm, tagList[0], mergedCell)
+                let p = mergeParadigm(paradigm, tagList[0], mergedCell, standardisation)
+                console.log(p.standardisation + ' ' + PI[mergeRow].standardisation + ' ' + standardisation)
+                // p.standardisation = standardisation
                 PI[mergeRow] = p
             } else if (!found) {
+                console.log('paradigm')
                 PI.push(paradigm)
+            } else {
+                null // 
             }
         })
         paradigmInfo = PI
         PI = []
     })
+    console.log('res')
+    console.log(paradigmInfo)
+    
     return paradigmInfo
 }
 
 function inflectedForms (paradigm, tagList, exclTagList) {
     let inflection = paradigm.inflection.filter(
-        infl => { let found = infl.markdown_word_form || infl.word_form
+        infl => { let found = infl.markdown_word_form || infl.word_form || '-'
+                  // '-' necessary for non-standard display,
+                  // where PerfPart Fem is lacking in standard paradigms (e.g., ‘ete’)
                   tagList.forEach(tag => {
                       if (typeof tag == 'string') {
                           if (!infl.tags.find(t => t == tag)) {
@@ -250,23 +286,24 @@ function inflectedForms (paradigm, tagList, exclTagList) {
                 })
     return [ inflection[0] && inflection[0].rowspan,
              inflection[0] && inflection[0].index,
-             appendWordForms(inflection.map(i => i.markdown_word_form || i.word_form)),
-             inflection[0] && inflection[0].gender ]
+             appendWordForms(inflection.map(i => i.markdown_word_form || i.word_form || '-')),
+             inflection[0] && inflection[0].gender,
+             inflection[0] && inflection[0].standardisation ]
 }
 
 // Calculate inflection table cell. If cells are vertically merged rowspan is the number of cells merged.
 // noVerticalMerge is used for nouns
 // see inflectionTable.vue for vertical merging and setting final rowspan
 export function inflectedForm (paradigm, tagList, exclTagList, noVerticalMerge) {
-    let [rowspan, index, forms, gender] = inflectedForms(paradigm,tagList,exclTagList)
+    let [rowspan, index, forms, gender, standardisation] = inflectedForms(paradigm,tagList,exclTagList)
     if (!rowspan && !noVerticalMerge) {
         return null
     } else if (!forms) {
-        return [ rowspan, index, [ '-' ] ]
+        return [ rowspan, index, [ '-' ], null, standardisation ]
     } else if (typeof forms == 'string') {
-        return [ rowspan, index, [ forms ], gender ]
+        return [ rowspan, index, [ forms ], gender, standardisation ]
     } else {
-        return [ rowspan, index, forms, gender ]
+        return [ rowspan, index, forms, gender, standardisation ]
     }
 }
 

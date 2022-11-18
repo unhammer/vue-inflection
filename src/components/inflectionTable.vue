@@ -127,7 +127,9 @@
                     :class="mq"
                     id="PerfPart"
                     scope="col"
-                    :colspan="hasPerfPartDef ? (j<0?4:(j==3?3:1)) : 1">{{tagToName('PerfPart')}}</th>
+                    :colspan="hasPerfPartFem ? 5 : (hasPerfPartDef ? (j<0?4:(j==3?3:1)) : 1)">
+                  {{tagToName('PerfPart')}}
+                </th>
                 <th v-if="j<0 || j==4"
                     class="infl-label label-border-top-right" :class="mq"
                     id="PresPart"
@@ -140,6 +142,11 @@
                     scope="col"
                     class="infl-label sub label-border-bottom" :class="mq">
                   {{tagToName('Masc')}}&nbsp;/<br/>{{tagToName('Fem')}}</th>
+                <th v-if="(j<0 || j==3) && hasPerfPartFem"
+                    id="Fem"
+                    scope="col"
+                    class="infl-label sub label-border-bottom" :class="mq">
+                  {{tagToName('Fem')}}</th>
                 <th id="Neuter"
                     scope="col"
                     class="infl-label sub label-border-bottom" :class="mq"
@@ -167,6 +174,7 @@
                                      :part="j"
                                      :language="language"
                                      :hasPerfPart="hasPerfPart"
+                                     :hasPerfPartFem="hasPerfPartFem"
                                      :lemmaId="lemma.id"
                                      :paradigm="paradigm"
                                      :context="context"/>
@@ -612,6 +620,7 @@ export default {
                  hasPresPart: this.hasInflForm(['Adj','<PresPart>']),
                  hasPerfPart: this.hasInflForm(['Adj','<PerfPart>']),
                  hasPerfPartDef: this.hasInflForm(['Adj','<PerfPart>','Def']),
+                 hasPerfPartFem: this.hasInflForm(['Adj','<PerfPart>','Fem']), // non-standard forms only
                  hasImp: this.hasInflForm(['Imp']),
                  hasNom: this.hasInflForm(['Nom']),
                  hasAcc: this.hasInflForm(['Acc']),
@@ -713,6 +722,7 @@ export default {
                     this.hasImp ? { label: 'Imp', tags: ['Imp'], suffix: '!' } : null,
                     this.hasPerfPart ? { title: 'PerfPart' } : null,
                     this.hasPerfPartDef ? { block: 'PerfPart', label: 'MascFem', tags: ['Adj','Masc/Fem']} : null,
+                    this.hasPerfPartFem ? { block: 'PerfPart', label: 'Fem', tags: ['Adj','Fem']} : null,
                     this.hasPerfPart ? { block: 'PerfPart', label: 'Neuter', tags: ['Adj','Neuter']} : null,
                     this.hasPerfPartDef ? { block: 'PerfPart', label: 'Def', tags: ['Adj','Def']} : null,
                     this.hasPerfPartDef ? { block: 'PerfPart', label: 'Plur', tags: ['Adj','Plur']} : null,
@@ -828,6 +838,7 @@ export default {
                 return infl })
             // merge equal cells by setting rowspan
             paradigms.forEach((p,index) => {
+                console.log(p)
                 for (let i = 0; i < p.inflection.length; i++) {
                     if (currentInfl[i] &&
                         p.inflection[i] &&
@@ -841,6 +852,9 @@ export default {
                        ) {
                         currentInfl[i].index.push(index+1) // remember paradigm row, for hiliting
                         currentInfl[i].rowspan++
+                        if (p.inflection[i].standardisation == 'STANDARD') {
+                            currentInfl[i].standardisation = 'STANDARD'
+                        }
                         if (isNoun) {
                             let gender = p.tags[1]
                             if (!currentInfl[i].gender.find(g=>g==gender)) {

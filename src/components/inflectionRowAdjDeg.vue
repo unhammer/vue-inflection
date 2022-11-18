@@ -1,16 +1,19 @@
 <template>
 <tr>
   <td class="infl-cell"
-      v-for="([[rowspan,rowindex,forms], headers], index) in rows"
+      v-for="([[rowspan,rowindex,forms,g,standardisation], headers], index) in rows"
       :key="index"
       :rowspan="rowspan"
       :index="rowindex"
       :headers="headers"
       @mouseover.stop="hiliteRow(rowindex)">
-    <span class='comma'
-          v-for="form in forms"
-          :key="form">
-      {{form}}</span>
+    <span v-if="standardisation!='STANDARD'">(</span>
+    <span>
+      <span class='comma'
+            v-for="form in forms"
+            :key="form">{{form}}</span>
+    </span>
+    <span v-if="standardisation!='STANDARD'">)</span>
   </td>
   
 </tr>

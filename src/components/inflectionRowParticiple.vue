@@ -1,19 +1,24 @@
 <template>
 <tr>
-  <td class="infl-cell"
-      v-for="([prefix, [rowspan,rowindex,forms], suffix, headers], index) in rows"
+  <td class="infl-cell left"
+      :class= "forms[0]=='-' ? 'merge-right':'' + paradigm.standardisation!='STANDARD' ? 'non-standard':''"
+      v-for="([prefix, [rowspan,rowindex,forms,gender,standardisation], suffix, headers], index) in rows"
       :key="index"
       :rowspan="rowspan"
       :index="rowindex"
       :headers="headers"
       @mouseover.stop="hiliteRow(rowindex)">
-    <span class='comma'
-          v-for="(form, index) in forms"
-          :key="index">
-      <em v-if="prefix" class="context">{{prefix}}</em>
-      {{form}}
-      <em v-if="suffix" class="context nobr">{{suffix}}</em>
+    <span v-if="standardisation!='STANDARD'">(</span>
+    <span>
+      <span class='comma'
+            v-for="(form, index) in forms"
+            :key="index">
+        <em v-if="prefix" class="context">{{prefix}}</em>
+        <span :style="form=='-' ? 'color: white':''">{{form}}</span>
+        <em v-if="suffix" class="context nobr">{{suffix}}</em>
+      </span>
     </span>
+    <span v-if="standardisation!='STANDARD'">)</span>
   </td>
   
 </tr>
@@ -29,7 +34,7 @@ import { inflectedForm, indefArticle
 
 export default {
     name: 'inflectionRowParticiple',
-    props: ['paradigm','hasPerfPart','language','part','lemmaId', 'context'],
+    props: ['paradigm','hasPerfPart','hasPerfPartFem','language','part','lemmaId', 'context'],
     data: function () {
         return { rows: [
             this.hasPerfPart && this.part!=4 ?
@@ -37,6 +42,11 @@ export default {
                               this.context ? indefArticle(['Masc/Fem'], this.language) : null,
                               this.context ? '+ substantiv' : null,
                               'PerfPart Masc') : null,
+            this.hasPerfPartFem && this.part!=4 ?
+                this.inflForm(['Adj','Fem'],
+                              this.context ? indefArticle(['Fem'], this.language) : null,
+                              this.context ? '+ substantiv' : null,
+                              'PerfPart Fem'): null,
             this.hasPerfPart && this.part!=4 ?
                 this.inflForm(['Adj','Neuter'],
                               this.context ? indefArticle(['Neuter'], this.language) : null,
@@ -75,3 +85,19 @@ export default {
 }
 
 </script>
+
+<style>
+
+td.merge-left {
+    border-right: none
+}
+
+td.merge-right {
+    border-left: none !important;
+}
+
+td.non-standard {
+/*    background: green */
+}
+
+</style>

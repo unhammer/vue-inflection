@@ -1,16 +1,20 @@
 <template>
 <tr>
   <td class="infl-cell"
-      v-for="([prefix, [rowspan,rowindex,forms], suffix], index) in rows"
+      v-for="([prefix, [rowspan,rowindex,forms,gender,standardisation], suffix], index) in rows"
       :key="index"
       :rowspan="rowspan"
       :index="rowindex"
       @mouseover.stop="hiliteRow(rowindex)">
-    <span class="comma nobr"
-          v-for="(form, index) in forms"
-          :key="index">
-      <em v-if="prefix" class="context">{{prefix}}</em>&nbsp;{{form}}<em v-if="suffix" class="context">{{suffix}}</em>
+    <span v-if="standardisation!='STANDARD'">(</span>
+    <span>
+      <span class="comma nobr"
+            v-for="(form, index) in forms"
+            :key="index">
+        <em v-if="prefix" class="context">{{prefix}}&nbsp;</em>{{form}}<em v-if="suffix" class="context">{{suffix}}</em>
+      </span>
     </span>
+    <span v-if="standardisation!='STANDARD'">)</span>
   </td>
 </tr>
 </template>

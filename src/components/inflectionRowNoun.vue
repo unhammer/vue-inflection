@@ -1,6 +1,6 @@
 <template>
 <tr>
-  <template v-for="([prefix, [rowspan,rowindex,forms], gender, colref], index) in cells"> 
+  <template v-for="([prefix, [rowspan,rowindex,forms,g,standardisation], gender, colref], index) in cells"> 
     <th v-if="gender"
         class="infl-label"
         :id="colref"
@@ -21,9 +21,13 @@
         :rowspan="rowspan"
         :index="rowindex"
         @mouseover.stop="hiliteRow(rowindex)">
-      <span class='comma'
-            v-for="(form, i) in forms"
-            :key="i"><em v-if="prefix" class="context">{{prefix}}</em>&nbsp;<span v-html="formattedForm(form)"/></span>
+      <span v-if="standardisation!='STANDARD'">(</span>
+      <span>
+        <span class='comma'
+              v-for="(form, i) in forms"
+              :key="i"><em v-if="prefix" class="context">{{prefix}}&nbsp;</em><span v-html="formattedForm(form)"/></span>
+      </span>
+      <span v-if="standardisation!='STANDARD'">)</span>
     </td>
   </template>
 </tr>
