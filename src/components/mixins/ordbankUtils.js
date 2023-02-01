@@ -95,8 +95,8 @@ function mergeCells(infl1, infl2, tagList, exclTagList) {
         for (let i = 0; i < infl1.length; i++) {
             let mf1 = infl1[i].markdown_word_form
             let f1 = infl1[i].word_form
-            let mf2 = infl2[i].markdown_word_form
-            let f2 = infl2[i].word_form
+            let mf2 = infl2[i] && infl2[i].markdown_word_form
+            let f2 = infl2[i] && infl2[i].word_form
             if (hasTags(infl1[i], tagList) && (!exclTagList || !hasTags(infl1[i], exclTagList))) {
                 if (!word_formsEqual(f1, f2)) {
                     wf1 = f1
@@ -192,7 +192,7 @@ function normalizeInflection(paradigm) {
 // Iterate through tagList list and merge paradigms that are equal except on tagList,
 // merging their word forms into an array
 function mergeParadigms (paradigmInfo) {
-    paradigmInfo = paradigmInfo.filter(p=>p.code.charAt(0) != 'M')
+    paradigmInfo = paradigmInfo.filter(p=> !p.code || p.code.charAt(0) != 'M') // remove Metaordbok paradigms
         .map(p => normalizeInflection(p))
     let PI = []
     let tagLists = [ [['Imp'], null],
