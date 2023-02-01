@@ -1,7 +1,7 @@
 <template>
 <div @mouseover="unhiliteRows()" :id="'lemma'+lemma.id">
   <div class="infl-wrapper">
-    <template v-if="lemma && lemma.word_class=='NOUN'">
+    <template v-if="isNoun">
       <div v-if="mq!='xs'"
            class="infl-wordclass"
            :class="mq">
@@ -26,7 +26,7 @@
                     id="Sing"
                     class="infl-label label-border-top-left" :class="mq" scope="col" colspan='2'>
                   {{tagToName('Sing')}}</th>
-                <th id="Plur" class="infl-label label-border-top-right" :class="mq" scope="col" colspan='2'>
+                <th v-if="hasPlur" id="Plur" class="infl-label label-border-top-right" :class="mq" scope="col" colspan='2'>
                   {{tagToName('Plur')}}</th>
               </tr>
               <tr>
@@ -40,12 +40,12 @@
                     class="infl-label sub label-border-bottom" scope="col" :class="mq">
                   {{tagToName('Def')}} form
                 </th>
-                <th class="infl-label sub label-border-bottom"
+                <th v-if="hasPlur" class="infl-label sub label-border-bottom"
                     id="PlurInd"
                     scope="col" :class="mq">
                   {{tagToName('Ind')}} form
                 </th>
-                <th v-if="hasDef"
+                <th v-if="hasDef && hasPlur"
                     class="infl-label sub label-border-bottom"
                     id="PlurDef"
                     scope="col" :class="mq">
@@ -624,7 +624,7 @@ export default {
                  hasImp: this.hasInflForm(['Imp']),
                  hasNom: this.hasInflForm(['Nom']),
                  hasAcc: this.hasInflForm(['Acc']),
-                 isUninflected: this.lemmaList && (!['NOUN','PROPN','ADJ','VERB','PRON','DET']
+                 isUninflected: this.lemmaList && (!['NOUN','PROPN','ADJ','VERB','PRON','DET','ABBR']
                                                    .find(wc=>wc==this.lemmaList[0].word_class) ||
                                                    this.lemmaList[0].paradigm_info[0].inflection_group == 'DET_simple'
                                                   ),
@@ -645,9 +645,13 @@ export default {
                                   { title: 'Plur'},
                                   { label: 'Ind', tags: ['Plur','Ind']},
                                   { label: 'Def', tags: ['Plur','Def']}],
-                 inflTagsNounPlur: [{ title: 'Plur'},
-                                    { label: 'Ind', tags: ['Plur','Ind']},
-                                    { label: 'Def', tags: ['Plur','Def']}],
+                 inflTagsNounSingG: [ { tags: ['_gender'] },
+                                      { title: 'Sing'},
+                                      { label: 'Ind', tags: ['Sing','Ind']},
+                                      { label: 'Def', tags: ['Sing','Def']}],
+                 inflTagsNounSingNG: [ { title: 'Sing'},
+                                       { label: 'Ind', tags: ['Sing','Ind']},
+                                       { label: 'Def', tags: ['Sing','Def']}],
                  inflTagsNounPlurInd: [{ title: 'Plur'},
                                        { label: 'Ind', tags: ['Plur','Ind']}],
                  inflTagsAdjAdv: [ { label: 'Pos', tags: ['Pos']},
@@ -696,6 +700,10 @@ export default {
         DETColspan: function () {
             return 2 + (this.hasDef ? 1 : 0) + (this.hasNeuter ? 1 : 0)
         },
+        isNoun: function () {
+            return this.lemma && (this.lemma.word_class=='NOUN' ||
+                                  this.lemma.paradigm_info.find(pi=>pi.inflection_group == 'NOUN_regular'))
+        },
         isADJ_Adv: function () {
             return this.lemmaList && this.lemmaList[0].paradigm_info[0].inflection_group == 'ADJ_adv'
         },
@@ -707,7 +715,11 @@ export default {
         },
         inflTagsNoun: function () {
             if (this.hasSing) {
-                return this.getGender() == '+' ? this.inflTagsNounG : this.inflTagsNounNG
+                 if (this.hasPlur) {
+                     return this.getGender() == '+' ? this.inflTagsNounG : this.inflTagsNounNG
+                 } else {
+                     return this.getGender() == '+' ? this.inflTagsNounSingG : this.inflTagsNounSingNG
+                 }
             } else if (this.hasDef) {
                 return this.inflTagsNounPlur
             } else {
@@ -792,8 +804,9 @@ export default {
                 return []
             }
 
-            let isNoun = paradigms[0].tags.find(t => t == 'NOUN')
-
+            let isNoun = paradigms[0].tags.find(t => t == 'NOUN') || // @@@@@@
+                this.lemmaList && this.lemmaList[0].paradigm_info[0].inflection_group == 'NOUN_regular'
+            
             let concat_wordforms = function (infl) {
                 let chain = ''
                 for (let i = 0; i < infl.length; i++) {
@@ -888,9 +901,9 @@ export default {
         },
         getGender: function () {
             let paradigms = this.getStandardParadigms()
-            let isNoun = paradigms[0] ? paradigms[0].tags.find(t => t == 'NOUN') : null
+            // let isNoun = paradigms[0] ? paradigms[0].tags.find(t => t == 'NOUN') : null
             paradigms.forEach(p => {
-                if (isNoun) {
+                if (this.isNoun) {
                     let gender = p.tags[1]
                     if (!this.gender) {
                         this.gender = gender
