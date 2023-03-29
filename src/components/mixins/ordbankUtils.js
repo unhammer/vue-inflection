@@ -3,7 +3,7 @@
 
 export function calculateStandardParadigms (lemma,edit,all) {
     if (lemma.paradigm_info) {
-        console.log(lemma.paradigm_info)
+        // console.log(lemma.paradigm_info)
         let paradigms = mergeParadigms(
             lemma.paradigm_info &&
                 lemma.paradigm_info.filter(paradigm =>
@@ -14,8 +14,8 @@ export function calculateStandardParadigms (lemma,edit,all) {
         paradigms.forEach(p => p.inflection.forEach(i => i.markdown_word_form ?
                                                     i.markdown_word_form = hyphenatedForm(i.markdown_word_form,lemma) :
                                                     i.word_form = hyphenatedForm(i.word_form,lemma)))
-        console.log(paradigms.map(p=>p.standardisation))
-        console.log(paradigms)
+        // console.log(paradigms.map(p=>p.standardisation))
+        // console.log(paradigms)
         return paradigms
     } else {
         return []
@@ -56,6 +56,7 @@ function appendTwoWordForms (wf1, wf2) {
         let res = wf1.map(w => w)
         wf2.forEach(w => { if (!wf1.find(x => x == w)) { res.push(w) } })
     }
+    if (res) res = res.sort((a,b) => a.localeCompare(b))
     return res
 }
 
@@ -243,11 +244,11 @@ function mergeParadigms (paradigmInfo) {
             })
             if (mergedCell) { // replace cell by merged cell (by updating word form), update paradigm in PI
                 let p = mergeParadigm(paradigm, tagList[0], mergedCell, standardisation)
-                console.log(p.standardisation + ' ' + PI[mergeRow].standardisation + ' ' + standardisation)
+                // console.log(p.standardisation + ' ' + PI[mergeRow].standardisation + ' ' + standardisation)
                 // p.standardisation = standardisation
                 PI[mergeRow] = p
             } else if (!found) {
-                console.log('paradigm')
+                // console.log('paradigm')
                 PI.push(paradigm)
             } else {
                 null // 
@@ -256,9 +257,8 @@ function mergeParadigms (paradigmInfo) {
         paradigmInfo = PI
         PI = []
     })
-    console.log('res')
-    console.log(paradigmInfo)
-    
+    // console.log('res')
+    //console.log(paradigmInfo)
     return paradigmInfo
 }
 
