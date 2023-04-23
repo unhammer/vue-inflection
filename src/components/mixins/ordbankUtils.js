@@ -56,7 +56,7 @@ function appendTwoWordForms (wf1, wf2) {
         let res = wf1.map(w => w)
         wf2.forEach(w => { if (!wf1.find(x => x == w)) { res.push(w) } })
     }
-    if (res) res = res.sort((a,b) => a.localeCompare(b))
+    if (Array.isArray(res)) res = res.sort((a,b) => a.localeCompare(b))
     return res
 }
 
@@ -217,7 +217,7 @@ function mergeParadigms (paradigmInfo) {
             let mergedCell = null
             let mergeRow = null
             let standardisation = null
-            console.log(paradigm)
+            // console.log(paradigm)
             PI.forEach((p,i) => { // try to merge cells from p and paradigm corresponding to tagList
                 let merged = mergeCells(p.inflection, paradigm.inflection, tagList[0], tagList[1])
                 if (!merged) {

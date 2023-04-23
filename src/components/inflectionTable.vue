@@ -851,7 +851,7 @@ export default {
                 return infl })
             // merge equal cells by setting rowspan
             paradigms.forEach((p,index) => {
-                console.log(p)
+                // console.log(p)
                 for (let i = 0; i < p.inflection.length; i++) {
                     if (currentInfl[i] &&
                         p.inflection[i] &&
