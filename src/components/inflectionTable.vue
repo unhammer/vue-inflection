@@ -14,6 +14,7 @@
           <table class="infl-table" :class="mq">
             <caption class="caption" v-if="language=='nob'">Bøyingstabell for dette substantivet</caption>
             <caption class="caption" v-else-if="language=='nno'">Bøyningstabell for dette substantivet</caption>
+            <caption class="caption" v-else-if="language=='ukr'">Таблиця відмінювання для цього іменника</caption>
             <caption class="caption" v-else>Inflection table for this noun</caption>
             <thead>
               <tr>
@@ -96,6 +97,7 @@
         <table class="infl-table" :class="mq">
           <caption class="caption" v-if="language=='nob'">Bøyingstabell for dette verbet</caption>
           <caption class="caption" v-else-if="language=='nno'">Bøyningstabell for dette verbet</caption>
+          <caption class="caption" v-else-if="language=='ukr'">Таблиця відмінювання для цього дієслова</caption>
           <caption class="caption" v-else>Inflection table for this verb</caption>
           <thead>
             <tr>
@@ -119,6 +121,7 @@
         <table class="infl-table" :class="mq">
           <caption class="caption" v-if="language=='nob'">Bøyingstabell for dette verbet (partisippformer)</caption>
           <caption class="caption" v-else-if="language=='nno'">Bøyningstabell for dette verbet (partisippformer)</caption>
+          <caption class="caption" v-else-if="language=='ukr'">Таблиця відмінювання для цього дієслова (дієприкметника)</caption>
           <caption class="caption" v-else>Inflection table for the participles of this verb</caption>
           <thead>
             <template v-if="hasPerfPart">
@@ -212,6 +215,7 @@
         <table class="infl-table" :class="mq">
           <caption class="caption" v-if="language=='nob'">Bøyingstabell for dette adjektivet</caption>
           <caption class="caption" v-else-if="language=='nno'">Bøyningstabell for dette adjektivet</caption>
+          <caption class="caption" v-else-if="language=='ukr'">Таблиця відмінювання для цього прикметника</caption>
           <caption class="caption" v-else>Inflection table for this adjective</caption>
           <thead>
             <tr>
@@ -279,6 +283,7 @@
         <table class="infl-table" :class="mq">
           <caption class="caption" v-if="language=='nob'">Bøyingstabell for dette adjektivet (gradbøying)</caption>
           <caption class="caption" v-else-if="language=='nno'">Bøyningstabell for dette adjektivet (gradbøyning)</caption>
+          <caption class="caption" v-else-if="language=='ukr'">Таблиця відмінювання для цього прикметника (ступені порівняння)</caption>
           <caption class="caption" v-else>Inflection table for this adjective (comparative, superlative)</caption>
           <thead>
             <tr>
@@ -347,6 +352,7 @@
         <table class="infl-table" :class="mq">
           <caption class="caption" v-if="language=='nob'">Bøyingstabell for dette adverbet</caption>
           <caption class="caption" v-else-if="language=='nno'">Bøyningstabell for dette adverbet</caption>
+          <caption class="caption" v-else-if="language=='ukr'">Таблиця відмінювання для цього прислівника</caption>
           <caption class="caption" v-else>Inflection table for this adverb</caption>
           <thead>
             <tr>
@@ -400,6 +406,7 @@
         <table class="infl-table" :class="mq">
           <caption class="caption" v-if="language=='nob'">Bøyingstabell for dette pronomenet</caption>
           <caption class="caption" v-else-if="language=='nno'">Bøyningstabell for dette pronomenet</caption>
+          <caption class="caption" v-else-if="language=='ukr'">Таблиця відмінювання для цього займенника</caption>
           <caption class="caption" v-else>Inflection table for this pronoun</caption>
           <thead>
             <tr>
@@ -457,6 +464,7 @@
         <table class="infl-table" :class="mq">
           <caption class="caption" v-if="language=='nob'">Bøyingstabell for dette determinativet</caption>
           <caption class="caption" v-else-if="language=='nno'">Bøyningstabell for dette determinativet</caption>
+          <caption class="caption" v-else-if="language=='ukr'">Таблиця відмінювання для цього детермінатива</caption>
           <caption class="caption" v-else>Inflection table for this determinative</caption>
           <thead>
             <tr>
@@ -540,6 +548,7 @@
         <table class="infl-table" :class="mq">
           <caption class="caption" v-if="language=='nob'">Bøyingstabell for dette adverbet</caption>
           <caption class="caption" v-else-if="language=='nno'">Bøyningstabell for dette adverbet</caption>
+          <caption class="caption" v-else-if="language=='ukr'">Таблиця відмінювання для цього прислівника</caption>
           <caption class="caption" v-else>Inflection table for this adverb</caption>
           <thead>
             <tr>
@@ -608,7 +617,7 @@ export default {
             'includeNonStandard'
            ],
     data: function () {
-        return { language: this.eng ? 'eng' : (this.lemmaList ? this.lemmaList[0].language : null),
+        return { language: this.eng ? 'eng' : (this.ukr ? 'ukr' : (this.lemmaList ? this.lemmaList[0].language : null)),
                  hasFem: this.hasInflForm(['Fem']),
                  hasNeuter: this.hasInflForm(['Neuter']),
                  hasDeg: this.hasInflForm(['Cmp']),
