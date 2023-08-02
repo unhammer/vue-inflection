@@ -831,10 +831,19 @@ export default {
             paradigms.forEach((p) => {
                 // cases like ‘et nynorsk’, see #406, #510
                 if (isNoun && p.tags.find(t=>t=='Uninfl') && p.inflection.length == 1) {
-                    p.inflection.push({ tags: ['Sing', 'Ind'], word_form: this.lemma.lemma })
-                    p.inflection.push({ tags: ['Sing', 'Def'], word_form: '–' })
-                    p.inflection.push({ tags: ['Plur', 'Ind'], word_form: '–' })
-                    p.inflection.push({ tags: ['Plur', 'Def'], word_form: '–' })
+                    let standard = p.inflection[0].standardisation
+                    p.inflection.push({ tags: ['Sing', 'Ind'],
+                                        word_form: this.lemma.lemma,
+                                        standardisation: standard })
+                    p.inflection.push({ tags: ['Sing', 'Def'],
+                                        word_form: '–',
+                                        standardisation: standard })
+                    p.inflection.push({ tags: ['Plur', 'Ind'],
+                                        word_form: '–',
+                                        standardisation: standard })
+                    p.inflection.push({ tags: ['Plur', 'Def'],
+                                        word_form: '–',
+                                        standardisation: standard })
                 }
             })
 
@@ -851,7 +860,6 @@ export default {
                 return infl })
             // merge equal cells by setting rowspan
             paradigms.forEach((p,index) => {
-                // console.log(p)
                 for (let i = 0; i < p.inflection.length; i++) {
                     if (currentInfl[i] &&
                         p.inflection[i] &&
