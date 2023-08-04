@@ -614,6 +614,7 @@ export default {
             'mq',        // media query screen size
             'context',   // show participle context?
             'eng',       // is localization language English?
+            'ukr',       // is localization language Ukrainian?
             'includeNonStandard'
            ],
     data: function () {
