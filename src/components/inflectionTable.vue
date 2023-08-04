@@ -121,7 +121,7 @@
         <table class="infl-table" :class="mq">
           <caption class="caption" v-if="language=='nob'">Bøyingstabell for dette verbet (partisippformer)</caption>
           <caption class="caption" v-else-if="language=='nno'">Bøyningstabell for dette verbet (partisippformer)</caption>
-          <caption class="caption" v-else-if="language=='ukr'">Таблиця відмінювання для цього дієслова (дієприкметника)</caption>
+          <caption class="caption" v-else-if="language=='ukr'">Таблиця відмінювання для цього дієслова (дієприкметники)</caption>
           <caption class="caption" v-else>Inflection table for the participles of this verb</caption>
           <thead>
             <template v-if="hasPerfPart">
