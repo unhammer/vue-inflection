@@ -421,6 +421,33 @@ const tagNames_eng = { Sing: "singular",
                        Uninfl: "uninflected"
                      }
 
+const tagNames_ukr = { Sing: "однина",
+                       Plur: "множина",
+                       Ind: "неозначений",
+                       Def: "означений",
+                       Finite: "кінцеві форми",
+                       Inf: "інфінітив",
+                       Pres: "теперішній",
+                       Past: "минулий",
+                       PresPerf: "теперішній доконаний",
+                       Imp: "імператив",
+                       PerfPart: "дієприкметник минулого часу",
+                       Fem: "жіночий",
+                       Masc: "чоловічий",
+                       MascFem: "чоловічий/ жіночий",
+                       Neuter: "середній",
+                       PresPart: "дієприкметник теперішнього часу",
+                       Deg: "ступені порівняння",
+                       Pos: "звичайний",
+                       Cmp: "вищий",
+                       Sup: "найвищий",
+                       SupInd: "найвищий неозначений",
+                       SupDef: "найвищий означений",
+                       Nom: "суб’єкт",
+                       Acc: "об’єкт",
+                       Uninfl: "незмінні"
+                     }
+
 export function tagToName (tag, language) {
     switch (language) {
     case 'nob':
@@ -429,6 +456,8 @@ export function tagToName (tag, language) {
         return tagNames_nno[tag]
     case 'eng':
         return tagNames_eng[tag]
+    case 'ukr':
+        return tagNames_ukr[tag]
     }
 }
 
@@ -462,6 +491,21 @@ const posNames_eng = { NOUN: "noun",
                        INFM: "infinitive marker"
                      }
 
+const posNames_ukr = { NOUN: "іменник",
+                       PROPN: "власний іменник",
+                       VERB: "дієслово",
+                       ADJ: "прикметник",
+                       ADV: "прислівник",
+                       ADP: "прийменник",
+                       INTJ: "вигук",
+                       DET: "детермінатив",
+                       PRON: "займенник",
+                       CCONJ: "сполучник",
+                       SCONJ: "підрядний сполучник",
+                       SYM: "символ",
+                       INFM: "інфінітивний маркер"
+                     }
+
 export function posName (pos, language) {
     switch (language) {
     case 'nob':
@@ -469,6 +513,8 @@ export function posName (pos, language) {
         return posNames_nor[pos]
     case 'eng':
         return posNames_eng[pos]
+    case 'ukr':
+        return posNames_ukr[pos]
     }
 }
 
