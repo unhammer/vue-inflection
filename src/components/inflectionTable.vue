@@ -146,7 +146,7 @@
                     id="Masc"
                     scope="col"
                     class="infl-label sub label-border-bottom" :class="mq">
-                  {{tagToName('Masc')}}&nbsp;/<br/>{{tagToName('Fem')}}</th>
+                  {{tagToName('MascShort')}}&nbsp;/<br/>{{tagToName('Fem')}}</th>
                 <th v-if="(j<0 || j==3) && hasPerfPartFem"
                     id="Fem"
                     scope="col"
