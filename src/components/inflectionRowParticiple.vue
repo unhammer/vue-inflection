@@ -13,9 +13,9 @@
       <span class='comma'
             v-for="(form, index) in forms"
             :key="index">
-        <em v-if="prefix" class="context">{{prefix}}</em>
+        <em v-if="prefix" class="context">{{prefix}} </em>
         <span :style="form=='-' ? 'color: white':''">{{form}}</span>
-        <em v-if="suffix" class="context nobr">{{suffix}}</em>
+        <em v-if="suffix" class="context nobr"> {{suffix}}</em>
       </span>
     </span>
     <span v-if="standardisation!='STANDARD'">)</span>
@@ -29,38 +29,38 @@
 // needed for hiliting
 import $ from 'jquery'
 
-import { inflectedForm, indefArticle
+import { inflectedForm, indefArticle, posName
        } from './mixins/ordbankUtils.js' 
 
 export default {
     name: 'inflectionRowParticiple',
-    props: ['paradigm','hasPerfPart','hasPerfPartFem','language','part','lemmaId', 'context'],
+    props: ['paradigm','hasPerfPart','hasPerfPartFem','language','locLang','part','lemmaId', 'context'],
     data: function () {
         return { rows: [
             this.hasPerfPart && this.part!=4 ?
                 this.inflForm(['Adj','Masc/Fem'],
                               this.context ? indefArticle(['Masc/Fem'], this.language) : null,
-                              this.context ? '+ substantiv' : null,
+                              this.context ? '+ ' + this.posName('NOUN') : null,
                               'PerfPart Masc') : null,
             this.hasPerfPartFem && this.part!=4 ?
                 this.inflForm(['Adj','Fem'],
                               this.context ? indefArticle(['Fem'], this.language) : null,
-                              this.context ? '+ substantiv' : null,
+                              this.context ?  '+ ' + this.posName('NOUN') : null,
                               'PerfPart Fem'): null,
             this.hasPerfPart && this.part!=4 ?
                 this.inflForm(['Adj','Neuter'],
                               this.context ? indefArticle(['Neuter'], this.language) : null,
-                              this.context ? '+ substantiv' : null,
+                              this.context ?  '+ ' + this.posName('NOUN') : null,
                               'PerfPart Neuter') : null,
             this.hasPerfPart && this.part!=4 ?
                 this.inflForm(['Adj','Def'],
                               this.context ? 'den/det' : null,
-                              this.context ? '+ substantiv' : null,
+                              this.context ?  '+ ' + this.posName('NOUN') : null,
                               'PerfPart Def') : null,
             this.hasPerfPart && this.part!=3 ?
                 this.inflForm(['Adj','Plur'],
                               null,
-                              this.context ? '+ substantiv' : null,
+                              this.context ?  '+ ' + this.posName('NOUN') : null,
                               'PerfPart Plur') : null,
             this.part!=3 ? this.inflForm(['Adj','<PresPart>'],
                                          null,
@@ -80,6 +80,9 @@ export default {
         hiliteRow: function (rowindex) {
             $('td[index]').removeClass('hilite')
             rowindex.forEach(i => $('#lemma' + this.lemmaId + ' td[index*='+ i + ']').addClass('hilite'))
+        },
+        posName: function (tag) {
+            return posName(tag, this.locLang)
         }
     }
 }

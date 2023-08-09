@@ -42,7 +42,7 @@ import { inflectedForm, tagToName, indefArticle, markdownToHTML
 
 export default {
     name: 'inflectionRowNoun',
-    props: ['paradigm','language', 'showGender', 'lemma'],
+    props: ['paradigm','language', 'locLang', 'showGender', 'lemma'],
     data: function () {
         return {
             cells: [
@@ -73,7 +73,7 @@ export default {
             return markdownToHTML(form)
         },
         tagToName: function (tag) {
-            return tagToName(tag, this.language)
+            return tagToName(tag, this.locLang)
         },
         hiliteRow: function (rowindex) {
             $('td[index]').removeClass('hilite')

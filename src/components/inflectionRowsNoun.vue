@@ -53,7 +53,7 @@ import { inflectedForm, tagToName, markdownToHTML
 
 export default {
     name: 'inflectionRowsNoun',
-    props: ['paradigms','tags','language','lemma', 'showGender'],
+    props: ['paradigms','tags','language','locLang', 'lemma', 'showGender'],
     data: function () {
         return {
             cells: !this.tags.title ?
@@ -119,7 +119,7 @@ export default {
             rowindex.forEach(i => $('#lemma' + this.lemma.id + ' td[index*='+ i + ']').addClass('hilite'))
         },
         tagToName: function (tag) {
-            return tagToName(tag, this.language)
+            return tagToName(tag, this.locLang)
         },
         formattedForm: function (tags,form) {
             return tags.tags[0]=='_gender' ? this.tagToName(form) : markdownToHTML(form)

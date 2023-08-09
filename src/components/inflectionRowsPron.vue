@@ -31,13 +31,11 @@ import { inflectedForm, tagToName
 
 export default {
     name: 'inflectionRowsPron',
-    props: ['paradigms','lemma','tags','language','lemmaId'],
+    props: ['paradigms','lemma','tags','locLang','lemmaId'],
     data: function () {
         return {
             cells: this.paradigms.map(p => this.inflForm(p, this.tags.tags))
         }
-    },
-    computed: {
     },
     methods: {
         inflForm: function (paradigm, tagList) {
@@ -49,7 +47,7 @@ export default {
             rowindex.forEach(i => $('#lemma' + this.lemmaId + ' td[index*='+ i + ']').addClass('hilite'))
         },
         tagToName: function (tag) {
-            return tagToName(tag, this.language)
+            return tagToName(tag, this.locLang)
         }
     }
 }
