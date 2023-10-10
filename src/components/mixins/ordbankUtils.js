@@ -3,7 +3,6 @@
 
 export function calculateStandardParadigms (lemma,edit,all) {
     if (lemma.paradigm_info) {
-        // console.log(lemma.paradigm_info)
         let paradigms = mergeParadigms(
             lemma.paradigm_info &&
                 lemma.paradigm_info.filter(paradigm =>
@@ -14,8 +13,6 @@ export function calculateStandardParadigms (lemma,edit,all) {
         paradigms.forEach(p => p.inflection.forEach(i => i.markdown_word_form ?
                                                     i.markdown_word_form = hyphenatedForm(i.markdown_word_form,lemma) :
                                                     i.word_form = hyphenatedForm(i.word_form,lemma)))
-        // console.log(paradigms.map(p=>p.standardisation))
-        // console.log(paradigms)
         return paradigms
     } else {
         return []
@@ -117,8 +114,7 @@ function mergeCells(infl1, infl2, tagList, exclTagList) {
     }
 }
 
-function mergeParadigm (p, tagList, mergedCell, standardisation) {
-    // console.log(p)
+function mergeParadigm (p, tagList, mergedCell) { // , standardisation) {
     return { exclude: p.exclude,
              from: p.from,
              to: p.to,
@@ -129,7 +125,6 @@ function mergeParadigm (p, tagList, mergedCell, standardisation) {
                  if (!hasTags(infl, tagList)) {
                      return infl
                  } else {
-                     console.log('infl.st: ' + infl.standardisation + ' st: ' + standardisation)
                      return { tags: infl.tags,
                               word_form: mergedCell[0],
                               markdown_word_form: mergedCell[1],
@@ -217,14 +212,9 @@ function mergeParadigms (paradigmInfo) {
             let mergedCell = null
             let mergeRow = null
             let standardisation = null
-            // console.log(paradigm)
             PI.forEach((p,i) => { // try to merge cells from p and paradigm corresponding to tagList
                 let merged = mergeCells(p.inflection, paradigm.inflection, tagList[0], tagList[1])
                 if (!merged) {
-                    console.log('equal:')
-                    console.log(paradigm)
-                    console.log(p)
-                    console.log(tagList[0] + ' ' + p.standardisation + ' ' + paradigm.standardisation)
                     p.standardisation == 'STANDARD' || paradigm.standardisation == 'STANDARD' ?
                         standardisation = 'STANDARD' : standardisation = 'NON-STANDARD'
                     if (standardisation) {
@@ -234,21 +224,16 @@ function mergeParadigms (paradigmInfo) {
                     found = true // equal one found
                 } else if (merged != true) { // merged cell
                     mergedCell = merged
-                    // console.log(mergedCell)
                     mergeRow = i
-                    // console.log(mergedCell)
-                    console.log(p.standardisation + ' ' + paradigm.standardisation)
                     p.standardisation == 'STANDARD' || paradigm.standardisation == 'STANDARD' ?
                         standardisation = 'STANDARD' : standardisation = 'NON-STANDARD'
                 }
             })
             if (mergedCell) { // replace cell by merged cell (by updating word form), update paradigm in PI
                 let p = mergeParadigm(paradigm, tagList[0], mergedCell, standardisation)
-                // console.log(p.standardisation + ' ' + PI[mergeRow].standardisation + ' ' + standardisation)
                 // p.standardisation = standardisation
                 PI[mergeRow] = p
             } else if (!found) {
-                // console.log('paradigm')
                 PI.push(paradigm)
             } else {
                 null // 
@@ -257,8 +242,6 @@ function mergeParadigms (paradigmInfo) {
         paradigmInfo = PI
         PI = []
     })
-    // console.log('res')
-    //console.log(paradigmInfo)
     return paradigmInfo
 }
 
@@ -326,7 +309,8 @@ function hyphenatedForm (form, lemma) {
         lemma.word_class == 'NOUN' &&
         lemma.lemma.length > 10 &&
         lemma.initial_lexeme &&
-        form.length >= lemma.initial_lexeme.length && // excludes _gender virtal tag!
+        !tagNames_eng[form] &&
+        // form.length >= lemma.initial_lexeme.length && // excludes _gender virtual tag!
         !lemma.neg_junction) {
         let junction = (lemma.junction && lemma.junction != '-') ? lemma.junction : null
         let il = lemma.initial_lexeme + (junction || '') + '­'
