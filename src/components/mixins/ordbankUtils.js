@@ -188,7 +188,8 @@ function normalizeInflection(paradigm) {
 // Iterate through tagList list and merge paradigms that are equal except on tagList,
 // merging their word forms into an array
 function mergeParadigms (paradigmInfo) {
-    paradigmInfo = paradigmInfo.filter(p=> !p.code || p.code.charAt(0) != 'M') // remove Metaordbok paradigms
+    // remove Metaordbok paradigms
+    paradigmInfo = paradigmInfo.filter(p=> !p.code || p.code.charAt(0) != 'M')
         .map(p => normalizeInflection(p))
     let PI = []
     let tagLists = [ [['Imp'], null],
@@ -229,9 +230,9 @@ function mergeParadigms (paradigmInfo) {
                         standardisation = 'STANDARD' : standardisation = 'NON-STANDARD'
                 }
             })
-            if (mergedCell) { // replace cell by merged cell (by updating word form), update paradigm in PI
+            if (mergedCell) {
+                // replace cell by merged cell (by updating word form), update paradigm in PI
                 let p = mergeParadigm(paradigm, tagList[0], mergedCell, standardisation)
-                // p.standardisation = standardisation
                 PI[mergeRow] = p
             } else if (!found) {
                 PI.push(paradigm)
@@ -248,6 +249,7 @@ function mergeParadigms (paradigmInfo) {
 function inflectedForms (paradigm, tagList, exclTagList) {
     let inflection = paradigm.inflection.filter(
         infl => { let found = infl.markdown_word_form || infl.word_form || '-'
+                  // console.log('infl', infl)
                   // '-' necessary for non-standard display,
                   // where PerfPart Fem is lacking in standard paradigms (e.g., ‘ete’)
                   tagList.forEach(tag => {
@@ -274,13 +276,17 @@ function inflectedForms (paradigm, tagList, exclTagList) {
              inflection[0] && inflection[0].standardisation ]
 }
 
-// Calculate inflection table cell. If cells are vertically merged rowspan is the number of cells merged.
+// Calculate inflection table cell.
+// If cells are vertically merged rowspan is the number of cells merged.
 // noVerticalMerge is used for nouns
 // see inflectionTable.vue for vertical merging and setting final rowspan
 export function inflectedForm (paradigm, tagList, exclTagList, noVerticalMerge) {
     let [rowspan, index, forms, gender, standardisation] = inflectedForms(paradigm,tagList,exclTagList)
-    if (!rowspan && !noVerticalMerge) {
-        return null
+    // console.log(rowspan, index, forms, gender, standardisation)
+    if (rowspan == 0 && !noVerticalMerge) {
+        return null // cell has been merged
+    } else if (!rowspan && !noVerticalMerge) {
+        return [null] // cell is empty
     } else if (!forms) {
         return [ rowspan, index, [ '-' ], null, standardisation ]
     } else if (typeof forms == 'string') {

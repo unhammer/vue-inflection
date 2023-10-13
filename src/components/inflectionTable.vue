@@ -25,9 +25,13 @@
                     rowspan='2'>{{tagToName('Gender')}}</th>
                 <th v-if="hasSing"
                     id="Sing"
-                    class="infl-label label-border-top-left" :class="mq" scope="col" colspan='2'>
+                    class="infl-label label-border-top-left" :class="mq"
+                    scope="col"
+                    :colspan='hasDef?2:1'>
                   {{tagToName('Sing')}}</th>
-                <th v-if="hasPlur" id="Plur" class="infl-label label-border-top-right" :class="mq" scope="col" colspan='2'>
+                <th v-if="hasPlur" id="Plur" class="infl-label label-border-top-right"
+                    :class="mq" scope="col"
+                    :colspan='hasDef?2:1'>
                   {{tagToName('Plur')}}</th>
               </tr>
               <tr>
@@ -36,7 +40,7 @@
                     class="infl-label sub label-border-bottom" scope="col" :class="mq">
                   {{tagToName('Ind')}} {{tagToName('Form')}}
                 </th>
-                <th v-if="hasSing"
+                <th v-if="hasDef && hasSing"
                     id="SingDef"
                     class="infl-label sub label-border-bottom" scope="col" :class="mq">
                   {{tagToName('Def')}} {{tagToName('Form')}}
@@ -61,6 +65,9 @@
                                  :language="language"
                                  :locLang="locLang"
                                  :lemma="lemma"
+                                 :hasDef="hasDef"
+                                 :hasSing="hasSing"
+                                 :hasPlur="hasPlur"
                                  :paradigm="paradigm"/>
             </tbody>
           </table>
@@ -662,6 +669,15 @@ export default {
                                   { title: 'Plur'},
                                   { label: 'Ind', tags: ['Plur','Ind']},
                                   { label: 'Def', tags: ['Plur','Def']}],
+                 inflTagsNounIndG: [ { tags: ['_gender'] },
+                                  { title: 'Sing' },
+                                  { label: 'Ind', tags: ['Sing','Ind'], indefArt: true },
+                                  { title: 'Plur'},
+                                  { label: 'Ind', tags: ['Plur','Ind']}],
+                 inflTagsNounIndNG: [{ title: 'Sing' },
+                                  { label: 'Ind', tags: ['Sing','Ind'], indefArt: true },
+                                  { title: 'Plur'},
+                                  { label: 'Ind', tags: ['Plur','Ind']}],
                  inflTagsNounSingG: [ { tags: ['_gender'] },
                                       { title: 'Sing'},
                                       { label: 'Ind', tags: ['Sing','Ind']},
@@ -735,11 +751,15 @@ export default {
         },
         inflTagsNoun: function () {
             if (this.hasSing) {
-                 if (this.hasPlur) {
-                     return this.getGender() == '+' ? this.inflTagsNounG : this.inflTagsNounNG
-                 } else {
-                     return this.getGender() == '+' ? this.inflTagsNounSingG : this.inflTagsNounSingNG
-                 }
+                if (this.hasPlur) {
+                    if (this.hasDef) {
+                        return this.getGender() == '+' ? this.inflTagsNounG : this.inflTagsNounNG
+                    } else {
+                        return this.getGender() == '+' ? this.inflTagsNounIndG : this.inflTagsNounIndNG
+                    }
+                } else {
+                    return this.getGender() == '+' ? this.inflTagsNounSingG : this.inflTagsNounSingNG
+                }
             } else if (this.hasDef) {
                 return this.inflTagsNounPlur
             } else {
@@ -789,6 +809,21 @@ export default {
             return tagToName(tag,this.locLang)
         },
         hasInflForm: function (tagList) {
+            let info = false
+            if (this.lemmaList) {
+                this.lemmaList.forEach(lemma => {
+                    if (lemma.paradigm_info &&
+                        lemma.paradigm_info.find(
+                            paradigm => (this.includeNonStandard ||
+                                         paradigm.standardisation == 'STANDARD') &&
+                                hasInflForm(paradigm, tagList))) {
+                        info = true
+                    }
+                })
+            }
+            return info
+            },
+        hasInflFormOld: function (tagList) {
             let info = this.lemmaList &&
                 this.lemmaList[0].paradigm_info &&
                 this.lemmaList[0].paradigm_info.find(
@@ -824,18 +859,18 @@ export default {
                 return []
             }
 
-            let isNoun = paradigms[0].tags.find(t => t == 'NOUN') || // @@@@@@
+            let isNoun = paradigms[0].tags.find(t => t == 'NOUN') ||
                 this.lemmaList && this.lemmaList[0].paradigm_info[0].inflection_group == 'NOUN_regular'
             
             let concat_wordforms = function (infl) {
                 let chain = ''
                 for (let i = 0; i < infl.length; i++) {
                     let wf = infl[i].word_form
-                    if (wf == 'Masc') { // Masc < Fem < Neuter
+                    if (wf == 'Masc' || wf == 'MascShort') { // Masc < Fem < Neuter
                         chain += 'a#'
-                    } else if (wf == 'Fem') {
+                    } else if (wf == 'Fem' || wf == 'FemShort') {
                         chain += 'b#'
-                    } else if (wf == 'Neuter') {
+                    } else if (wf == 'Neuter'|| wf == 'NeuterShort') {
                         chain += 'c#'
                     } else if (typeof wf == 'string') {
                         chain += wf + '#'
