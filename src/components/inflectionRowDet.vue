@@ -24,7 +24,7 @@ import { inflectedForm, tagToName
 
 export default {
     name: 'inflectionRowPron',
-    props: ['paradigm','locLang','lemmaId'],
+    props: ['paradigm','locale','lemmaId'],
     data: function () {
         return {
             cells: [ this.inflForm(['Masc'],`Sing${this.lemmaId} Masc${this.lemmaId}`),
@@ -42,7 +42,7 @@ export default {
             return [inflectedForm(this.paradigm, tagList), headers]
         },
         tagToName: function (tag) {
-            return tagToName(tag, this.locLang)
+            return tagToName(tag, this.locale)
         },
         hiliteRow: function (rowindex) {
             $('td[index]').removeClass('hilite')

@@ -42,7 +42,7 @@ import { inflectedForm, tagToName, indefArticle, markdownToHTML
 
 export default {
     name: 'inflectionRowNoun',
-    props: ['paradigm','dict', 'locLang', 'showGender', 'lemma','hasDef', 'hasSing', 'hasPlur'],
+    props: ['paradigm','dict', 'locale', 'showGender', 'lemma','hasDef', 'hasSing', 'hasPlur'],
     data: function () {
         return {
             cells: [
@@ -79,7 +79,7 @@ export default {
             return markdownToHTML(form)
         },
         tagToName: function (tag) {
-            return tagToName(tag, this.locLang)
+            return tagToName(tag, this.locale)
         },
         hiliteRow: function (rowindex) {
             if (rowindex) {

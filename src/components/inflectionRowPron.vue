@@ -23,7 +23,7 @@ import { inflectedForm
 
 export default {
     name: 'inflectionRowPron',
-    props: ['paradigm','locLang','lemmaId'],
+    props: ['paradigm','lemmaId'],
     data: function () {
         return {
             cells: [

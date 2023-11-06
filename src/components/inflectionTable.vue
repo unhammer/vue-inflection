@@ -12,9 +12,9 @@
         </div>
         <div>
           <table class="infl-table" :class="mq">
-            <caption class="caption" v-if="locLang=='nob'">Bøyingstabell for dette substantivet</caption>
-            <caption class="caption" v-else-if="locLang=='nno'">Bøyningstabell for dette substantivet</caption>
-            <caption class="caption" v-else-if="locLang=='ukr'">Таблиця відмінювання для цього іменника</caption>
+            <caption class="caption" v-if="locale=='nob'">Bøyingstabell for dette substantivet</caption>
+            <caption class="caption" v-else-if="locale=='nno'">Bøyningstabell for dette substantivet</caption>
+            <caption class="caption" v-else-if="locale=='ukr'">Таблиця відмінювання для цього іменника</caption>
             <caption class="caption" v-else>Inflection table for this noun</caption>
             <thead>
               <tr>
@@ -65,7 +65,7 @@
                                  :key="index"
                                  :showGender="!nounGender"
                                  :dict="language"
-                                 :locLang="locLang"
+                                 :locale="locale"
                                  :lemma="lemma"
                                  :hasDef="hasDef"
                                  :hasSing="hasSing"
@@ -90,7 +90,7 @@
                               :showGender="!nounGender"
                               :tags="tags"
                               :dict="language"
-                              :locLang="locLang"
+                              :locale="locale"
                               :lemma="lemma"
                               :paradigms="standardParadigms"/>
         </table>
@@ -106,9 +106,9 @@
       </div>
       <div v-for="i in mq=='xs' ? [1,2] : [0]" :key="i">
         <table class="infl-table" :class="mq">
-          <caption class="caption" v-if="locLang=='nob'">Bøyingstabell for dette verbet</caption>
-          <caption class="caption" v-else-if="locLang=='nno'">Bøyningstabell for dette verbet</caption>
-          <caption class="caption" v-else-if="locLang=='ukr'">Таблиця відмінювання для цього дієслова</caption>
+          <caption class="caption" v-if="locale=='nob'">Bøyingstabell for dette verbet</caption>
+          <caption class="caption" v-else-if="locale=='nno'">Bøyningstabell for dette verbet</caption>
+          <caption class="caption" v-else-if="locale=='ukr'">Таблиця відмінювання для цього дієслова</caption>
           <caption class="caption" v-else>Inflection table for this verb</caption>
           <thead>
             <tr>
@@ -130,9 +130,9 @@
       </div>
       <div v-for="j in mq=='xs' ? [3,4] : [-1]" :key="j">
         <table class="infl-table" :class="mq">
-          <caption class="caption" v-if="locLang=='nob'">Bøyingstabell for dette verbet (partisippformer)</caption>
-          <caption class="caption" v-else-if="locLang=='nno'">Bøyningstabell for dette verbet (partisippformer)</caption>
-          <caption class="caption" v-else-if="locLang=='ukr'">Таблиця відмінювання для цього дієслова (дієприкметники)</caption>
+          <caption class="caption" v-if="locale=='nob'">Bøyingstabell for dette verbet (partisippformer)</caption>
+          <caption class="caption" v-else-if="locale=='nno'">Bøyningstabell for dette verbet (partisippformer)</caption>
+          <caption class="caption" v-else-if="locale=='ukr'">Таблиця відмінювання для цього дієслова (дієприкметники)</caption>
           <caption class="caption" v-else>Inflection table for the participles of this verb</caption>
           <thead>
             <template v-if="hasPerfPart">
@@ -188,7 +188,7 @@
                                      :key="index"
                                      :part="j"
                                      :dict="language"
-                                     :locLang="locLang"
+                                     :locale="locale"
                                      :hasPerfPart="hasPerfPart"
                                      :hasPerfPartFem="hasPerfPartFem"
                                      :lemmaId="lemma.id"
@@ -209,7 +209,7 @@
           <inflectionRowsVerb v-for="(tags, index) in inflTagsVerb"
                               :key="index"
                               :tags="tags"
-                              :locLang="locLang"
+                              :locale="locale"
                               :lemmaId="lemma.id"
                               :paradigms="standardParadigms"/>
         </table>
@@ -226,9 +226,9 @@
       </div>
       <div>
         <table class="infl-table" :class="mq">
-          <caption class="caption" v-if="locLang=='nob'">Bøyingstabell for dette adjektivet</caption>
-          <caption class="caption" v-else-if="locLang=='nno'">Bøyningstabell for dette adjektivet</caption>
-          <caption class="caption" v-else-if="locLang=='ukr'">Таблиця відмінювання для цього прикметника</caption>
+          <caption class="caption" v-if="locale=='nob'">Bøyingstabell for dette adjektivet</caption>
+          <caption class="caption" v-else-if="locale=='nno'">Bøyningstabell for dette adjektivet</caption>
+          <caption class="caption" v-else-if="locale=='ukr'">Таблиця відмінювання для цього прикметника</caption>
           <caption class="caption" v-else>Inflection table for this adjective</caption>
           <thead>
             <tr>
@@ -294,9 +294,9 @@
       </div>
       <div v-if="hasDeg">
         <table class="infl-table" :class="mq">
-          <caption class="caption" v-if="locLang=='nob'">Bøyingstabell for dette adjektivet (gradbøying)</caption>
-          <caption class="caption" v-else-if="locLang=='nno'">Bøyningstabell for dette adjektivet (gradbøyning)</caption>
-          <caption class="caption" v-else-if="locLang=='ukr'">Таблиця відмінювання для цього прикметника (ступені порівняння)</caption>
+          <caption class="caption" v-if="locale=='nob'">Bøyingstabell for dette adjektivet (gradbøying)</caption>
+          <caption class="caption" v-else-if="locale=='nno'">Bøyningstabell for dette adjektivet (gradbøyning)</caption>
+          <caption class="caption" v-else-if="locale=='ukr'">Таблиця відмінювання для цього прикметника (ступені порівняння)</caption>
           <caption class="caption" v-else>Inflection table for this adjective (comparative, superlative)</caption>
           <thead>
             <tr>
@@ -346,7 +346,7 @@
           <inflectionRowsAdj v-for="(tags, index) in inflTagsAdj"
                              :key="index"
                              :tags="tags"
-                             :locLang="locLang"
+                             :locale="locale"
                              :lemmaId="lemma.id"
                              :paradigms="standardParadigms"/>
         </table>
@@ -363,9 +363,9 @@
       </div>
       <div v-if="hasDeg">
         <table class="infl-table" :class="mq">
-          <caption class="caption" v-if="locLang=='nob'">Bøyingstabell for dette adverbet</caption>
-          <caption class="caption" v-else-if="locLang=='nno'">Bøyningstabell for dette adverbet</caption>
-          <caption class="caption" v-else-if="locLang=='ukr'">Таблиця відмінювання для цього прислівника</caption>
+          <caption class="caption" v-if="locale=='nob'">Bøyingstabell for dette adverbet</caption>
+          <caption class="caption" v-else-if="locale=='nno'">Bøyningstabell for dette adverbet</caption>
+          <caption class="caption" v-else-if="locale=='ukr'">Таблиця відмінювання для цього прислівника</caption>
           <caption class="caption" v-else>Inflection table for this adverb</caption>
           <thead>
             <tr>
@@ -400,7 +400,7 @@
           <inflectionRowsAdj v-for="(tags, index) in inflTagsAdjAdv"
                              :key="index"
                              :tags="tags"
-                             :locLang="locLang"
+                             :locale="locale"
                              :lemmaId="lemma.id"
                              :paradigms="standardParadigms"/>
         </table>
@@ -417,9 +417,9 @@
       </div>
       <div>
         <table class="infl-table" :class="mq">
-          <caption class="caption" v-if="locLang=='nob'">Bøyingstabell for dette pronomenet</caption>
-          <caption class="caption" v-else-if="locLang=='nno'">Bøyningstabell for dette pronomenet</caption>
-          <caption class="caption" v-else-if="locLang=='ukr'">Таблиця відмінювання для цього займенника</caption>
+          <caption class="caption" v-if="locale=='nob'">Bøyingstabell for dette pronomenet</caption>
+          <caption class="caption" v-else-if="locale=='nno'">Bøyningstabell for dette pronomenet</caption>
+          <caption class="caption" v-else-if="locale=='ukr'">Таблиця відмінювання для цього займенника</caption>
           <caption class="caption" v-else>Inflection table for this pronoun</caption>
           <thead>
             <tr>
@@ -437,7 +437,6 @@
           <tbody>
             <inflectionRowPron v-for="(paradigm, index) in standardParadigms"
                                :key="index"
-                               :locLang="locLang"
                                :lemmaId="lemma.id"
                                :paradigm="paradigm"/>
           </tbody>
@@ -458,7 +457,7 @@
                               :key="index"
                               :tags="tags"
                               :lemma="lemma.lemma"
-                              :locLang="locLang"
+                              :locale="locale"
                               :lemmaId="lemma.id"
                               :paradigms="standardParadigms"/>
         </table>
@@ -475,9 +474,9 @@
       </div>
       <div>
         <table class="infl-table" :class="mq">
-          <caption class="caption" v-if="locLang=='nob'">Bøyingstabell for dette determinativet</caption>
-          <caption class="caption" v-else-if="locLang=='nno'">Bøyningstabell for dette determinativet</caption>
-          <caption class="caption" v-else-if="locLang=='ukr'">Таблиця відмінювання для цього детермінатива</caption>
+          <caption class="caption" v-if="locale=='nob'">Bøyingstabell for dette determinativet</caption>
+          <caption class="caption" v-else-if="locale=='nno'">Bøyningstabell for dette determinativet</caption>
+          <caption class="caption" v-else-if="locale=='ukr'">Таблиця відмінювання для цього детермінатива</caption>
           <caption class="caption" v-else>Inflection table for this determinative</caption>
           <thead>
             <tr>
@@ -523,7 +522,7 @@
           <tbody>
             <inflectionRowDet v-for="(paradigm, index) in standardParadigms"
                               :key="index"
-                              :locLang="locLang"
+                              :locale="locale"
                               :lemmaId="lemma.id"
                               :paradigm="paradigm"/>
           </tbody>
@@ -544,7 +543,7 @@
                              :key="index"
                              :tags="tags"
                              :lemma="lemma.lemma"
-                             :locLang="locLang"
+                             :locale="locale"
                              :lemmaId="lemma.id"
                              :paradigms="standardParadigms"/>
         </table>
@@ -559,9 +558,9 @@
       </div>
       <div>
         <table class="infl-table" :class="mq">
-          <caption class="caption" v-if="locLang=='nob'">Bøyingstabell for dette adverbet</caption>
-          <caption class="caption" v-else-if="locLang=='nno'">Bøyningstabell for dette adverbet</caption>
-          <caption class="caption" v-else-if="locLang=='ukr'">Таблиця відмінювання для цього прислівника</caption>
+          <caption class="caption" v-if="locale=='nob'">Bøyingstabell for dette adverbet</caption>
+          <caption class="caption" v-else-if="locale=='nno'">Bøyningstabell for dette adverbet</caption>
+          <caption class="caption" v-else-if="locale=='ukr'">Таблиця відмінювання для цього прислівника</caption>
           <caption class="caption" v-else>Inflection table for this adverb</caption>
           <thead>
             <tr>
@@ -632,7 +631,7 @@ export default {
            ],
     data: function () {
         return { language: this.lemmaList ? this.lemmaList[0].language : null,
-                 locLang: this.eng ? 'eng' : (this.ukr ? 'ukr' : (this.lemmaList ? this.lemmaList[0].language : null)),
+                 locale: this.eng ? 'eng' : (this.ukr ? 'ukr' : (this.lemmaList ? this.lemmaList[0].language : null)),
                  hasFem: this.hasInflForm(['Fem']),
                  hasNeuter: this.hasInflForm(['Neuter']),
                  hasDeg: this.hasInflForm(['Cmp']),
@@ -717,9 +716,9 @@ export default {
         wordClass: function () {
             if (this.lemmaList) {
                 if (this.isADJ_Adv) {
-                    return posName['ADV', this.locLang]
+                    return posName['ADV', this.locale]
                 } else {
-                    return posName[this.lemmaList[0].word_class, this.locLang]
+                    return posName[this.lemmaList[0].word_class, this.locale]
                         || this.lemmaList[0].word_class
                 }
             } else {
@@ -798,7 +797,7 @@ export default {
             },
         nounGender: function () {
             this.getGender()
-            return !this.gender || this.gender=='+' ? null : tagToName(this.gender,this.locLang)
+            return !this.gender || this.gender=='+' ? null : tagToName(this.gender,this.locale)
         },
         edit: function () {
             return this.lemma.mode == 'edit' || this.lemma.mode == 'new'
@@ -806,7 +805,7 @@ export default {
     },
     methods: {
         tagToName: function (tag) {
-            return tagToName(tag,this.locLang)
+            return tagToName(tag,this.locale)
         },
         hasInflForm: function (tagList) {
             let info = false

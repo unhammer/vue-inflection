@@ -34,7 +34,7 @@ import { inflectedForm, indefArticle, posName
 
 export default {
     name: 'inflectionRowParticiple',
-    props: ['paradigm','hasPerfPart','hasPerfPartFem','dict','locLang','part','lemmaId', 'context'],
+    props: ['paradigm','hasPerfPart','hasPerfPartFem','dict','locale','part','lemmaId', 'context'],
     data: function () {
         return { rows: [
             this.hasPerfPart && this.part!=4 ?
@@ -82,7 +82,7 @@ export default {
             rowindex.forEach(i => $('#lemma' + this.lemmaId + ' td[index*='+ i + ']').addClass('hilite'))
         },
         posName: function (tag) {
-            return posName(tag, this.locLang)
+            return posName(tag, this.locale)
         }
     }
 }

@@ -41,7 +41,7 @@ import { inflectedForm, tagToName
 
 export default {
     name: 'inflectionRowsVerb',
-    props: ['paradigms','tags','locLang','lemmaId'],
+    props: ['paradigms','tags','locale','lemmaId'],
     data: function () {
         return {
             cells: !this.tags.title ?
@@ -71,7 +71,7 @@ export default {
             rowindex.forEach(i => $('#lemma' + this.lemmaId + ' td[index*='+ i + ']').addClass('hilite'))
         },
         tagToName: function (tag) {
-            return tagToName(tag, this.locLang) || tag
+            return tagToName(tag, this.locale) || tag
         }
     }
 }
