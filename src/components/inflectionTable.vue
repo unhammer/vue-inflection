@@ -407,7 +407,7 @@
       </div>
     </div>
   </template>
-  <template v-if="lemma && lemma.word_class=='PRON' && standardParadigms[0]?.inflection">
+  <template v-if="lemma && lemma.word_class=='PRON' && standardParadigms[0] && standardParadigms[0].inflection">
     <div v-if="mq!='xs'"
          class="infl-wordclass"
          :class="mq">
