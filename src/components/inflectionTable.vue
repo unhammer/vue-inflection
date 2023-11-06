@@ -407,7 +407,7 @@
       </div>
     </div>
   </template>
-  <template v-if="lemma && lemma.word_class=='PRON' && standardParadigms[0].inflection">
+  <template v-if="lemma && lemma.word_class=='PRON' && standardParadigms[0]?.inflection">
     <div v-if="mq!='xs'"
          class="infl-wordclass"
          :class="mq">
@@ -491,7 +491,7 @@
                   class="infl-label label-border-top-right" :class="mq"
                   id="Plur"
                   scope="col"
-                  rowspan="1">
+                  :rowspan="hasSing?2:1">
                 {{tagToName('Plur')}}
               </th>
             </tr>
@@ -807,14 +807,16 @@ export default {
         tagToName: function (tag) {
             return tagToName(tag,this.locale)
         },
-        hasInflForm: function (tagList) {
+        hasInflForm: function (tagList) { // checks only standard forms
             let info = false
             if (this.lemmaList) {
                 this.lemmaList.forEach(lemma => {
                     if (lemma.paradigm_info &&
                         lemma.paradigm_info.find(
                             paradigm => (this.includeNonStandard ||
-                                         paradigm.standardisation == 'STANDARD') &&
+                                         (paradigm.standardisation == 'STANDARD' &&
+                                          paradigm.code[0] != 'M' && 
+                                          !paradigm.to)) &&
                                 hasInflForm(paradigm, tagList))) {
                         info = true
                     }
@@ -822,26 +824,6 @@ export default {
             }
             return info
             },
-        hasInflFormOld: function (tagList) {
-            let info = this.lemmaList &&
-                this.lemmaList[0].paradigm_info &&
-                this.lemmaList[0].paradigm_info.find(
-                    paradigm => (this.includeNonStandard || paradigm.standardisation == 'STANDARD') &&
-                        hasInflForm(paradigm, tagList))
-            return !!info
-        },
-        hasSing1: function () {
-            let paradigms = this.getStandardParadigms()
-            let sing = false
-            paradigms.forEach(p => {
-                p.inflection.forEach(infl => {
-                    if (infl.tags.find(t => t == 'Sing')) {
-                        sing = true
-                    }
-                })
-            })
-            return sing
-        },
         // the paradigms that should be shown in the table
         // sort Masc < Fem < Neuter, then sort alphabetically by word_form (first elt if it is a list)
         getStandardParadigms: function () {

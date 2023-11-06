@@ -6,13 +6,15 @@ export function calculateStandardParadigms (lemma,edit,all) {
         let paradigms = mergeParadigms(
             lemma.paradigm_info &&
                 lemma.paradigm_info.filter(paradigm =>
-                                           (all || (paradigm.standardisation=='STANDARD' &&
-                                                    !paradigm.to)) && // we assume this is in the past if not null
-                                           (!edit || !paradigm.exclude)
-                                          ))
-        paradigms.forEach(p => p.inflection.forEach(i => i.markdown_word_form ?
-                                                    i.markdown_word_form = hyphenatedForm(i.markdown_word_form,lemma) :
-                                                    i.word_form = hyphenatedForm(i.word_form,lemma)))
+                    (all || (paradigm.standardisation=='STANDARD' &&
+                             paradigm.code[0] != 'M' && 
+                             !paradigm.to)) && // we assume this is in the past if not null
+                        (!edit || !paradigm.exclude)
+                ))
+        paradigms.forEach(p => p.inflection.forEach(i =>
+            i.markdown_word_form ?
+                i.markdown_word_form = hyphenatedForm(i.markdown_word_form,lemma) :
+                i.word_form = hyphenatedForm(i.word_form,lemma)))
         return paradigms
     } else {
         return []
@@ -282,7 +284,6 @@ function inflectedForms (paradigm, tagList, exclTagList) {
 // see inflectionTable.vue for vertical merging and setting final rowspan
 export function inflectedForm (paradigm, tagList, exclTagList, noVerticalMerge) {
     let [rowspan, index, forms, gender, standardisation] = inflectedForms(paradigm,tagList,exclTagList)
-    // console.log(rowspan, index, forms, gender, standardisation)
     if (rowspan == 0 && !noVerticalMerge) {
         return null // cell has been merged
     } else if (!rowspan && !noVerticalMerge) {
@@ -301,12 +302,15 @@ export function hasInflForm (paradigm, tagList) {
         paradigm.inflection_group != "VERB_sPass" && // fix for bug in paradigm def.
         paradigm.inflection.find(
             infl => { let found = infl.word_form // there are empty cells!
-                      tagList.forEach(tag =>
-                                      { if (!infl.tags.find(t => t == tag) && // have to include common tags!
-                                            !paradigm.tags.find(t => t == tag)) {
-                                          found = false }
-                                      })
-                      return found })
+                      if (found) {
+                          tagList.forEach(tag =>
+                              { if (!infl.tags.find(t => t == tag) && // have to include common tags!
+                                    !paradigm.tags.find(t => t == tag)) {
+                                    found = false }
+                              })
+                      }
+                      return found
+                    })
     return !!res
 }
 

@@ -30,7 +30,7 @@ export default {
                 this.inflForm(['Nom']),
                 this.inflForm(['Acc']),
                 this.inflForm(['Neuter'])
-            ].filter(r => r)
+            ].filter(r => r[0])
         }
     },
     methods: {
