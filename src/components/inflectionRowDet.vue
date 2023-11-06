@@ -27,11 +27,11 @@ export default {
     props: ['paradigm','locLang','lemmaId'],
     data: function () {
         return {
-            cells: [ this.inflForm(['Masc'],'Sing Masc'),
-                     this.inflForm(['Fem'],'Sing Frem'),
-                     this.inflForm(['Neuter'],'Sing Neuter'),
-                     this.inflForm(['Def'],'Sing Def'),
-                     this.inflForm([ 'Plur'],'Plur')
+            cells: [ this.inflForm(['Masc'],`Sing${this.lemmaId} Masc${this.lemmaId}`),
+                     this.inflForm(['Fem'],`Sing${this.lemmaId} Fem${this.lemmaId}`),
+                     this.inflForm(['Neuter'],`Sing${this.lemmaId} Neuter${this.lemmaId}`),
+                     this.inflForm(['Def'],`Sing${this.lemmaId} Def${this.lemmaId}`),
+                     this.inflForm([ 'Plur'],'Plur' + this.lemmaId)
                    ].filter(r => r[0])
         }
     },

@@ -30,9 +30,9 @@ export default {
     props: ['paradigm','lemmaId'],
     data: function () {
         return {
-            rows: [ this.inflForm(['Cmp'],'Deg Cmp'),
-                    this.inflForm(['Sup','Ind'], 'Deg SupInd'),
-                    this.inflForm(['Sup','Def'], 'Deg SupDef')
+            rows: [ this.inflForm(['Cmp'],`Deg${this.lemmaId} Cmp${this.lemmaId}`),
+                    this.inflForm(['Sup','Ind'], `Deg${this.lemmaId} SupInd${this.lemmaId}`),
+                    this.inflForm(['Sup','Def'], `Deg${this.lemmaId} SupDef${this.lemmaId}`)
                   ].filter(r => r && r[0])
                }
     },

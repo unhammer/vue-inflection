@@ -20,39 +20,41 @@
               <tr>
                 <th class="infl-label sub label-border-top-left" :class="mq"
                     v-if="!nounGender && hasGender"
-                    id="gender"
+                    :id="'Gender'+lemma.id"
                     scope="col"
                     rowspan='2'>{{tagToName('Gender')}}</th>
                 <th v-if="hasSing"
-                    id="Sing"
+                    :id="'Sing'+lemma.id"
                     class="infl-label label-border-top-left" :class="mq"
                     scope="col"
                     :colspan='hasDef?2:1'>
                   {{tagToName('Sing')}}</th>
-                <th v-if="hasPlur" id="Plur" class="infl-label label-border-top-right"
+                <th v-if="hasPlur"
+                    :id="'Plur'+lemma.id"
+                    class="infl-label label-border-top-right"
                     :class="mq" scope="col"
                     :colspan='hasDef?2:1'>
                   {{tagToName('Plur')}}</th>
               </tr>
               <tr>
                 <th v-if="hasSing"
-                    id="SingInd"
+                    :id="'SingInd'+lemma.id"
                     class="infl-label sub label-border-bottom" scope="col" :class="mq">
                   {{tagToName('Ind')}} {{tagToName('Form')}}
                 </th>
                 <th v-if="hasDef && hasSing"
-                    id="SingDef"
+                    :id="'SingDef'+lemma.id"
                     class="infl-label sub label-border-bottom" scope="col" :class="mq">
                   {{tagToName('Def')}} {{tagToName('Form')}}
                 </th>
                 <th v-if="hasPlur" class="infl-label sub label-border-bottom"
-                    id="PlurInd"
+                    :id="'PlurInd'+lemma.id"
                     scope="col" :class="mq">
                   {{tagToName('Ind')}} {{tagToName('Form')}}
                 </th>
                 <th v-if="hasDef && hasPlur"
                     class="infl-label sub label-border-bottom"
-                    id="PlurDef"
+                    :id="'PlurDef'+lemma.id"
                     scope="col" :class="mq">
                   {{tagToName('Def')}} {{tagToName('Form')}}
                 </th>
@@ -137,38 +139,38 @@
               <tr>
                 <th class="infl-label label-border-top-left"
                     :class="mq"
-                    id="PerfPart"
+                    :id="'PerfPart'+lemma.id"
                     scope="col"
                     :colspan="hasPerfPartFem ? 5 : (hasPerfPartDef ? (j<0?4:(j==3?3:1)) : 1)">
                   {{tagToName('PerfPart')}}
                 </th>
                 <th v-if="j<0 || j==4"
                     class="infl-label label-border-top-right" :class="mq"
-                    id="PresPart"
+                    :id="'PresPart'+lemma.id"
                     scope="col"
                     rowspan="2">{{tagToName('PresPart')}}</th>
               </tr>
               <tr>
                 <th v-if="(j<0 || j==3) && hasPerfPartDef"
-                    id="Masc"
+                    :id="'Masc'+lemma.id"
                     scope="col"
                     class="infl-label sub label-border-bottom" :class="mq">
                   {{tagToName('MascShort')}}&nbsp;/<br/>{{tagToName('Fem')}}</th>
                 <th v-if="(j<0 || j==3) && hasPerfPartFem"
-                    id="Fem"
+                    :id="'Fem'+lemma.id"
                     scope="col"
                     class="infl-label sub label-border-bottom" :class="mq">
                   {{tagToName('Fem')}}</th>
-                <th id="Neuter"
+                <th :id="'Neuter'+lemma.id"
                     scope="col"
                     class="infl-label sub label-border-bottom" :class="mq"
                     v-if="(j<0 || j==3)">{{tagToName('Neuter')}}</th>
                 <th v-if="(j<0 || j==3) && hasPerfPartDef"
-                    id="Def"
+                    :id="'Def'+lemma.id"
                     scope="col"
                     class="infl-label sub label-border-bottom" :class="mq">{{tagToName('Def')}} {{tagToName('Form')}}</th>
                 <th v-if="(j<0 || j==4) && hasPerfPartDef"
-                    id="Plur"
+                    :id="'Plur'+lemma.id"
                     scope="col"
                     class="infl-label sub label-border-bottom" :class="mq">{{tagToName('Plur')}}</th>
               </tr>
@@ -176,6 +178,7 @@
             <template v-else-if="hasPresPart">
               <tr>
                 <th v-if="j<0 || j==4"
+                    :id="'PresPart'+lemma.id"
                     class="infl-label label-border-top" :class="mq">{{tagToName('PresPart')}}</th>
               </tr>
             </template>
@@ -233,13 +236,13 @@
               <th v-if="hasSingAdj"
                   class="infl-label label-border-top-left"
                   :class="mq"
-                  id="Sing"
+                  :id="'Sing'+lemma.id"
                   scope="col"
                   :colspan="hasFem ? 4 : 3">
                 {{tagToName('Sing')}}
               </th>
               <th class="infl-label label-border-top-right" :class="mq"
-                  id="Plur"
+                  :id="'Plur'+lemma.id"
                   scope="col"
                   :rowspan="hasSingAdj ? 2 : 1">
                 {{tagToName('Plur')}}
@@ -248,32 +251,32 @@
             <tr v-if="hasSingAdj">
               <th v-if="hasFem"
                   class="infl-label sub label-border-bottom"
-                  id="Masc"
+                  :id="'Masc'+lemma.id"
                   scope="col"
                   :class="mq">
                 {{tagToName('Masc')}}
               </th>
               <th v-if="!hasFem"
                   class="infl-label sub label-border-bottom"
-                  id="Masc"
+                  :id="'Masc'+lemma.id"
                   scope="col"
                   :class="mq">
                 <span class="nobr">{{tagToName('MascShort')}}&nbsp;/</span><br/>{{tagToName('Fem')}}</th>
               <th v-if="hasFem"
                   class="infl-label sub label-border-bottom"
-                  id="Fem"
+                  :id="'Fem'+lemma.id"
                   scope="col"
                   :class="mq">
                 {{tagToName('Fem')}}
               </th>
               <th class="infl-label sub label-border-bottom"
-                  id="Neuter"
+                  :id="'Neuter'+lemma.id"
                   scope="col"
                   :class="mq">
                 {{tagToName('Neuter')}}
               </th>
               <th class="infl-label sub label-border-bottom"
-                  id="Def"
+                  :id="'Def'+lemma.id"
                   scope="col"
                  :class="mq">
                 {{tagToName('Def')}} {{tagToName('Form')}}
@@ -300,24 +303,24 @@
             <tr>
               <th class="infl-label label-border-top-left-right"
                   v-if="hasDeg"
-                  id="Deg"
+                  :id="'Deg'+lemma.id"
                   scope="col"
                   colspan="3">
                 {{tagToName('Deg')}}
               </th>
             </tr>
             <tr>
-              <th id ="Cmp"
+              <th :id ="'Cmp'+lemma.id"
                   scope="col"
                   class="infl-label label-border-bottom">
                 {{tagToName('Cmp')}}
               </th>
-              <th id="SupInd"
+              <th :id="'SupInd'+lemma.id"
                   scope="col"
                   class="infl-label label-border-bottom">
                 {{tagToName('Sup')}}<br/><span class="sub">{{tagToName('Ind')}} {{tagToName('Form')}}</span>
               </th>
-              <th id="SupDef"
+              <th :id="'SupDef'+lemma.id"
                   scope="col"
                   class="infl-label label-border-bottom">
                 {{tagToName('Sup')}}<br/><span class="sub">{{tagToName('Def')}} {{tagToName('Form')}}</span>

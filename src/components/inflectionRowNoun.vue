@@ -5,7 +5,7 @@
         class="infl-label"
         :id="colref"
         scope="row"
-        headers="gender"
+        :headers="'Gender'+lemma.id"
         :key="index"
         :rowspan="rowspan"
         :index="rowindex"
@@ -68,7 +68,11 @@ export default {
                 return [prefix, forms, true, forms[2]]
             } else {
                 let gender = (this.showGender && forms[3]) ? forms[3].join(' ') + ' ' : ''
-                return [prefix, forms, false, gender + tagList[0] +  ' ' + tagList[0] + tagList[1]]
+                return [prefix,
+                        forms,
+                        false,
+                        gender + tagList[0] + this.lemma.id + ' ' + tagList[0] + tagList[1] + this.lemma.id
+                       ]
             } 
         },
         formattedForm: function (form) {

@@ -2,7 +2,7 @@
 <tr class="infl-row">
   <template v-if="tags.tags && cells.length">
     <th class="infl-label xs"
-        :id="tags.label"
+        :id="tags.label + lemmaId"
         scope="row">
       {{tagToName(tags.label)}}
     </th>
@@ -12,6 +12,7 @@
         :colspan="rowspan"
         :index="rowindex"
         :headers="tags.block + ' ' + (tags.label || '')"
+        :headers="tags.block + lemmaId + ' ' + (tags.label ? tags.label + lemmaId : '')"
         @mouseover.stop="hiliteRow(rowindex)">
       <span class='comma'
             v-for="(form, index) in forms"

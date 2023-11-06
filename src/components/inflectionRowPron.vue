@@ -18,7 +18,7 @@
 
 import $ from 'jquery'
 
-import { inflectedForm, tagToName
+import { inflectedForm
        } from './mixins/ordbankUtils.js' 
 
 export default {
@@ -36,9 +36,6 @@ export default {
     methods: {
         inflForm: function (tagList) {
             return inflectedForm(this.paradigm, tagList)
-        },
-        tagToName: function (tag) {
-            return tagToName(tag, this.locLang)
         },
         hiliteRow: function (rowindex) {
             $('td[index]').removeClass('hilite')
