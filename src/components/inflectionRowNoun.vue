@@ -42,7 +42,7 @@ import { inflectedForm, tagToName, indefArticle, markdownToHTML
 
 export default {
     name: 'inflectionRowNoun',
-    props: ['paradigm','language', 'locLang', 'showGender', 'lemma','hasDef', 'hasSing', 'hasPlur'],
+    props: ['paradigm','dict', 'locLang', 'showGender', 'lemma','hasDef', 'hasSing', 'hasPlur'],
     data: function () {
         return {
             cells: [
@@ -56,7 +56,7 @@ export default {
     },
     methods: {
         indefArticle: function () {
-            return indefArticle(this.paradigm.tags, this.language)
+            return indefArticle(this.paradigm.tags, this.dict)
         },
         inflForm: function (tagList,display,prefix) {
             let forms = inflectedForm(this.paradigm, tagList, [])

@@ -41,7 +41,7 @@ import { inflectedForm, tagToName
 
 export default {
     name: 'inflectionRowsVerb',
-    props: ['paradigms','tags','language','locLang','lemmaId'],
+    props: ['paradigms','tags','locLang','lemmaId'],
     data: function () {
         return {
             cells: !this.tags.title ?

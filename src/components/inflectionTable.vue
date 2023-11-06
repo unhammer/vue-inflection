@@ -64,7 +64,7 @@
               <inflectionRowNoun v-for="(paradigm, index) in standardParadigms"
                                  :key="index"
                                  :showGender="!nounGender"
-                                 :language="language"
+                                 :dict="language"
                                  :locLang="locLang"
                                  :lemma="lemma"
                                  :hasDef="hasDef"
@@ -89,7 +89,7 @@
                               :key="index"
                               :showGender="!nounGender"
                               :tags="tags"
-                              :language="language"
+                              :dict="language"
                               :locLang="locLang"
                               :lemma="lemma"
                               :paradigms="standardParadigms"/>
@@ -187,7 +187,7 @@
             <inflectionRowParticiple v-for="(paradigm, index) in standardParadigms"
                                      :key="index"
                                      :part="j"
-                                     :language="language"
+                                     :dict="language"
                                      :locLang="locLang"
                                      :hasPerfPart="hasPerfPart"
                                      :hasPerfPartFem="hasPerfPartFem"
@@ -209,7 +209,6 @@
           <inflectionRowsVerb v-for="(tags, index) in inflTagsVerb"
                               :key="index"
                               :tags="tags"
-                              :language="language"
                               :locLang="locLang"
                               :lemmaId="lemma.id"
                               :paradigms="standardParadigms"/>
@@ -524,7 +523,6 @@
           <tbody>
             <inflectionRowDet v-for="(paradigm, index) in standardParadigms"
                               :key="index"
-                              :language="language"
                               :locLang="locLang"
                               :lemmaId="lemma.id"
                               :paradigm="paradigm"/>
@@ -546,7 +544,6 @@
                              :key="index"
                              :tags="tags"
                              :lemma="lemma.lemma"
-                             :language="language"
                              :locLang="locLang"
                              :lemmaId="lemma.id"
                              :paradigms="standardParadigms"/>

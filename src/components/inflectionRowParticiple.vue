@@ -34,22 +34,22 @@ import { inflectedForm, indefArticle, posName
 
 export default {
     name: 'inflectionRowParticiple',
-    props: ['paradigm','hasPerfPart','hasPerfPartFem','language','locLang','part','lemmaId', 'context'],
+    props: ['paradigm','hasPerfPart','hasPerfPartFem','dict','locLang','part','lemmaId', 'context'],
     data: function () {
         return { rows: [
             this.hasPerfPart && this.part!=4 ?
                 this.inflForm(['Adj','Masc/Fem'],
-                              this.context ? indefArticle(['Masc/Fem'], this.language) : null,
+                              this.context ? indefArticle(['Masc/Fem'], this.dict) : null,
                               this.context ? '+ ' + this.posName('NOUN') : null,
                               `PerfPart${this.lemmaId} Masc${this.lemmaId}`) : null,
             this.hasPerfPartFem && this.part!=4 ?
                 this.inflForm(['Adj','Fem'],
-                              this.context ? indefArticle(['Fem'], this.language) : null,
+                              this.context ? indefArticle(['Fem'], this.dict) : null,
                               this.context ?  '+ ' + this.posName('NOUN') : null,
                               `PerfPart${this.lemmaId} Fem${this.lemmaId}`): null,
             this.hasPerfPart && this.part!=4 ?
                 this.inflForm(['Adj','Neuter'],
-                              this.context ? indefArticle(['Neuter'], this.language) : null,
+                              this.context ? indefArticle(['Neuter'], this.dict) : null,
                               this.context ?  '+ ' + this.posName('NOUN') : null,
                               `PerfPart${this.lemmaId} Neuter${this.lemmaId}`) : null,
             this.hasPerfPart && this.part!=4 ?

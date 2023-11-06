@@ -53,7 +53,7 @@ import { inflectedForm, tagToName, markdownToHTML
 
 export default {
     name: 'inflectionRowsNoun',
-    props: ['paradigms','tags','language','locLang', 'lemma', 'showGender'],
+    props: ['paradigms','tags','dict','locLang', 'lemma', 'showGender'],
     data: function () {
         return {
             cells: !this.tags.title ?
@@ -78,30 +78,30 @@ export default {
             return paradigm.tags.find(tag => tag == 'Neuter')
         },
         indefArticle: function (paradigm) {
-            if (this.isMasc(paradigm) && this.language=='nob') {
+            if (this.isMasc(paradigm) && this.dict=='nob') {
                 return "en"
-            } else if (this.isMasc(paradigm) && this.language=='nno') {
+            } else if (this.isMasc(paradigm) && this.dict=='nno') {
                 return "ein"
-            } else if (this.isFem(paradigm) && this.language=='nob') {
+            } else if (this.isFem(paradigm) && this.dict=='nob') {
                 return "ei/en"
-            } else if (this.isFem(paradigm) && this.language=='nno') {
+            } else if (this.isFem(paradigm) && this.dict=='nno') {
                 return "ei"
-            } else if (this.isNeuter(paradigm) && this.language=='nob') {
+            } else if (this.isNeuter(paradigm) && this.dict=='nob') {
                 return "et"
-            } else if (this.isNeuter(paradigm) && this.language=='nno') {
+            } else if (this.isNeuter(paradigm) && this.dict=='nno') {
                 return "eit"
             }
         },
         genderCat: function (paradigm) {
             if (this.isMasc(paradigm)) {
                 return "hankjønn"
-            } else if (this.isFem(paradigm) && this.language=='nob') {
+            } else if (this.isFem(paradigm) && this.dict=='nob') {
                 return "hunkjønn"
-            } else if (this.isFem(paradigm) && this.language=='nno') {
+            } else if (this.isFem(paradigm) && this.dict=='nno') {
                 return "hokjønn"
-            } else if (this.isNeuter(paradigm) && this.language=='nob') {
+            } else if (this.isNeuter(paradigm) && this.dict=='nob') {
                 return "intetkjønn"
-            } else if (this.isNeuter(paradigm) && this.language=='nno') {
+            } else if (this.isNeuter(paradigm) && this.dict=='nno') {
                 return "inkjekjønn"
             }
         },

@@ -540,8 +540,8 @@ const indefArticle_nno = { Masc: "ein",
                            Fem: "ei",
                            Neuter: "eit" }
 
-export function indefArticle (tagList, language) {
-    switch (language) {
+export function indefArticle (tagList, dict) {
+    switch (dict) {
     case 'nob':
         return indefArticle_nob[tagList[1]]
     case 'nno':
