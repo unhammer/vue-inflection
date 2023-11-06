@@ -11,7 +11,6 @@
         :key="index"
         :colspan="rowspan"
         :index="rowindex"
-        :headers="tags.block + ' ' + (tags.label || '')"
         :headers="tags.block + lemmaId + ' ' + (tags.label ? tags.label + lemmaId : '')"
         @mouseover.stop="hiliteRow(rowindex)">
       <span class='comma'
