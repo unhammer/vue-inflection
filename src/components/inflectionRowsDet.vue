@@ -6,13 +6,14 @@
         scope="row">
       {{tagToName(tags.label)}}
     </th>
-    <td class="infl-cell xs"
+    <td class="notranslate infl-cell xs"
         v-for="([rowspan,rowindex,forms], index) in cells"
         :key="index"
         :colspan="rowspan"
-        :index="rowindex"
         :headers="tags.block + ' ' + (tags.label || '')"
-        @mouseover.stop="hiliteRow(rowindex)">
+        :class="{hilite: $parent.hilited(rowindex, lemmaId)}"
+        @mouseover="$emit('hilite', rowindex, lemmaId)"
+        @mouseleave="$emit('unhilite')">
       <span class='comma'
             v-for="(form, index) in forms"
             :key="index">{{form}}</span>
@@ -30,8 +31,6 @@
 </template>
 
 <script>
-
-import $ from 'jquery'
 
 import { inflectedForm, tagToName
        } from './mixins/ordbankUtils.js' 
@@ -53,10 +52,6 @@ export default {
     methods: {
         inflForm: function (paradigm, tagList, exclTagList) {
             return inflectedForm(paradigm, tagList, exclTagList)
-        },
-        hiliteRow: function (rowindex) {
-            $('td[index]').removeClass('hilite')
-            rowindex.forEach(i => $('#lemma' + this.lemmaId + ' td[index*='+ i + ']').addClass('hilite'))
         },
         tagToName: function (tag) {
             return tagToName(tag, this.locale) || tag

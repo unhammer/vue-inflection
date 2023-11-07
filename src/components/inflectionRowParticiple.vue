@@ -1,13 +1,13 @@
 <template>
 <tr>
-  <td class="infl-cell left"
-      :class= "forms[0]=='-' ? 'merge-right':'' + paradigm.standardisation!='STANDARD' ? 'non-standard':''"
+  <td class="notranslate infl-cell left"
+      :class="{'merge-right': forms[0]==='-', 'non-standard': paradigm.standardisation!='STANDARD', hilite: $parent.hilited(rowindex, lemmaId)}"
       v-for="([prefix, [rowspan,rowindex,forms,gender,standardisation], suffix, headers], index) in rows"
       :key="index"
       :rowspan="rowspan"
-      :index="rowindex"
       :headers="headers"
-      @mouseover.stop="hiliteRow(rowindex)">
+      @mouseover="$emit('hilite', rowindex, lemmaId)"
+      @mouseleave="$emit('unhilite')">
     <span v-if="standardisation!='STANDARD'">(</span>
     <span>
       <span class='comma'
@@ -25,9 +25,6 @@
 </template>
 
 <script>
-
-// needed for hiliting
-import $ from 'jquery'
 
 import { inflectedForm, indefArticle, posName
        } from './mixins/ordbankUtils.js' 
@@ -76,10 +73,6 @@ export default {
             } else {
                 return null
             }
-        },
-        hiliteRow: function (rowindex) {
-            $('td[index]').removeClass('hilite')
-            rowindex.forEach(i => $('#lemma' + this.lemmaId + ' td[index*='+ i + ']').addClass('hilite'))
         },
         posName: function (tag) {
             return posName(tag, this.locale)

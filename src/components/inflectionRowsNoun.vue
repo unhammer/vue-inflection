@@ -1,5 +1,5 @@
 <template>
-<tr class="infl-row" :id="'lemma'+lemma.id">
+<tr class="infl-row" :id="'lemma'+lemmaId">
   <template v-if="tags.tags">
     <th class="infl-label xs"
         :id="tags.tags.join('')"
@@ -13,17 +13,19 @@
           :key="index"
           scope="row"
           :colspan="rowspan"
-          :index="rowindex"
-          @mouseover.stop="hiliteRow(rowindex)">
+          :class="{hilite: $parent.hilited(rowindex, lemmaId)}"
+          @mouseover="$emit('hilite', rowindex, lemmaId)"
+          @mouseleave="$emit('unhilite')">
         <span v-html="formattedForm(tags,forms[0])"/>
       </th>
       <td v-else
-          class="infl-cell"
+          class="notranslate infl-cell"
           :key="index"
           :colspan="rowspan"
-          :index="rowindex"
           :headers="headers"
-          @mouseover.stop="hiliteRow(rowindex)">
+          :class="{hilite: $parent.hilited(rowindex, lemmaId)}"
+          @mouseover="$emit('hilite', rowindex, lemmaId)"
+          @mouseleave="$emit('unhilite')">
         <span class='comma'
               v-for="(form, index) in forms"
               :key="index">
@@ -46,14 +48,13 @@
 
 <script>
 
-import $ from 'jquery'
-
 import { inflectedForm, tagToName, markdownToHTML
        } from './mixins/ordbankUtils.js' 
 
 export default {
     name: 'inflectionRowsNoun',
-    props: ['paradigms','tags','dict','locale', 'lemma', 'showGender'],
+    props: ['paradigms','tags','dict','locale', 'lemmaId', 'showGender'],
+    emits: ['hilite', 'unhilite'],
     data: function () {
         return {
             cells: !this.tags.title ?
@@ -113,10 +114,6 @@ export default {
                 let gender = (this.showGender && forms[3]) ? forms[3].join(' ') + ' ' : ''
                 return [prefix, forms, gender + tagList[0] +  ' ' + tagList[0] + tagList[1]]
             }
-        },
-        hiliteRow: function (rowindex) {
-            $('td[index]').removeClass('hilite')
-            rowindex.forEach(i => $('#lemma' + this.lemma.id + ' td[index*='+ i + ']').addClass('hilite'))
         },
         tagToName: function (tag) {
             return tagToName(tag, this.locale)

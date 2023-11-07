@@ -12,10 +12,7 @@
         </div>
         <div>
           <table class="infl-table" :class="mq">
-            <caption class="caption" v-if="locale=='nob'">Bøyingstabell for dette substantivet</caption>
-            <caption class="caption" v-else-if="locale=='nno'">Bøyningstabell for dette substantivet</caption>
-            <caption class="caption" v-else-if="locale=='ukr'">Таблиця відмінювання для цього іменника</caption>
-            <caption class="caption" v-else>Inflection table for this noun</caption>
+            <caption class="caption">{{$t('Inflection table for this noun')}}</caption>
             <thead>
               <tr>
                 <th class="infl-label sub label-border-top-left" :class="mq"
@@ -70,7 +67,10 @@
                                  :hasDef="hasDef"
                                  :hasSing="hasSing"
                                  :hasPlur="hasPlur"
-                                 :paradigm="paradigm"/>
+                                 :paradigm="paradigm"
+                                 @hilite="hilite"
+                                 @unhilite="unhilite"
+                                 />
             </tbody>
           </table>
         </div>
@@ -91,8 +91,11 @@
                               :tags="tags"
                               :dict="language"
                               :locale="locale"
-                              :lemma="lemma"
-                              :paradigms="standardParadigms"/>
+                              :lemmaId="lemma.id"
+                              :paradigms="standardParadigms"
+                              @hilite="hilite"
+                              @unhilite="unhilite"
+                              />
         </table>
       </div>
     </div>
@@ -124,7 +127,9 @@
                                :key="index"
                                :part="i"
                                :lemmaId="lemma.id"
-                               :paradigm="paradigm"/>
+                               :paradigm="paradigm"
+                               @hilite="hilite"
+                               @unhilite="unhilite"/>
           </tbody>
         </table>
       </div>
@@ -193,7 +198,9 @@
                                      :hasPerfPartFem="hasPerfPartFem"
                                      :lemmaId="lemma.id"
                                      :paradigm="paradigm"
-                                     :context="context"/>
+                                     :context="context"
+                                     @hilite="hilite"
+                                     @unhilite="unhilite"/>
           </tbody>
         </table>
       </div>
@@ -211,7 +218,9 @@
                               :tags="tags"
                               :locale="locale"
                               :lemmaId="lemma.id"
-                              :paradigms="standardParadigms"/>
+                              :paradigms="standardParadigms"
+                              @hilite="hilite"
+                              @unhilite="unhilite"/>
         </table>
       </div>
     </div>
@@ -289,7 +298,9 @@
                               :hasFem="hasFem"
                               :hasSing="hasSingAdj"
                               :lemmaId="lemma.id"
-                              :paradigm="paradigm"/>
+                              :paradigm="paradigm"
+                              @hilite="hilite"
+                              @unhilite="unhilite"/>
           </tbody>
         </table>
       </div>
@@ -331,7 +342,9 @@
             <inflectionRowAdjDeg v-for="(paradigm, index) in standardParadigms"
                                  :key="index"
                                  :lemmaId="lemma.id"
-                                 :paradigm="paradigm"/>
+                                 :paradigm="paradigm"
+                                 @hilite="hilite"
+                                 @unhilite="unhilite"/>
           </tbody>
         </table>
       </div>
@@ -349,7 +362,9 @@
                              :tags="tags"
                              :locale="locale"
                              :lemmaId="lemma.id"
-                             :paradigms="standardParadigms"/>
+                             :paradigms="standardParadigms"
+                             @hilite="hilite"
+                             @unhilite="unhilite"/>
         </table>
       </div>
     </div>
@@ -385,7 +400,9 @@
             <inflectionRowAdjAdv v-for="(paradigm, index) in standardParadigms"
                                  :key="index"
                                  :lemmaId="lemma.id"
-                                 :paradigm="paradigm"/>
+                                 :paradigm="paradigm"
+                                 @hilite="hilite"
+                                 @unhilite="unhilite"/>
           </tbody>
         </table>
       </div>
@@ -403,7 +420,9 @@
                              :tags="tags"
                              :locale="locale"
                              :lemmaId="lemma.id"
-                             :paradigms="standardParadigms"/>
+                             :paradigms="standardParadigms"
+                             @hilite="hilite"
+                             @unhilite="unhilite"/>
         </table>
       </div>
     </div>
@@ -439,7 +458,9 @@
             <inflectionRowPron v-for="(paradigm, index) in standardParadigms"
                                :key="index"
                                :lemmaId="lemma.id"
-                               :paradigm="paradigm"/>
+                               :paradigm="paradigm"
+                               @hilite="hilite"
+                               @unhilite="unhilite"/>
           </tbody>
         </table>
       </div>
@@ -460,7 +481,9 @@
                               :lemma="lemma.lemma"
                               :locale="locale"
                               :lemmaId="lemma.id"
-                              :paradigms="standardParadigms"/>
+                              :paradigms="standardParadigms"
+                              @hilite="hilite"
+                              @unhilite="unhilite"/>
         </table>
       </div>
     </div>
@@ -526,7 +549,6 @@
           <tbody>
             <inflectionRowDet v-for="(paradigm, index) in standardParadigms"
                               :key="index"
-                              :locale="locale"
                               :lemmaId="lemma.id"
                               :paradigm="paradigm"/>
           </tbody>
@@ -714,7 +736,9 @@ export default {
                                   { block: 'Sing', label: 'Fem', tags: ['Fem'] },
                                   { block: 'Sing', label: 'Neuter', tags: ['Neuter']},
                                   { block: 'Sing', label: 'Def', tags: ['Def']}
-                                ]
+                                ],
+                 hilitedLemma: null,
+                 hilitedRows: [],
                }
     },
     computed: {
@@ -810,6 +834,25 @@ export default {
         }
     },
     methods: {
+        hilited: function(rowindex, lemmaId) {
+            console.log('hilited', rowindex, lemmaId)
+            if(lemmaId === this.hilitedLemma)
+                for(const item of rowindex) {
+                    if (this.hilitedRows.includes(item)) {
+                        return true
+                    }
+                }
+          return false
+            
+        },
+        hilite: function(rowindex, lemmaId) {
+          this.hilitedLemma = lemmaId
+          this.hilitedRows = rowindex
+        },
+        unhilite: function() {
+          this.hilitedLemma = null
+          this.hilitedRows = []
+        },
         tagToName: function (tag) {
             return tagToName(tag,this.locale)
         },

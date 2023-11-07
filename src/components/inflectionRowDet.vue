@@ -4,9 +4,10 @@
       v-for="([[rowspan,rowindex,forms],headers], index) in cells"
       :key="index"
       :rowspan="rowspan"
-      :index="rowindex"
       :headers="headers"
-      @mouseover.stop="hiliteRow(rowindex)">
+      :class="{hilite: $parent.hilited(rowindex, lemmaId)}"
+      @mouseover="$emit('hilite', rowindex, lemmaId)"
+      @mouseleave="$emit('unhilite')">
     <span class='comma'
           v-for="(form, i) in forms"
           :key="i">
@@ -17,14 +18,13 @@
 
 <script>
 
-import $ from 'jquery'
-
-import { inflectedForm, tagToName
+import { inflectedForm
        } from './mixins/ordbankUtils.js' 
 
 export default {
     name: 'inflectionRowDet',
-    props: ['paradigm','locale','lemmaId'],
+    props: ['paradigm','lemmaId'],
+    emits: ['hilite', 'unhilite'],
     data: function () {
         return {
             cells: [ this.inflForm(['Masc'],`Sing${this.lemmaId} Masc${this.lemmaId}`),
@@ -35,18 +35,9 @@ export default {
                    ].filter(r => r[0][0])
         }
     },
-    computed: {
-    },
     methods: {
         inflForm: function (tagList, headers) {
             return [inflectedForm(this.paradigm, tagList), headers]
-        },
-        tagToName: function (tag) {
-            return tagToName(tag, this.locale)
-        },
-        hiliteRow: function (rowindex) {
-            $('td[index]').removeClass('hilite')
-            rowindex.forEach(i => $('#lemma' + this.lemmaId + ' td[index*='+ i + ']').addClass('hilite'))
         }
     }
 }
