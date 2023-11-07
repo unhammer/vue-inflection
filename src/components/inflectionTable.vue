@@ -497,12 +497,14 @@
               </th>
             </tr>
             <tr v-if="hasSing">
-              <th class="infl-label sub label-border-bottom" :class="mq"
+              <th v-if="hasMasc"
+                  class="infl-label sub label-border-bottom" :class="mq"
                   id="Masc"
                   scope="col">
                 {{tagToName('Masc')}}
               </th>
-              <th class="infl-label sub label-border-bottom" :class="mq"
+              <th v-if="hasFem"
+                  class="infl-label sub label-border-bottom" :class="mq"
                   id="Fem"
                   scope="col">
                 {{tagToName('Fem')}}
@@ -513,7 +515,8 @@
                   scope="col">
                 {{tagToName('Neuter')}}
               </th>
-              <th class="infl-label sub label-border-bottom" :class="mq" v-if="hasDef"
+              <th v-if="hasDef"
+                  class="infl-label sub label-border-bottom" :class="mq"
                   id="Def"
                   scope="col">
                 {{tagToName('Def')}} {{tagToName('Form')}}
@@ -635,6 +638,7 @@ export default {
                  locale: this.eng ? 'eng' : (this.ukr ? 'ukr' : (this.lemmaList ? this.lemmaList[0].language : null)),
                  hasFem: this.hasInflForm(['Fem']),
                  hasNeuter: this.hasInflForm(['Neuter']),
+                 hasMasc: this.hasInflForm(['Masc']),
                  hasDeg: this.hasInflForm(['Cmp']),
                  hasDef: this.hasInflForm(['Def']),
                  hasSing: this.hasInflForm(['Sing']),
@@ -734,7 +738,8 @@ export default {
             return this.getStandardParadigms()
         },
         DETColspan: function () {
-            return 2 + (this.hasDef ? 1 : 0) + (this.hasNeuter ? 1 : 0)
+            return (this.hasDef ? 1 : 0) +
+                (this.hasMasc ? 1 : 0) + (this.hasFem ? 1 : 0) + (this.hasNeuter ? 1 : 0)
         },
         isNoun: function () {
             return this.lemma && (this.lemma.word_class=='NOUN' ||
