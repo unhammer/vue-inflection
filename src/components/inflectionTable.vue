@@ -827,7 +827,7 @@ export default {
                         lemma.paradigm_info.find(
                             paradigm => (this.includeNonStandard ||
                                          (paradigm.standardisation == 'STANDARD' &&
-                                          paradigm.code[0] != 'M' && 
+                                          (!paradigm.code || paradigm.code[0] != 'M') && 
                                           !paradigm.to)) &&
                                 hasInflForm(paradigm, tagList))) {
                         info = true
