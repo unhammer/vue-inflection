@@ -26,38 +26,38 @@
 
 <script>
 
-import { inflectedForm, indefArticle, posName
+import { inflectedForm, indefArticle
        } from './mixins/ordbankUtils.js' 
 
 export default {
     name: 'inflectionRowParticiple',
-    props: ['paradigm','hasPerfPart','hasPerfPartFem','dict','locale','part','lemmaId', 'context'],
+    props: ['paradigm','hasPerfPart','hasPerfPartFem','dict','part','lemmaId', 'context'],
     data: function () {
         return { rows: [
             this.hasPerfPart && this.part!=4 ?
                 this.inflForm(['Adj','Masc/Fem'],
                               this.context ? indefArticle(['Masc/Fem'], this.dict) : null,
-                              this.context ? '+ ' + this.posName('NOUN') : null,
+                              this.context ? '+ ' + this.$t('NOUN') : null,
                               `PerfPart${this.lemmaId} Masc${this.lemmaId}`) : null,
             this.hasPerfPartFem && this.part!=4 ?
                 this.inflForm(['Adj','Fem'],
                               this.context ? indefArticle(['Fem'], this.dict) : null,
-                              this.context ?  '+ ' + this.posName('NOUN') : null,
+                              this.context ?  '+ ' + this.$t('NOUN') : null,
                               `PerfPart${this.lemmaId} Fem${this.lemmaId}`): null,
             this.hasPerfPart && this.part!=4 ?
                 this.inflForm(['Adj','Neuter'],
                               this.context ? indefArticle(['Neuter'], this.dict) : null,
-                              this.context ?  '+ ' + this.posName('NOUN') : null,
+                              this.context ?  '+ ' + this.$t('NOUN') : null,
                               `PerfPart${this.lemmaId} Neuter${this.lemmaId}`) : null,
             this.hasPerfPart && this.part!=4 ?
                 this.inflForm(['Adj','Def'],
                               this.context ? 'den/det' : null,
-                              this.context ?  '+ ' + this.posName('NOUN') : null,
+                              this.context ?  '+ ' + this.$t('NOUN') : null,
                               `PerfPart${this.lemmaId} Def${this.lemmaId}`) : null,
             this.hasPerfPart && this.part!=3 ?
                 this.inflForm(['Adj','Plur'],
                               null,
-                              this.context ?  '+ ' + this.posName('NOUN') : null,
+                              this.context ?  '+ ' + this.$t('NOUN') : null,
                               `PerfPart${this.lemmaId} Plur${this.lemmaId}`) : null,
             this.part!=3 ? this.inflForm(['Adj','<PresPart>'],
                                          null,
@@ -73,9 +73,6 @@ export default {
             } else {
                 return null
             }
-        },
-        posName: function (tag) {
-            return posName(tag, this.locale)
         }
     }
 }

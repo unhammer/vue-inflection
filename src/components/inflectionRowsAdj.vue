@@ -4,7 +4,7 @@
     <th class="infl-label xs"
         :id="tags.label + lemmaId"
         scope="row">
-      {{tagToName(tags.label)}}
+      {{$t(tags.label)}}
     </th>
     <td class="notranslate infl-cell"
         v-for="([rowspan,rowindex,forms], index) in cells"
@@ -25,7 +25,7 @@
         :id="tags.title"
         scope="col"
         :colspan="paradigms.length+1">
-      {{tagToName(tags.title)}}
+      {{$t(tags.title)}}
     </th>
   </template>
 </tr>
@@ -33,12 +33,12 @@
 
 <script>
 
-import { inflectedForm, markdownToHTML, tagToName
+import { inflectedForm, markdownToHTML
        } from './mixins/ordbankUtils.js' 
 
 export default {
     name: 'inflectionRowsAdj',
-    props: ['paradigms','tags','locale','lemmaId'],
+    props: ['paradigms','tags','lemmaId'],
     emits: ['hilite', 'unhilite'],
     data: function () {
         return {
@@ -57,9 +57,6 @@ export default {
         },
         formattedForm: function (form) {
             return markdownToHTML(form)
-        },
-        tagToName: function (tag) {
-            return tagToName(tag, this.locale) || tag
         }
     }
 }

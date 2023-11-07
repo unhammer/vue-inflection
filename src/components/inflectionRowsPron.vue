@@ -5,7 +5,7 @@
         class="infl-label xs"
         :id="tags.label"
         scope="row">
-      {{tagToName(tags.label)}}
+      {{$t(tags.label)}}
     </th>
     <td class="notranslate infl-cell"
         v-for="([rowspan,rowindex,forms], index) in cells"
@@ -25,12 +25,12 @@
 
 <script>
 
-import { inflectedForm, tagToName
+import { inflectedForm
        } from './mixins/ordbankUtils.js' 
 
 export default {
     name: 'inflectionRowsPron',
-    props: ['paradigms','lemma','tags','locale','lemmaId'],
+    props: ['paradigms','tags','lemmaId'],
     data: function () {
         return {
             cells: this.paradigms.map(p => this.inflForm(p, this.tags.tags))
@@ -40,9 +40,6 @@ export default {
         inflForm: function (paradigm, tagList) {
             let forms = inflectedForm(paradigm, tagList, [])
             return forms || [1,0,[this.lemma]] // workaround for missing inflection
-        },
-        tagToName: function (tag) {
-            return tagToName(tag, this.locale)
         }
     }
 }
