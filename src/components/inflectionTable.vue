@@ -224,7 +224,7 @@
         <span class="infl-lemma">{{lemma.lemma}} </span>
         <span class="sub">{{wordClass}}</span>
       </div>
-      <div>
+      <div v-if="hasSingAdj || hasPlur">
         <table class="infl-table" :class="mq">
           <caption class="caption" v-if="locale=='nob'">Bøyingstabell for dette adjektivet</caption>
           <caption class="caption" v-else-if="locale=='nno'">Bøyningstabell for dette adjektivet</caption>
@@ -240,7 +240,8 @@
                   :colspan="hasFem ? 4 : 3">
                 {{tagToName('Sing')}}
               </th>
-              <th class="infl-label label-border-top-right" :class="mq"
+              <th v-if="hasPlur"
+                  class="infl-label label-border-top-right" :class="mq"
                   :id="'Plur'+lemma.id"
                   scope="col"
                   :rowspan="hasSingAdj ? 2 : 1">
