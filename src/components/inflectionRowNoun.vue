@@ -17,7 +17,7 @@
     <td v-else
         class="notranslate infl-cell"
         :headers="colref"
-        :key="index"
+        :key="index + 'else'"
         :rowspan="rowspan"
         :class="{hilite: $parent.hilited(rowindex, lemma.id)}"
         @mouseover="$emit('hilite', rowindex, lemma.id)"

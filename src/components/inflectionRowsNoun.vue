@@ -20,7 +20,7 @@
       </th>
       <td v-else
           class="notranslate infl-cell"
-          :key="index"
+          :key="index + 'else'"
           :colspan="rowspan"
           :headers="headers"
           :class="{hilite: $parent.hilited(rowindex, lemmaId)}"

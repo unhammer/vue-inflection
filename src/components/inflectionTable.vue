@@ -608,7 +608,7 @@
 
 <script>
 
-import $ from 'jquery'
+
 
 import inflectionRowNoun from './inflectionRowNoun.vue'
 import inflectionRowAdj from './inflectionRowAdj.vue'
