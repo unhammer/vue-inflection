@@ -4,7 +4,7 @@
     <th class="infl-label xs"
         :id="tags.tags.join('')"
         scope="row">
-      {{tagToName(tags.label)}}
+      {{$t(tags.label)}}
     </th>
     <template v-for="([prefix, [rowspan,rowindex,forms], headers], index) in cells">
       <th v-if="tags.tags[0]=='_gender'"
@@ -40,7 +40,7 @@
         :colspan="paradigms.length+1"
         scope="col"
         :id="tags.title">
-      {{tagToName(tags.title)}}
+      {{$t(tags.title)}}
     </th>
   </template>
 </tr>
@@ -48,12 +48,12 @@
 
 <script>
 
-import { inflectedForm, tagToName, markdownToHTML
+import { inflectedForm, markdownToHTML
        } from './mixins/ordbankUtils.js' 
 
 export default {
     name: 'inflectionRowsNoun',
-    props: ['paradigms','tags','dict','locale', 'lemmaId', 'showGender'],
+    props: ['paradigms','tags','dict', 'lemmaId', 'showGender'],
     emits: ['hilite', 'unhilite'],
     data: function () {
         return {
@@ -115,11 +115,8 @@ export default {
                 return [prefix, forms, gender + tagList[0] +  ' ' + tagList[0] + tagList[1]]
             }
         },
-        tagToName: function (tag) {
-            return tagToName(tag, this.locale)
-        },
         formattedForm: function (tags,form) {
-            return tags.tags[0]=='_gender' ? this.tagToName(form) : markdownToHTML(form)
+            return tags.tags[0]=='_gender' ? this.$t(form) : markdownToHTML(form)
         }
     }
 }

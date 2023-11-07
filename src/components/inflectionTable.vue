@@ -19,41 +19,41 @@
                     v-if="!nounGender && hasGender"
                     :id="'Gender'+lemma.id"
                     scope="col"
-                    rowspan='2'>{{tagToName('Gender')}}</th>
+                    rowspan='2'>{{$t('Gender')}}</th>
                 <th v-if="hasSing"
                     :id="'Sing'+lemma.id"
                     class="infl-label label-border-top-left" :class="mq"
                     scope="col"
                     :colspan='hasDef?2:1'>
-                  {{tagToName('Sing')}}</th>
+                  {{$t('Sing')}}</th>
                 <th v-if="hasPlur"
                     :id="'Plur'+lemma.id"
                     class="infl-label label-border-top-right"
                     :class="mq" scope="col"
                     :colspan='hasDef?2:1'>
-                  {{tagToName('Plur')}}</th>
+                  {{$t('Plur')}}</th>
               </tr>
               <tr>
                 <th v-if="hasSing"
                     :id="'SingInd'+lemma.id"
                     class="infl-label sub label-border-bottom" scope="col" :class="mq">
-                  {{tagToName('Ind')}} {{tagToName('Form')}}
+                  {{$t('Ind')}} {{$t('Form')}}
                 </th>
                 <th v-if="hasDef && hasSing"
                     :id="'SingDef'+lemma.id"
                     class="infl-label sub label-border-bottom" scope="col" :class="mq">
-                  {{tagToName('Def')}} {{tagToName('Form')}}
+                  {{$t('Def')}} {{$t('Form')}}
                 </th>
                 <th v-if="hasPlur" class="infl-label sub label-border-bottom"
                     :id="'PlurInd'+lemma.id"
                     scope="col" :class="mq">
-                  {{tagToName('Ind')}} {{tagToName('Form')}}
+                  {{$t('Ind')}} {{$t('Form')}}
                 </th>
                 <th v-if="hasDef && hasPlur"
                     class="infl-label sub label-border-bottom"
                     :id="'PlurDef'+lemma.id"
                     scope="col" :class="mq">
-                  {{tagToName('Def')}} {{tagToName('Form')}}
+                  {{$t('Def')}} {{$t('Form')}}
                 </th>
               </tr>
             </thead>
@@ -62,7 +62,6 @@
                                  :key="index"
                                  :showGender="!nounGender"
                                  :dict="language"
-                                 :locale="locale"
                                  :lemma="lemma"
                                  :hasDef="hasDef"
                                  :hasSing="hasSing"
@@ -90,7 +89,6 @@
                               :showGender="!nounGender"
                               :tags="tags"
                               :dict="language"
-                              :locale="locale"
                               :lemmaId="lemma.id"
                               :paradigms="standardParadigms"
                               @hilite="hilite"
@@ -109,17 +107,14 @@
       </div>
       <div v-for="i in mq=='xs' ? [1,2] : [0]" :key="i">
         <table class="infl-table" :class="mq">
-          <caption class="caption" v-if="locale=='nob'">Bøyingstabell for dette verbet</caption>
-          <caption class="caption" v-else-if="locale=='nno'">Bøyningstabell for dette verbet</caption>
-          <caption class="caption" v-else-if="locale=='ukr'">Таблиця відмінювання для цього дієслова</caption>
-          <caption class="caption" v-else>Inflection table for this verb</caption>
+          <caption class="caption">{{$t('Inflection table for this verb')}}</caption>
           <thead>
             <tr>
-              <th v-if="!i || i==1" class="infl-label label-border-top-left" :class="mq">{{tagToName('Inf')}}</th>
-              <th v-if="!i || i==1" class="infl-label label-border-top" :class="mq">{{tagToName('Pres')}}</th>
-              <th v-if="!i || i==1" class="infl-label label-border-top" :class="mq">{{tagToName('Past')}}</th>
-              <th v-if="!i || i==2" class="infl-label label-border-top" :class="mq">{{tagToName('PresPerf')}}</th>
-              <th v-if="(!i || i==2) && hasImp" class="infl-label label-border-top-right" :class="mq">{{tagToName('Imp')}}</th>
+              <th v-if="!i || i==1" class="infl-label label-border-top-left" :class="mq">{{$t('Inf')}}</th>
+              <th v-if="!i || i==1" class="infl-label label-border-top" :class="mq">{{$t('Pres')}}</th>
+              <th v-if="!i || i==1" class="infl-label label-border-top" :class="mq">{{$t('Past')}}</th>
+              <th v-if="!i || i==2" class="infl-label label-border-top" :class="mq">{{$t('PresPerf')}}</th>
+              <th v-if="(!i || i==2) && hasImp" class="infl-label label-border-top-right" :class="mq">{{$t('Imp')}}</th>
             </tr>
           </thead>
           <tbody>
@@ -135,10 +130,7 @@
       </div>
       <div v-for="j in mq=='xs' ? [3,4] : [-1]" :key="j">
         <table class="infl-table" :class="mq">
-          <caption class="caption" v-if="locale=='nob'">Bøyingstabell for dette verbet (partisippformer)</caption>
-          <caption class="caption" v-else-if="locale=='nno'">Bøyningstabell for dette verbet (partisippformer)</caption>
-          <caption class="caption" v-else-if="locale=='ukr'">Таблиця відмінювання для цього дієслова (дієприкметники)</caption>
-          <caption class="caption" v-else>Inflection table for the participles of this verb</caption>
+          <caption class="caption">{{$t('Inflection table for the participles of this verb')}}</caption>
           <thead>
             <template v-if="hasPerfPart">
               <tr>
@@ -147,44 +139,44 @@
                     :id="'PerfPart'+lemma.id"
                     scope="col"
                     :colspan="hasPerfPartFem ? 5 : (hasPerfPartDef ? (j<0?4:(j==3?3:1)) : 1)">
-                  {{tagToName('PerfPart')}}
+                  {{$t('PerfPart')}}
                 </th>
                 <th v-if="j<0 || j==4"
                     class="infl-label label-border-top-right" :class="mq"
                     :id="'PresPart'+lemma.id"
                     scope="col"
-                    rowspan="2">{{tagToName('PresPart')}}</th>
+                    rowspan="2">{{$t('PresPart')}}</th>
               </tr>
               <tr>
                 <th v-if="(j<0 || j==3) && hasPerfPartDef"
                     :id="'Masc'+lemma.id"
                     scope="col"
                     class="infl-label sub label-border-bottom" :class="mq">
-                  {{tagToName('MascShort')}}&nbsp;/<br/>{{tagToName('Fem')}}</th>
+                  {{$t('MascShort')}}&nbsp;/<br/>{{$t('Fem')}}</th>
                 <th v-if="(j<0 || j==3) && hasPerfPartFem"
                     :id="'Fem'+lemma.id"
                     scope="col"
                     class="infl-label sub label-border-bottom" :class="mq">
-                  {{tagToName('Fem')}}</th>
+                  {{$t('Fem')}}</th>
                 <th :id="'Neuter'+lemma.id"
                     scope="col"
                     class="infl-label sub label-border-bottom" :class="mq"
-                    v-if="(j<0 || j==3)">{{tagToName('Neuter')}}</th>
+                    v-if="(j<0 || j==3)">{{$t('Neuter')}}</th>
                 <th v-if="(j<0 || j==3) && hasPerfPartDef"
                     :id="'Def'+lemma.id"
                     scope="col"
-                    class="infl-label sub label-border-bottom" :class="mq">{{tagToName('Def')}} {{tagToName('Form')}}</th>
+                    class="infl-label sub label-border-bottom" :class="mq">{{$t('Def')}} {{$t('Form')}}</th>
                 <th v-if="(j<0 || j==4) && hasPerfPartDef"
                     :id="'Plur'+lemma.id"
                     scope="col"
-                    class="infl-label sub label-border-bottom" :class="mq">{{tagToName('Plur')}}</th>
+                    class="infl-label sub label-border-bottom" :class="mq">{{$t('Plur')}}</th>
               </tr>
             </template>
             <template v-else-if="hasPresPart">
               <tr>
                 <th v-if="j<0 || j==4"
                     :id="'PresPart'+lemma.id"
-                    class="infl-label label-border-top" :class="mq">{{tagToName('PresPart')}}</th>
+                    class="infl-label label-border-top" :class="mq">{{$t('PresPart')}}</th>
               </tr>
             </template>
           </thead>
@@ -193,7 +185,6 @@
                                      :key="index"
                                      :part="j"
                                      :dict="language"
-                                     :locale="locale"
                                      :hasPerfPart="hasPerfPart"
                                      :hasPerfPartFem="hasPerfPartFem"
                                      :lemmaId="lemma.id"
@@ -216,7 +207,6 @@
           <inflectionRowsVerb v-for="(tags, index) in inflTagsVerb"
                               :key="index"
                               :tags="tags"
-                              :locale="locale"
                               :lemmaId="lemma.id"
                               :paradigms="standardParadigms"
                               @hilite="hilite"
@@ -235,10 +225,7 @@
       </div>
       <div v-if="hasSingAdj || hasPlur">
         <table class="infl-table" :class="mq">
-          <caption class="caption" v-if="locale=='nob'">Bøyingstabell for dette adjektivet</caption>
-          <caption class="caption" v-else-if="locale=='nno'">Bøyningstabell for dette adjektivet</caption>
-          <caption class="caption" v-else-if="locale=='ukr'">Таблиця відмінювання для цього прикметника</caption>
-          <caption class="caption" v-else>Inflection table for this adjective</caption>
+          <caption class="caption">{{$t('Inflection table for this adjective')}}</caption>
           <thead>
             <tr>
               <th v-if="hasSingAdj"
@@ -247,14 +234,14 @@
                   :id="'Sing'+lemma.id"
                   scope="col"
                   :colspan="hasFem ? 4 : 3">
-                {{tagToName('Sing')}}
+                {{$t('Sing')}}
               </th>
               <th v-if="hasPlur"
                   class="infl-label label-border-top-right" :class="mq"
                   :id="'Plur'+lemma.id"
                   scope="col"
                   :rowspan="hasSingAdj ? 2 : 1">
-                {{tagToName('Plur')}}
+                {{$t('Plur')}}
               </th>
             </tr>
             <tr v-if="hasSingAdj">
@@ -263,32 +250,32 @@
                   :id="'Masc'+lemma.id"
                   scope="col"
                   :class="mq">
-                {{tagToName('Masc')}}
+                {{$t('Masc')}}
               </th>
               <th v-if="!hasFem"
                   class="infl-label sub label-border-bottom"
                   :id="'Masc'+lemma.id"
                   scope="col"
                   :class="mq">
-                <span class="nobr">{{tagToName('MascShort')}}&nbsp;/</span><br/>{{tagToName('Fem')}}</th>
+                <span class="nobr">{{$t('MascShort')}}&nbsp;/</span><br/>{{$t('Fem')}}</th>
               <th v-if="hasFem"
                   class="infl-label sub label-border-bottom"
                   :id="'Fem'+lemma.id"
                   scope="col"
                   :class="mq">
-                {{tagToName('Fem')}}
+                {{$t('Fem')}}
               </th>
               <th class="infl-label sub label-border-bottom"
                   :id="'Neuter'+lemma.id"
                   scope="col"
                   :class="mq">
-                {{tagToName('Neuter')}}
+                {{$t('Neuter')}}
               </th>
               <th class="infl-label sub label-border-bottom"
                   :id="'Def'+lemma.id"
                   scope="col"
                  :class="mq">
-                {{tagToName('Def')}} {{tagToName('Form')}}
+                {{$t('Def')}} {{$t('Form')}}
               </th>
             </tr>
           </thead>
@@ -306,10 +293,7 @@
       </div>
       <div v-if="hasDeg">
         <table class="infl-table" :class="mq">
-          <caption class="caption" v-if="locale=='nob'">Bøyingstabell for dette adjektivet (gradbøying)</caption>
-          <caption class="caption" v-else-if="locale=='nno'">Bøyningstabell for dette adjektivet (gradbøyning)</caption>
-          <caption class="caption" v-else-if="locale=='ukr'">Таблиця відмінювання для цього прикметника (ступені порівняння)</caption>
-          <caption class="caption" v-else>Inflection table for this adjective (comparative, superlative)</caption>
+          <caption class="caption">{{$t('Inflection table for this adjective (comparative, superlative)')}}</caption>
           <thead>
             <tr>
               <th class="infl-label label-border-top-left-right"
@@ -317,24 +301,24 @@
                   :id="'Deg'+lemma.id"
                   scope="col"
                   colspan="3">
-                {{tagToName('Deg')}}
+                {{$t('Deg')}}
               </th>
             </tr>
             <tr>
               <th :id ="'Cmp'+lemma.id"
                   scope="col"
                   class="infl-label label-border-bottom">
-                {{tagToName('Cmp')}}
+                {{$t('Cmp')}}
               </th>
               <th :id="'SupInd'+lemma.id"
                   scope="col"
                   class="infl-label label-border-bottom">
-                {{tagToName('Sup')}}<br/><span class="sub">{{tagToName('Ind')}} {{tagToName('Form')}}</span>
+                {{$t('Sup')}}<br/><span class="sub">{{$t('Ind')}} {{$t('Form')}}</span>
               </th>
               <th :id="'SupDef'+lemma.id"
                   scope="col"
                   class="infl-label label-border-bottom">
-                {{tagToName('Sup')}}<br/><span class="sub">{{tagToName('Def')}} {{tagToName('Form')}}</span>
+                {{$t('Sup')}}<br/><span class="sub">{{$t('Def')}} {{$t('Form')}}</span>
               </th>
             </tr>
           </thead>
@@ -360,7 +344,6 @@
           <inflectionRowsAdj v-for="(tags, index) in inflTagsAdj"
                              :key="index"
                              :tags="tags"
-                             :locale="locale"
                              :lemmaId="lemma.id"
                              :paradigms="standardParadigms"
                              @hilite="hilite"
@@ -379,20 +362,17 @@
       </div>
       <div v-if="hasDeg">
         <table class="infl-table" :class="mq">
-          <caption class="caption" v-if="locale=='nob'">Bøyingstabell for dette adverbet</caption>
-          <caption class="caption" v-else-if="locale=='nno'">Bøyningstabell for dette adverbet</caption>
-          <caption class="caption" v-else-if="locale=='ukr'">Таблиця відмінювання для цього прислівника</caption>
-          <caption class="caption" v-else>Inflection table for this adverb</caption>
+          <caption class="caption">{{$t('Inflection table for this adverb')}}</caption>
           <thead>
             <tr>
               <th class="infl-label label-border-bottom">
-                {{tagToName('Pos')}}
+                {{$t('Pos')}}
               </th>
               <th class="infl-label label-border-bottom">
-                {{tagToName('Cmp')}}
+                {{$t('Cmp')}}
               </th>
               <th class="infl-label label-border-bottom">
-                {{tagToName('Sup')}}
+                {{$t('Sup')}}
               </th>
             </tr>
           </thead>
@@ -418,7 +398,6 @@
           <inflectionRowsAdj v-for="(tags, index) in inflTagsAdjAdv"
                              :key="index"
                              :tags="tags"
-                             :locale="locale"
                              :lemmaId="lemma.id"
                              :paradigms="standardParadigms"
                              @hilite="hilite"
@@ -437,20 +416,17 @@
       </div>
       <div>
         <table class="infl-table" :class="mq">
-          <caption class="caption" v-if="locale=='nob'">Bøyingstabell for dette pronomenet</caption>
-          <caption class="caption" v-else-if="locale=='nno'">Bøyningstabell for dette pronomenet</caption>
-          <caption class="caption" v-else-if="locale=='ukr'">Таблиця відмінювання для цього займенника</caption>
-          <caption class="caption" v-else>Inflection table for this pronoun</caption>
+          <caption class="caption">{{$t('Inflection table for this pronoun')}}</caption>
           <thead>
             <tr>
               <th v-if="hasNom" class="infl-label sub label-border-top-left">
-                {{tagToName('Nom')}}
+                {{$t('Nom')}}
               </th>
               <th v-if="hasAcc" class="infl-label sub label-border-top-right">
-                {{tagToName('Acc')}}
+                {{$t('Acc')}}
               </th>
               <th v-if="hasNeuter" class="infl-label sub label-border-top-right">
-                {{tagToName('Neuter')}}
+                {{$t('Neuter')}}
               </th>
             </tr>
           </thead>
@@ -478,8 +454,6 @@
           <inflectionRowsPron v-for="(tags, index) in inflTagsPron"
                               :key="index"
                               :tags="tags"
-                              :lemma="lemma.lemma"
-                              :locale="locale"
                               :lemmaId="lemma.id"
                               :paradigms="standardParadigms"
                               @hilite="hilite"
@@ -498,10 +472,7 @@
       </div>
       <div>
         <table class="infl-table" :class="mq">
-          <caption class="caption" v-if="locale=='nob'">Bøyingstabell for dette determinativet</caption>
-          <caption class="caption" v-else-if="locale=='nno'">Bøyningstabell for dette determinativet</caption>
-          <caption class="caption" v-else-if="locale=='ukr'">Таблиця відмінювання для цього детермінатива</caption>
-          <caption class="caption" v-else>Inflection table for this determinative</caption>
+          <caption class="caption">{{$t('Inflection table for this determinative')}}</caption>
           <thead>
             <tr>
               <th v-if="hasSing"
@@ -509,14 +480,14 @@
                   id="Sing"
                   scope="col"
                   :colspan="DETColspan">
-                {{tagToName('Sing')}}
+                {{$t('Sing')}}
               </th>
               <th v-if="hasPlur"
                   class="infl-label label-border-top-right" :class="mq"
                   id="Plur"
                   scope="col"
                   :rowspan="hasSing?2:1">
-                {{tagToName('Plur')}}
+                {{$t('Plur')}}
               </th>
             </tr>
             <tr v-if="hasSing">
@@ -524,25 +495,25 @@
                   class="infl-label sub label-border-bottom" :class="mq"
                   id="Masc"
                   scope="col">
-                {{tagToName('Masc')}}
+                {{$t('Masc')}}
               </th>
               <th v-if="hasFem"
                   class="infl-label sub label-border-bottom" :class="mq"
                   id="Fem"
                   scope="col">
-                {{tagToName('Fem')}}
+                {{$t('Fem')}}
               </th>
               <th v-if="hasNeuter"
                   class="infl-label sub label-border-bottom" :class="mq"
                   id="Neuter"
                   scope="col">
-                {{tagToName('Neuter')}}
+                {{$t('Neuter')}}
               </th>
               <th v-if="hasDef"
                   class="infl-label sub label-border-bottom" :class="mq"
                   id="Def"
                   scope="col">
-                {{tagToName('Def')}} {{tagToName('Form')}}
+                {{$t('Def')}} {{$t('Form')}}
               </th>
             </tr>
           </thead>
@@ -568,8 +539,6 @@
           <inflectionRowsDet v-for="(tags, index) in inflTagsDet"
                              :key="index"
                              :tags="tags"
-                             :lemma="lemma.lemma"
-                             :locale="locale"
                              :lemmaId="lemma.id"
                              :paradigms="standardParadigms"/>
         </table>
@@ -584,13 +553,10 @@
       </div>
       <div>
         <table class="infl-table" :class="mq">
-          <caption class="caption" v-if="locale=='nob'">Bøyingstabell for dette adverbet</caption>
-          <caption class="caption" v-else-if="locale=='nno'">Bøyningstabell for dette adverbet</caption>
-          <caption class="caption" v-else-if="locale=='ukr'">Таблиця відмінювання для цього прислівника</caption>
-          <caption class="caption" v-else>Inflection table for this adverb</caption>
+          <caption class="caption">{{$t('Inflection table for this adverb')}}</caption>
           <thead>
             <tr>
-              <th class="infl-label label-border">{{tagToName('Uninfl')}}</th>
+              <th class="infl-label label-border">{{$t('Uninfl')}}</th>
             </tr>
           </thead>
           <tbody>
@@ -628,7 +594,7 @@ import inflectionRowsDet from './inflectionRowsDet.vue'
 
 
 import { calculateStandardParadigms,
-         word_formsEqual, hasTags, tagToName, posName, hasInflForm, markdownToHTML
+         word_formsEqual, hasTags, hasInflForm, markdownToHTML
        } from './mixins/ordbankUtils.js'
 
 export default {
@@ -745,9 +711,9 @@ export default {
         wordClass: function () {
             if (this.lemmaList) {
                 if (this.isADJ_Adv) {
-                    return posName['ADV', this.locale]
+                    return this.$t('ADV')
                 } else {
-                    return posName[this.lemmaList[0].word_class, this.locale]
+                    return this.$t(this.lemmaList[0].word_class)
                         || this.lemmaList[0].word_class
                 }
             } else {
@@ -827,7 +793,7 @@ export default {
             },
         nounGender: function () {
             this.getGender()
-            return !this.gender || this.gender=='+' ? null : tagToName(this.gender,this.locale)
+            return !this.gender || this.gender=='+' ? null : this.$t(this.gender)
         },
         edit: function () {
             return this.lemma.mode == 'edit' || this.lemma.mode == 'new'
@@ -852,9 +818,6 @@ export default {
         unhilite: function() {
           this.hilitedLemma = null
           this.hilitedRows = []
-        },
-        tagToName: function (tag) {
-            return tagToName(tag,this.locale)
         },
         hasInflForm: function (tagList) { // checks only standard forms
             let info = false

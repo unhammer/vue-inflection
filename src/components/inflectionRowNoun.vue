@@ -12,7 +12,7 @@
         @mouseover="$emit('hilite', rowindex, lemma.id)">
       <span class='comma'
             v-for="(form, i) in forms"
-            :key="i">{{tagToName(form)}}</span>
+            :key="i">{{$t(form)}}</span>
     </th>
     <td v-else
         class="notranslate infl-cell"
@@ -36,12 +36,12 @@
 
 <script>
 
-import { inflectedForm, tagToName, indefArticle, markdownToHTML
+import { inflectedForm, indefArticle, markdownToHTML
        } from './mixins/ordbankUtils.js' 
 
 export default {
     name: 'inflectionRowNoun',
-    props: ['paradigm','dict', 'locale', 'showGender', 'lemma','hasDef', 'hasSing', 'hasPlur'],
+    props: ['paradigm','dict', 'showGender', 'lemma','hasDef', 'hasSing', 'hasPlur'],
     emits: ['hilite', 'unhilite'],
     data: function () {
         return {
@@ -77,9 +77,6 @@ export default {
         },
         formattedForm: function (form) {
             return markdownToHTML(form)
-        },
-        tagToName: function (tag) {
-            return tagToName(tag, this.locale)
         }
     }
 }
