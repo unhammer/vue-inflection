@@ -617,13 +617,10 @@ export default {
                          // https://clarino.uib.no/ordbank-api-prod/lemmas?query=<lemma_id>&stubs=false&language=nob
             'mq',        // media query screen size
             'context',   // show participle context?
-            'eng',       // is localization language English?
-            'ukr',       // is localization language Ukrainian?
             'includeNonStandard'
            ],
     data: function () {
         return { language: this.lemmaList ? this.lemmaList[0].language : null,
-                 locale: this.eng ? 'eng' : (this.ukr ? 'ukr' : (this.lemmaList ? this.lemmaList[0].language : null)),
                  hasFem: this.hasInflForm(['Fem']),
                  hasNeuter: this.hasInflForm(['Neuter']),
                  hasMasc: this.hasInflForm(['Masc']),
