@@ -743,7 +743,7 @@ export default {
               if (args.includes(undefined)) {
                   return ""
               }
-              return this.$t("infl."+ args.join("."), {locale: this.locale})
+              return this.$t(args.join("."), {locale: this.locale})
         },
         hilited: function(rowindex, lemmaId) {
             if(lemmaId === this.hilitedLemma)
