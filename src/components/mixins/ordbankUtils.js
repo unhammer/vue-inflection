@@ -354,6 +354,10 @@ export function indefArticle (tagList, dict) {
         return indefArticle_nob[tagList[1]]
     case 'nno':
         return indefArticle_nno[tagList[1]]
+    case 'bm':
+        return indefArticle_nob[tagList[1]]
+    case 'nn':
+        return indefArticle_nno[tagList[1]]
     }
 }
 
