@@ -990,18 +990,18 @@ div.comma:not(:last-child):after {
     content: ", ";
 }
 
-td[class="infl-group"] {
+td.infl-group {
   background-color: #FDF4F5;
   font-style: italic;
   text-align: center;
 }
 
-td[class*="infl-label"] {
+td.infl-label {
   font-style: italic;
   text-align: left;
 }
 
-td[class^="infl-cell"] {
+td.infl-cell {
   text-align: center;
 }
 
