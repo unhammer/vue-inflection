@@ -1001,7 +1001,7 @@ td[class*="infl-label"] {
   text-align: left;
 }
 
-td[class="infl-cell"] {
+td[class^="infl-cell"] {
   text-align: center;
 }
 
