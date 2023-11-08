@@ -72,11 +72,6 @@
     <div v-else
          class="infl-wordclass"
          :class="mq">
-      <div class="lemma">
-        <span class="infl-lemma" v-html="formattedLemma"/>
-        <span class="sub"> {{wordClass}}</span>
-        <span class="sub" v-if="nounGender"> {{nounGender}}</span>
-      </div>
       <div>
         <table class="infl-table" :class="mq">
           <inflectionRowsNoun v-for="(tags, index) in inflTagsNoun"
@@ -96,10 +91,6 @@
   <template v-if="lemma && lemma.word_class=='VERB'">
     <div v-if="mq!='xs'"
            class="infl-wordclass" :class="mq">
-      <div class="lemma label-border-lemma">
-        <span class="infl-lemma">{{lemma.lemma}} </span>
-        <span class="sub">{{wordClass}}</span>
-      </div>
       <div v-for="i in mq=='xs' ? [1,2] : [0]" :key="i">
         <table class="infl-table" :class="mq">
           <caption class="caption">{{$t('Inflection table for this verb')}}</caption>
@@ -193,10 +184,6 @@
     </div>
     <div v-else
          class="infl-wordclass" :class="mq">
-      <div class="lemma">
-          <span class="infl-lemma">{{lemma.lemma}} </span>
-          <span class="sub">{{wordClass}}</span>
-      </div>
       <div>
         <table class="infl-table" :class="mq" >
           <inflectionRowsVerb v-for="(tags, index) in inflTagsVerb"
@@ -214,10 +201,6 @@
     <div v-if="mq!='xs'"
            class="infl-wordclass"
            :class="mq">
-      <div class="lemma label-border-lemma">
-        <span class="infl-lemma">{{lemma.lemma}} </span>
-        <span class="sub">{{wordClass}}</span>
-      </div>
       <div v-if="hasSingAdj || hasPlur">
         <table class="infl-table" :class="mq">
           <caption class="caption">{{$t('Inflection table for this adjective')}}</caption>
@@ -330,10 +313,6 @@
     </div>
     <div v-else
       class="infl-wordclass" :class="mq">
-      <div class="lemma">
-          <span class="infl-lemma">{{lemma.lemma}} </span>
-          <span class="sub">{{wordClass}}</span>
-      </div>
       <div>
         <table class="infl-table" :class="mq" >
           <inflectionRowsAdj v-for="(tags, index) in inflTagsAdj"
@@ -351,10 +330,6 @@
     <div v-if="mq!='xs'"
            class="infl-wordclass"
            :class="mq">
-      <div class="lemma label-border-lemma">
-        <span class="infl-lemma">{{lemma.lemma}} </span>
-        <span class="sub">{{wordClass}}</span>
-      </div>
       <div v-if="hasDeg">
         <table class="infl-table" :class="mq">
           <caption class="caption">{{$t('Inflection table for this adverb')}}</caption>
@@ -384,10 +359,6 @@
     </div>
     <div v-else
       class="infl-wordclass" :class="mq">
-      <div class="lemma">
-          <span class="infl-lemma">{{lemma.lemma}} </span>
-          <span class="sub">{{wordClass}}</span>
-      </div>
       <div>
         <table class="infl-table" :class="mq" >
           <inflectionRowsAdj v-for="(tags, index) in inflTagsAdjAdv"
@@ -405,10 +376,6 @@
     <div v-if="mq!='xs'"
          class="infl-wordclass"
          :class="mq">
-      <div class="lemma label-border-lemma">
-          <span class="infl-lemma">{{lemma.lemma}} </span>
-          <span class="sub">{{wordClass}}</span>
-      </div>
       <div>
         <table class="infl-table" :class="mq">
           <caption class="caption">{{$t('Inflection table for this pronoun')}}</caption>
@@ -439,11 +406,6 @@
     <div v-else
          class="infl-wordclass"
          :class="mq">
-      <div class="lemma">
-        <span class="infl-lemma">{{lemma.lemma}} </span>
-        <span class="sub">{{wordClass}}</span>
-        <span class="sub" v-if="nounGender"> {{nounGender}}</span>
-      </div>
       <div>
         <table class="infl-table" :class="mq">
           <inflectionRowsPron v-for="(tags, index) in inflTagsPron"
@@ -461,10 +423,6 @@
     <div v-if="mq!='xs'"
          class="infl-wordclass"
          :class="mq">
-      <div class="lemma label-border-lemma">
-          <span class="infl-lemma">{{lemma.lemma}} </span>
-          <span class="sub">{{wordClass}}</span>
-      </div>
       <div>
         <table class="infl-table" :class="mq">
           <caption class="caption">{{$t('Inflection table for this determinative')}}</caption>
@@ -524,11 +482,6 @@
     <div v-else
          class="infl-wordclass"
          :class="mq">
-      <div class="lemma">
-        <span class="infl-lemma">{{lemma.lemma}} </span>
-        <span class="sub">{{wordClass}}</span>
-        <span class="sub" v-if="nounGender"> {{nounGender}}</span>
-      </div>
       <div>
         <table class="infl-table" :class="mq">
           <inflectionRowsDet v-for="(tags, index) in inflTagsDet"
@@ -542,10 +495,6 @@
   </template>
   <template v-if="lemma && isUninflected && !isADJ_Adv">
     <div class="infl-wordclass" :class="mq">
-      <div class="lemma label-border-top">
-        <span class="lemma">{{lemma.lemma}} </span>
-        <span class="sub">{{wordClass}}</span>
-      </div>
       <div>
         <table class="infl-table" :class="mq">
           <caption class="caption">{{$t('Inflection table for this adverb')}}</caption>
@@ -700,18 +649,6 @@ export default {
                }
     },
     computed: {
-        wordClass: function () {
-            if (this.lemmaList) {
-                if (this.isADJ_Adv) {
-                    return this.$t('ADV')
-                } else {
-                    return this.$t(this.lemmaList[0].word_class)
-                        || this.lemmaList[0].word_class
-                }
-            } else {
-                return null
-            }
-        },
         formattedLemma: function () {
             return markdownToHTML(this.lemma.markdown_lemma || this.lemma.lemma)
         },
