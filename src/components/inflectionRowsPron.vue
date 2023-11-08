@@ -5,7 +5,7 @@
         class="infl-label xs"
         :id="tags.label"
         scope="row">
-      {{$t(tags.label)}}
+      {{translate(tags.label)}}
     </th>
     <td class="notranslate infl-cell"
         v-for="([rowspan,rowindex,forms], index) in cells"

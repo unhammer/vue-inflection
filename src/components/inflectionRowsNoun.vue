@@ -4,7 +4,7 @@
     <th class="infl-label xs"
         :id="tags.tags.join('')"
         scope="row">
-      {{$t(tags.label)}}
+      {{translate("tags",  tags.label)}}
     </th>
     <template v-for="([prefix, [rowspan,rowindex,forms], headers], index) in cells">
       <th v-if="tags.tags[0]=='_gender'"
@@ -40,7 +40,7 @@
         :colspan="paradigms.length+1"
         scope="col"
         :id="tags.title">
-      {{$t(tags.title)}}
+      {{translate('tags',  tags.title)}}
     </th>
   </template>
 </tr>
@@ -53,7 +53,7 @@ import { inflectedForm, markdownToHTML
 
 export default {
     name: 'inflectionRowsNoun',
-    props: ['paradigms','tags','dict', 'lemmaId', 'showGender'],
+    props: ['paradigms','tags','dict', 'translate', 'lemmaId', 'showGender'],
     emits: ['hilite', 'unhilite'],
     data: function () {
         return {
@@ -116,7 +116,7 @@ export default {
             }
         },
         formattedForm: function (tags,form) {
-            return tags.tags[0]=='_gender' ? this.$t(form) : markdownToHTML(form)
+            return tags.tags[0]=='_gender' ? this.translate('tags',  form) : markdownToHTML(form)
         }
     }
 }
