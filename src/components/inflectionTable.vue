@@ -1,5 +1,5 @@
 <template>
-<div @mouseover="unhiliteRows()" :id="'lemma'+lemma.id">
+<div :id="'lemma'+lemma.id">
   <div class="infl-wrapper">
     <template v-if="isNoun">
       <div v-if="mq!='xs'"
@@ -966,9 +966,6 @@ export default {
                 }
             })
             return this.gender
-        },
-        unhiliteRows: function () {
-            $('td[index]').removeClass('hilite')
         }
     }
 }
