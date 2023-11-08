@@ -79,30 +79,30 @@ export default {
             return paradigm.tags.find(tag => tag == 'Neuter')
         },
         indefArticle: function (paradigm) {
-            if (this.isMasc(paradigm) && this.dict=='nob') {
+            if (this.isMasc(paradigm) && this.dict=='nob' || this.dict == 'bm') {
                 return "en"
-            } else if (this.isMasc(paradigm) && this.dict=='nno') {
+            } else if (this.isMasc(paradigm) && this.dict=='nno' || this.dict == 'nn') {
                 return "ein"
-            } else if (this.isFem(paradigm) && this.dict=='nob') {
+            } else if (this.isFem(paradigm) && this.dict=='nob' || this.dict == 'bm') {
                 return "ei/en"
-            } else if (this.isFem(paradigm) && this.dict=='nno') {
+            } else if (this.isFem(paradigm) && this.dict=='nno' || this.dict == 'nn') {
                 return "ei"
-            } else if (this.isNeuter(paradigm) && this.dict=='nob') {
+            } else if (this.isNeuter(paradigm) && this.dict=='nob' || this.dict == 'bm') {
                 return "et"
-            } else if (this.isNeuter(paradigm) && this.dict=='nno') {
+            } else if (this.isNeuter(paradigm) && this.dict=='nno' || this.dict == 'nn') {
                 return "eit"
             }
         },
         genderCat: function (paradigm) {
             if (this.isMasc(paradigm)) {
                 return "hankjønn"
-            } else if (this.isFem(paradigm) && this.dict=='nob') {
+            } else if (this.isFem(paradigm) && this.dict=='nob' || this.dict == 'bm') {
                 return "hunkjønn"
-            } else if (this.isFem(paradigm) && this.dict=='nno') {
+            } else if (this.isFem(paradigm) && this.dict=='nno' || this.dict == 'nn') {
                 return "hokjønn"
-            } else if (this.isNeuter(paradigm) && this.dict=='nob') {
+            } else if (this.isNeuter(paradigm) && this.dict=='nob' || this.dict == 'bm') {
                 return "intetkjønn"
-            } else if (this.isNeuter(paradigm) && this.dict=='nno') {
+            } else if (this.isNeuter(paradigm) && this.dict=='nno' || this.dict == 'nn') {
                 return "inkjekjønn"
             }
         },
