@@ -5,11 +5,6 @@
       <div v-if="mq!='xs'"
            class="infl-wordclass"
            :class="mq">
-        <div class="lemma label-border-lemma">
-          <span class="infl-lemma" v-html="formattedLemma"/>
-          <span class="sub"> {{wordClass}}</span>
-          <span class="sub" v-if="nounGender"> {{nounGender}}</span>
-        </div>
         <div>
           <table class="infl-table" :class="mq">
             <caption class="caption">{{$t('Inflection table for this noun')}}</caption>
