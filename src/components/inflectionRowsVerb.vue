@@ -4,7 +4,7 @@
     <th class="infl-label xs"
         :id="tags.label + lemmaId"
         scope="row">
-      {{$t(tags.label)}}
+      {{tags.label ? $t(tags.label) : ''}}
     </th>
     <td class="notranslate infl-cell"
         v-for="([prefix, [rowspan,rowindex,forms], suffix], index) in cells"
