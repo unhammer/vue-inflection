@@ -569,11 +569,12 @@ export default {
             'mq',        // media query screen size
             'context',   // show participle context?
             'locale',
-            'translate',
+            'customTranslate',
             'includeNonStandard'
            ],
     data: function () {
         return { dict: this.lemmaList ? this.lemmaList[0].language : null,
+                 translate: this.customTranslate || this.defaultTranslate,
                  hasFem: this.hasInflForm(['Fem']),
                  hasNeuter: this.hasInflForm(['Neuter']),
                  hasMasc: this.hasInflForm(['Masc']),
@@ -738,6 +739,12 @@ export default {
         }
     },
     methods: {
+        defaultTranslate: function(...args) {
+              if (args.includes(undefined)) {
+                  return ""
+              }
+              return this.$t("infl."+ args.join("."), {locale: this.locale})
+        },
         hilited: function(rowindex, lemmaId) {
             if(lemmaId === this.hilitedLemma)
                 for(const item of rowindex) {
