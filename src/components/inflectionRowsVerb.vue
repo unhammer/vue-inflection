@@ -18,7 +18,7 @@
             v-for="(form, index) in forms"
             :key="index">
         <em v-if="prefix" class="context">{{prefix}}</em>
-        {{form}}<span v-if="suffix!='!'"> </span><em v-if="suffix" class="context nobr">{{suffix}}</em>
+        {{form}}<span v-if="suffix!='!'"> </span><em v-if="suffix" :lang="lang" translate="yes" class="context nobr">{{suffix}}</em>
       </span>
     </td>
   </template>
@@ -40,7 +40,7 @@ import { inflectedForm
 
 export default {
     name: 'inflectionRowsVerb',
-    props: ['paradigms','tags','lemmaId', 'translate'],
+    props: ['paradigms','tags', 'lang', 'lemmaId', 'translate'],
     data: function () {
         return {
             cells: !this.tags.title ?
