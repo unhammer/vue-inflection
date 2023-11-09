@@ -30,7 +30,7 @@ import { inflectedForm
 
 export default {
     name: 'inflectionRowsPron',
-    props: ['paradigms','tags','lemmaId'],
+    props: ['paradigms','tags', 'translate', 'lemmaId'],
     data: function () {
         return {
             cells: this.paradigms.map(p => this.inflForm(p, this.tags.tags))
