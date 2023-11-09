@@ -33,7 +33,7 @@ export default {
     props: ['paradigms','tags', 'translate', 'lemmaId'],
     data: function () {
         return {
-            cells: this.paradigms.map(p => this.inflForm(p, this.tags.tags))
+            cells: this.paradigms.map(p => this.inflForm(p, this.tags.tags)).filter(r => r[1])
         }
     },
     methods: {
