@@ -3,7 +3,7 @@
   <div class="infl-wrapper">
     <template v-if="isNoun">
         <table v-if="mq!='xs'" class="infl-table" :class="mq">
-          <caption class="caption">{{translate('caption.NOUN')}}</caption>
+          <caption class="caption">{{translate('caption.VERB')}}</caption>
           <thead>
             <tr>
               <th class="infl-label sub label-border-top-left" :class="mq"
@@ -83,7 +83,7 @@
       <div v-for="i in mq=='xs' ? [1,2] : [0]" :key="i">
         <table class="infl-table" :class="mq">
           <caption class="caption">{{translate('caption.NOUN')}}</caption>
-          <thead>
+          <thead :lang="lang">
             <tr>
               <th v-if="!i || i==1" class="infl-label label-border-top-left" :class="mq">{{translate('tags.Inf')}}</th>
               <th v-if="!i || i==1" class="infl-label label-border-top" :class="mq">{{translate('tags.Pres')}}</th>
@@ -105,8 +105,8 @@
       </div>
       <div v-for="j in mq=='xs' ? [3,4] : [-1]" :key="j">
         <table class="infl-table" :class="mq">
-          <caption class="caption">{{translate('caption.NOUN')}}</caption>
-          <thead>
+          <caption class="caption">{{translate('caption.VERB')}}</caption>
+          <thead :lang="lang">
             <template v-if="hasPerfPart">
               <tr>
                 <th class="infl-label label-border-top-left"
@@ -188,7 +188,7 @@
       <template v-if="hasSingAdj || hasPlur">
         <table class="infl-table" :class="mq">
           <caption class="caption">{{translate('caption.ADJ')}}</caption>
-          <thead>
+          <thead :lang="lang">
             <tr>
               <th v-if="hasSingAdj"
                   class="infl-label label-border-top-left"
@@ -256,7 +256,7 @@
       <template v-if="hasDeg">
         <table class="infl-table" :class="mq">
           <caption class="caption">{{translate('caption.ADJCS')}}</caption>
-          <thead>
+          <thead :lang="lang">
             <tr>
               <th class="infl-label label-border-top-left-right"
                   v-if="hasDeg"
@@ -311,7 +311,7 @@
       <template v-if="hasDeg">
         <table class="infl-table" :class="mq">
           <caption class="caption">{{translate('caption.ADV')}}</caption>
-          <thead>
+          <thead :lang="lang">
             <tr>
               <th class="infl-label label-border-bottom">
                 {{translate('tags.Pos')}}
@@ -349,7 +349,7 @@
     <template v-if="mq!='xs'">
         <table class="infl-table" :class="mq">
           <caption class="caption">{{translate('caption.PRON')}}</caption>
-          <thead>
+          <thead :lang="lang">
             <tr>
               <th v-if="hasNom" class="infl-label sub label-border-top-left">
                 {{translate('tags.Nom')}}
@@ -511,12 +511,14 @@ export default {
             'mq',        // media query screen size
             'context',   // show participle context?
             'locale',
+            'langTag',
             'customTranslate',
             'includeNonStandard'
            ],
     data: function () {
         return { dict: this.lemmaList ? this.lemmaList[0].language : null,
                  translate: this.customTranslate || this.defaultTranslate,
+                 lang: this.langTag || locale,
                  hasFem: this.hasInflForm(['Fem']),
                  hasNeuter: this.hasInflForm(['Neuter']),
                  hasMasc: this.hasInflForm(['Masc']),
@@ -784,7 +786,7 @@ export default {
             paradigms = paradigms.sort((p1,p2) => {
                 let chain1 = concat_wordforms(p1.inflection)
                 let chain2 = concat_wordforms(p2.inflection)
-                return chain1.localeCompare(chain2)
+                return chain1.localeCompare(chain2, 'no')
             })
 
             let currentTags = paradigms[0].tags
