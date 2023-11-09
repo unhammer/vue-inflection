@@ -4,7 +4,7 @@
     <template v-if="isNoun">
         <table v-if="mq!='xs'" class="infl-table" :class="mq">
           <caption class="caption">{{translate('caption.VERB')}}</caption>
-          <thead>
+          <thead :lang="lang">
             <tr>
               <th class="infl-label sub label-border-top-left" :class="mq"
                   v-if="!nounGender && hasGender"
@@ -386,7 +386,7 @@
   <template v-if="lemma && lemma.word_class=='DET' && !isUninflected">
     <table v-if="mq!='xs'" class="infl-table" :class="mq">
       <caption class="caption">{{translate('caption.DET')}}</caption>
-      <thead>
+      <thead :lang="lang">
         <tr>
           <th v-if="hasSing"
               class="infl-label label-border-top-left" :class="mq"
@@ -449,7 +449,7 @@
   <template v-if="lemma && isUninflected && !isADJ_Adv">
     <table class="infl-table" :class="mq">
       <caption class="caption">{{translate('caption.ADV')}}</caption>
-      <thead>
+      <thead :lang="lang">
         <tr>
           <th class="infl-label label-border">{{translate('tags.Uninfl')}}</th>
         </tr>
@@ -518,7 +518,7 @@ export default {
     data: function () {
         return { dict: this.lemmaList ? this.lemmaList[0].language : null,
                  translate: this.customTranslate || this.defaultTranslate,
-                 lang: this.langTag || locale,
+                 lang: this.langTag || this.locale || this.$i18n.locale,
                  hasFem: this.hasInflForm(['Fem']),
                  hasNeuter: this.hasInflForm(['Neuter']),
                  hasMasc: this.hasInflForm(['Masc']),
