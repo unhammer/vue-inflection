@@ -15,7 +15,7 @@
             :key="index">
         <em v-if="prefix" class="context">{{prefix}} </em>
         <span :style="form=='-' ? 'color: white':''">{{form}}</span>
-        <em v-if="suffix" class="context nobr"> {{suffix}}</em>
+        <em v-if="suffix" :lang="lang" translate="yes" class="context nobr"> {{suffix}}</em>
       </span>
     </span>
     <span v-if="standardisation!='STANDARD'">)</span>
@@ -31,7 +31,7 @@ import { inflectedForm, indefArticle
 
 export default {
     name: 'inflectionRowParticiple',
-    props: ['paradigm','hasPerfPart','hasPerfPartFem','dict', 'translate', 'part','lemmaId', 'context'],
+    props: ['paradigm','hasPerfPart','hasPerfPartFem','dict', 'translate', 'lang', 'part','lemmaId', 'context'],
     data: function () {
         return { rows: [
             this.hasPerfPart && this.part!=4 ?
