@@ -79,9 +79,8 @@
         </table>
   </template>
   <template v-if="lemma && lemma.word_class=='VERB'">
-    <div v-if="mq!='xs'"
-           class="infl-wordclass" :class="mq">
-      <template v-for="i in mq=='xs' ? [1,2] : [0]" :key="i">
+    <template v-if="mq!='xs'">
+      <div v-for="i in mq=='xs' ? [1,2] : [0]" :key="i">
         <table class="infl-table" :class="mq">
           <caption class="caption">{{translate('caption.NOUN')}}</caption>
           <thead>
@@ -103,7 +102,7 @@
                                @unhilite="unhilite"/>
           </tbody>
         </table>
-      </template>
+      </div>
       <div v-for="j in mq=='xs' ? [3,4] : [-1]" :key="j">
         <table class="infl-table" :class="mq">
           <caption class="caption">{{translate('caption.NOUN')}}</caption>
@@ -172,7 +171,7 @@
           </tbody>
         </table>
       </div>
-    </div>
+    </template>
     <table v-else class="infl-table" :class="mq" >
       <inflectionRowsVerb v-for="(tags, index) in inflTagsVerb"
                           :key="index"
