@@ -82,7 +82,7 @@
     <template v-if="mq!='xs'">
       <div v-for="i in mq=='xs' ? [1,2] : [0]" :key="i">
         <table class="infl-table" :class="mq">
-          <caption class="caption">{{translate('caption.NOUN')}}</caption>
+          <caption class="caption">{{translate('caption.VERB')}}</caption>
           <thead :lang="lang">
             <tr>
               <th v-if="!i || i==1" class="infl-label label-border-top-left" :class="mq">{{translate('tags.Inf')}}</th>
@@ -105,7 +105,7 @@
       </div>
       <div v-for="j in mq=='xs' ? [3,4] : [-1]" :key="j">
         <table class="infl-table" :class="mq">
-          <caption class="caption">{{translate('caption.VERB')}}</caption>
+          <caption class="caption">{{translate('caption.VERBPP')}}</caption>
           <thead :lang="lang">
             <template v-if="hasPerfPart">
               <tr>
@@ -489,6 +489,7 @@ import inflectionRowsDet from './inflectionRowsDet.vue'
 
 
 import { calculateStandardParadigms,
+         getStandardParadigms,
          word_formsEqual, hasTags, hasInflForm, markdownToHTML
        } from './mixins/ordbankUtils.js'
 
@@ -729,6 +730,9 @@ export default {
         // the paradigms that should be shown in the table
         // sort Masc < Fem < Neuter, then sort alphabetically by word_form (first elt if it is a list)
         getStandardParadigms: function () {
+            return getStandardParadigms(this.lemmaList)
+        },
+        getStandardParadigmsOld: function () {
             if (this.paradigms) {
                 return this.paradigms
             }
