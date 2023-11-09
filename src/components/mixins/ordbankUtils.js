@@ -395,32 +395,15 @@ function markdownCharToHTML (str,c,e,whole) {
     return html + str.substring(pos)
 }
 
-export function getGender () {
-    let paradigms = this.getStandardParadigms()
-    // let isNoun = paradigms[0] ? paradigms[0].tags.find(t => t == 'NOUN') : null
-    paradigms.forEach(p => {
-        if (this.isNoun) {
-            let gender = p.tags[1]
-            if (!this.gender) {
-                this.gender = gender
-            } else if (this.gender != gender) {
-                this.gender = '+' // more than one gender
-            }
-        }
-    })
-    return this.gender
-}
-
-export function getStandardParadigms (lemmaList) {
-    /* if (this.paradigms) {
-        return this.paradigms
-    } */
+// the paradigms that should be shown in the table
+// sort Masc < Fem < Neuter, then sort alphabetically by word_form (first elt if it is a list)
+export function getStandardParadigms (lemmaList, edit, includeNonStandard) {
     let paradigms = []
     lemmaList &&
         lemmaList.
         forEach(lemma =>
             paradigms = paradigms.concat(
-                calculateStandardParadigms(lemma, this.edit, this.includeNonStandard)))
+                calculateStandardParadigms(lemma, edit, includeNonStandard)))
     if (!paradigms.length) {
         return []
     }

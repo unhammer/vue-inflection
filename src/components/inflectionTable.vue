@@ -469,8 +469,6 @@
 
 <script>
 
-
-
 import inflectionRowNoun from './inflectionRowNoun.vue'
 import inflectionRowAdj from './inflectionRowAdj.vue'
 import inflectionRowAdjDeg from './inflectionRowAdjDeg.vue'
@@ -483,14 +481,13 @@ import inflectionRowDet from './inflectionRowDet.vue'
 import inflectionRowsNoun from './inflectionRowsNoun.vue'
 import inflectionRowsVerb from './inflectionRowsVerb.vue'
 import inflectionRowsAdj from './inflectionRowsAdj.vue'
-// import inflectionRowsAdjAdv from './inflectionRowsAdjAdv.vue'
 import inflectionRowsPron from './inflectionRowsPron.vue'
 import inflectionRowsDet from './inflectionRowsDet.vue'
 
 
-import { calculateStandardParadigms,
-         getStandardParadigms,
-         word_formsEqual, hasTags, hasInflForm, markdownToHTML
+import { getStandardParadigms,
+         hasInflForm,
+         markdownToHTML
        } from './mixins/ordbankUtils.js'
 
 export default {
@@ -523,7 +520,7 @@ export default {
                  translate: this.customTranslate || this.defaultTranslate,
                  lang: this.langTag || this.locale || this.$i18n.locale,
                  hasFem: this.hasInflForm(['Fem']),
-                 hasNeuter: this.hasInflForm(['Neuter']),
+                 hasNeuter: this.hasInflForm(['Neuter']) && !this.hasInflForm(['Nom']),
                  hasMasc: this.hasInflForm(['Masc']),
                  hasDeg: this.hasInflForm(['Cmp']),
                  hasDef: this.hasInflForm(['Def']),
@@ -661,7 +658,7 @@ export default {
                     this.hasPerfPartDef ? { block: 'PerfPart', label: 'Plur', tags: ['Adj','Plur']} : null,
                     this.hasPresPart ? { title: 'PresPart' } : null,
                     this.hasPresPart ? { block: 'PresPart', tags: ['Adj','<PresPart>'] } : null,
-                   ].filter(r => r)
+                   ].filter(r=>r)
         },
         inflTagsAdj: function () {
             return [ this.hasSingAdj ? { title: 'Sing' } : null,
@@ -727,117 +724,8 @@ export default {
             }
             return info
             },
-        // the paradigms that should be shown in the table
-        // sort Masc < Fem < Neuter, then sort alphabetically by word_form (first elt if it is a list)
         getStandardParadigms: function () {
-            return getStandardParadigms(this.lemmaList)
-        },
-        getStandardParadigmsOld: function () {
-            if (this.paradigms) {
-                return this.paradigms
-            }
-            let paradigms = []
-            this.lemmaList &&
-                this.lemmaList.
-                forEach(lemma =>
-                        paradigms = paradigms.concat(
-                            calculateStandardParadigms(lemma, this.edit, this.includeNonStandard)))
-            if (!paradigms.length) {
-                return []
-            }
-
-            let isNoun = paradigms[0].tags.find(t => t == 'NOUN') ||
-                this.lemmaList && this.lemmaList[0].paradigm_info[0].inflection_group == 'NOUN_regular'
-            
-            let concat_wordforms = function (infl) {
-                let chain = ''
-                for (let i = 0; i < infl.length; i++) {
-                    let wf = infl[i].word_form
-                    if (wf == 'Masc' || wf == 'MascShort') { // Masc < Fem < Neuter
-                        chain += 'a#'
-                    } else if (wf == 'Fem' || wf == 'FemShort') {
-                        chain += 'b#'
-                    } else if (wf == 'Neuter'|| wf == 'NeuterShort') {
-                        chain += 'c#'
-                    } else if (typeof wf == 'string') {
-                        chain += wf + '#'
-                    } else if (!wf) {
-                        null
-                    } else {
-                        chain += wf[0] + '#'
-                    }
-                }
-                return chain
-            }
-            
-            paradigms.forEach((p) => {
-                // cases like ‘et nynorsk’, see #406, #510
-                if (isNoun && p.tags.find(t=>t=='Uninfl') && p.inflection.length == 1) {
-                    let standard = p.inflection[0].standardisation
-                    p.inflection.push({ tags: ['Sing', 'Ind'],
-                                        word_form: this.lemma.lemma,
-                                        standardisation: standard })
-                    p.inflection.push({ tags: ['Sing', 'Def'],
-                                        word_form: '–',
-                                        standardisation: standard })
-                    p.inflection.push({ tags: ['Plur', 'Ind'],
-                                        word_form: '–',
-                                        standardisation: standard })
-                    p.inflection.push({ tags: ['Plur', 'Def'],
-                                        word_form: '–',
-                                        standardisation: standard })
-                }
-            })
-
-            paradigms = paradigms.sort((p1,p2) => {
-                let chain1 = concat_wordforms(p1.inflection)
-                let chain2 = concat_wordforms(p2.inflection)
-                return chain1.localeCompare(chain2, 'no')
-            })
-
-            let currentTags = paradigms[0].tags
-            let currentInfl = paradigms[0].inflection.map(infl => {
-                infl.rowspan = 0
-                infl.index = []
-                return infl })
-            // merge equal cells by setting rowspan
-            paradigms.forEach((p,index) => {
-                for (let i = 0; i < p.inflection.length; i++) {
-                    if (currentInfl[i] &&
-                        p.inflection[i] &&
-                        currentInfl[i].rowspan > 0 &&
-                        word_formsEqual(currentInfl[i].word_form,
-                                        p.inflection[i].word_form,
-                                        currentTags,
-                                        p.tags,
-                                        hasTags(currentInfl[i], ['Sing','Ind']) // no vertical merge
-                                       )
-                       ) {
-                        currentInfl[i].index.push(index+1) // remember paradigm row, for hiliting
-                        currentInfl[i].rowspan++
-                        if (p.inflection[i].standardisation == 'STANDARD') {
-                            currentInfl[i].standardisation = 'STANDARD'
-                        }
-                        if (isNoun) {
-                            let gender = p.tags[1]
-                            if (!currentInfl[i].gender.find(g=>g==gender)) {
-                                currentInfl[i].gender.push(gender)
-                            }
-                        }
-                        p.inflection[i].rowspan = 0
-                    } else {
-                        currentInfl[i] = p.inflection[i]
-                        currentInfl[i].index = []
-                        currentInfl[i].index.push(index+1) // remember paradigm row, for hiliting
-                        currentInfl[i].rowspan = 1
-                        if (isNoun) {
-                            let gender = p.tags[1]
-                            currentInfl[i].gender = [gender]
-                        }
-                    }
-                }
-            })
-            return paradigms
+            return this.paradigms || getStandardParadigms(this.lemmaList, this.edit, this.includeNonStandard)
         },
         isNeuterPron: function () {
             let paradigms = this.getStandardParadigms()
@@ -850,8 +738,7 @@ export default {
             return neuter
         },
         getGender: function () {
-            let paradigms = this.getStandardParadigms()
-            // let isNoun = paradigms[0] ? paradigms[0].tags.find(t => t == 'NOUN') : null
+            let paradigms = getStandardParadigms(this.lemmaList)
             paradigms.forEach(p => {
                 if (this.isNoun) {
                     let gender = p.tags[1]
