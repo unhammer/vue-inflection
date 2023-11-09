@@ -7,7 +7,7 @@ export function calculateStandardParadigms (lemma,edit,all) {
             lemma.paradigm_info &&
                 lemma.paradigm_info.filter(paradigm =>
                     (all || (paradigm.standardisation=='STANDARD' &&
-                             paradigm.code[0] != 'M' && 
+                             (!paradigm.code || paradigm.code[0] != 'M') && 
                              !paradigm.to)) && // we assume this is in the past if not null
                         (!edit || !paradigm.exclude)
                 ))
@@ -353,6 +353,10 @@ export function indefArticle (tagList, dict) {
     case 'nob':
         return indefArticle_nob[tagList[1]]
     case 'nno':
+        return indefArticle_nno[tagList[1]]
+    case 'bm':
+        return indefArticle_nob[tagList[1]]
+    case 'nn':
         return indefArticle_nno[tagList[1]]
     }
 }

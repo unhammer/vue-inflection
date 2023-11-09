@@ -4,7 +4,7 @@
     <th class="infl-label xs"
         :id="tags.label"
         scope="row">
-      {{$t(tags.label)}}
+      {{translate("tags",  tags.label)}}
     </th>
     <td class="notranslate infl-cell xs"
         v-for="([rowspan,rowindex,forms], index) in cells"
@@ -24,7 +24,7 @@
         :id="tags.title"
         scope="col"
         :colspan="paradigms.length+1">
-      {{$t(tags.title)}}
+      {{translate("tags",  tags.title)}}
     </th>
   </template>
 </tr>
@@ -37,7 +37,7 @@ import { inflectedForm
 
 export default {
     name: 'inflectionRowsAdj',
-    props: ['paradigms','tags','lemmaId'],
+    props: ['paradigms','tags','lemmaId', 'translate'],
     data: function () {
         return {
             cells: !this.tags.title ?
