@@ -5,7 +5,7 @@
         class="infl-label xs"
         :id="tags.label"
         scope="row">
-      {{$t(tags.label)}}
+      {{translate(tags.label)}}
     </th>
     <td class="notranslate infl-cell"
         v-for="([rowspan,rowindex,forms], index) in cells"
@@ -34,6 +34,7 @@ export default {
     data: function () {
         return {
             cells: this.paradigms.map(p => this.inflForm(p, this.tags.tags))
+                .filter(r => r && r[0])
         }
     },
     methods: {

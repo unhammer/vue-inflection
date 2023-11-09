@@ -32,7 +32,7 @@ export default {
                      this.inflForm(['Neuter'],`Sing${this.lemmaId} Neuter${this.lemmaId}`),
                      this.inflForm(['Def'],`Sing${this.lemmaId} Def${this.lemmaId}`),
                      this.inflForm([ 'Plur'],'Plur' + this.lemmaId)
-                   ].filter(r => r[0][0])
+                   ].filter(r => r[0] && r[0][0])
         }
     },
     methods: {

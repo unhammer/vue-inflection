@@ -1,59 +1,54 @@
 <template>
-<div @mouseover="unhiliteRows()" :id="'lemma'+lemma.id">
+<div :id="'lemma'+lemma.id">
   <div class="infl-wrapper">
     <template v-if="isNoun">
       <div v-if="mq!='xs'"
            class="infl-wordclass"
            :class="mq">
-        <div class="lemma label-border-lemma">
-          <span class="infl-lemma" v-html="formattedLemma"/>
-          <span class="sub"> {{wordClass}}</span>
-          <span class="sub" v-if="nounGender"> {{nounGender}}</span>
-        </div>
         <div>
           <table class="infl-table" :class="mq">
-            <caption class="caption">{{$t('Inflection table for this noun')}}</caption>
+            <caption class="caption">{{translate('caption.NOUN')}}</caption>
             <thead>
               <tr>
                 <th class="infl-label sub label-border-top-left" :class="mq"
                     v-if="!nounGender && hasGender"
                     :id="'Gender'+lemma.id"
                     scope="col"
-                    rowspan='2'>{{$t('Gender')}}</th>
+                    rowspan='2'>{{translate('tags.Gender')}}</th>
                 <th v-if="hasSing"
                     :id="'Sing'+lemma.id"
                     class="infl-label label-border-top-left" :class="mq"
                     scope="col"
                     :colspan='hasDef?2:1'>
-                  {{$t('Sing')}}</th>
+                  {{translate('tags.Sing')}}</th>
                 <th v-if="hasPlur"
                     :id="'Plur'+lemma.id"
                     class="infl-label label-border-top-right"
                     :class="mq" scope="col"
                     :colspan='hasDef?2:1'>
-                  {{$t('Plur')}}</th>
+                  {{translate('tags.Plur')}}</th>
               </tr>
               <tr>
                 <th v-if="hasSing"
                     :id="'SingInd'+lemma.id"
                     class="infl-label sub label-border-bottom" scope="col" :class="mq">
-                  {{$t('Ind')}} {{$t('Form')}}
+                  {{translate('tags.Ind')}} {{translate('tags.Form')}}
                 </th>
                 <th v-if="hasDef && hasSing"
                     :id="'SingDef'+lemma.id"
                     class="infl-label sub label-border-bottom" scope="col" :class="mq">
-                  {{$t('Def')}} {{$t('Form')}}
+                  {{translate('tags.Def')}} {{translate('tags.Form')}}
                 </th>
                 <th v-if="hasPlur" class="infl-label sub label-border-bottom"
                     :id="'PlurInd'+lemma.id"
                     scope="col" :class="mq">
-                  {{$t('Ind')}} {{$t('Form')}}
+                  {{translate('tags.Ind')}} {{translate('tags.Form')}}
                 </th>
                 <th v-if="hasDef && hasPlur"
                     class="infl-label sub label-border-bottom"
                     :id="'PlurDef'+lemma.id"
                     scope="col" :class="mq">
-                  {{$t('Def')}} {{$t('Form')}}
+                  {{translate('tags.Def')}} {{translate('tags.Form')}}
                 </th>
               </tr>
             </thead>
@@ -61,7 +56,8 @@
               <inflectionRowNoun v-for="(paradigm, index) in standardParadigms"
                                  :key="index"
                                  :showGender="!nounGender"
-                                 :dict="language"
+                                 :dict="dict"
+                                 :translate="translate"
                                  :lemma="lemma"
                                  :hasDef="hasDef"
                                  :hasSing="hasSing"
@@ -77,18 +73,14 @@
     <div v-else
          class="infl-wordclass"
          :class="mq">
-      <div class="lemma">
-        <span class="infl-lemma" v-html="formattedLemma"/>
-        <span class="sub"> {{wordClass}}</span>
-        <span class="sub" v-if="nounGender"> {{nounGender}}</span>
-      </div>
       <div>
         <table class="infl-table" :class="mq">
           <inflectionRowsNoun v-for="(tags, index) in inflTagsNoun"
                               :key="index"
                               :showGender="!nounGender"
                               :tags="tags"
-                              :dict="language"
+                              :dict="dict"
+                              :translate="translate"
                               :lemmaId="lemma.id"
                               :paradigms="standardParadigms"
                               @hilite="hilite"
@@ -101,20 +93,16 @@
   <template v-if="lemma && lemma.word_class=='VERB'">
     <div v-if="mq!='xs'"
            class="infl-wordclass" :class="mq">
-      <div class="lemma label-border-lemma">
-        <span class="infl-lemma">{{lemma.lemma}} </span>
-        <span class="sub">{{wordClass}}</span>
-      </div>
       <div v-for="i in mq=='xs' ? [1,2] : [0]" :key="i">
         <table class="infl-table" :class="mq">
-          <caption class="caption">{{$t('Inflection table for this verb')}}</caption>
+          <caption class="caption">{{translate('caption.NOUN')}}</caption>
           <thead>
             <tr>
-              <th v-if="!i || i==1" class="infl-label label-border-top-left" :class="mq">{{$t('Inf')}}</th>
-              <th v-if="!i || i==1" class="infl-label label-border-top" :class="mq">{{$t('Pres')}}</th>
-              <th v-if="!i || i==1" class="infl-label label-border-top" :class="mq">{{$t('Past')}}</th>
-              <th v-if="!i || i==2" class="infl-label label-border-top" :class="mq">{{$t('PresPerf')}}</th>
-              <th v-if="(!i || i==2) && hasImp" class="infl-label label-border-top-right" :class="mq">{{$t('Imp')}}</th>
+              <th v-if="!i || i==1" class="infl-label label-border-top-left" :class="mq">{{translate('tags.Inf')}}</th>
+              <th v-if="!i || i==1" class="infl-label label-border-top" :class="mq">{{translate('tags.Pres')}}</th>
+              <th v-if="!i || i==1" class="infl-label label-border-top" :class="mq">{{translate('tags.Past')}}</th>
+              <th v-if="!i || i==2" class="infl-label label-border-top" :class="mq">{{translate('tags.PresPerf')}}</th>
+              <th v-if="(!i || i==2) && hasImp" class="infl-label label-border-top-right" :class="mq">{{translate('tags.Imp')}}</th>
             </tr>
           </thead>
           <tbody>
@@ -130,7 +118,7 @@
       </div>
       <div v-for="j in mq=='xs' ? [3,4] : [-1]" :key="j">
         <table class="infl-table" :class="mq">
-          <caption class="caption">{{$t('Inflection table for the participles of this verb')}}</caption>
+          <caption class="caption">{{translate('caption.NOUN')}}</caption>
           <thead>
             <template v-if="hasPerfPart">
               <tr>
@@ -139,44 +127,44 @@
                     :id="'PerfPart'+lemma.id"
                     scope="col"
                     :colspan="hasPerfPartFem ? 5 : (hasPerfPartDef ? (j<0?4:(j==3?3:1)) : 1)">
-                  {{$t('PerfPart')}}
+                  {{translate('tags.PerfPart')}}
                 </th>
                 <th v-if="j<0 || j==4"
                     class="infl-label label-border-top-right" :class="mq"
                     :id="'PresPart'+lemma.id"
                     scope="col"
-                    rowspan="2">{{$t('PresPart')}}</th>
+                    rowspan="2">{{translate('tags.PresPart')}}</th>
               </tr>
               <tr>
                 <th v-if="(j<0 || j==3) && hasPerfPartDef"
                     :id="'Masc'+lemma.id"
                     scope="col"
                     class="infl-label sub label-border-bottom" :class="mq">
-                  {{$t('MascShort')}}&nbsp;/<br/>{{$t('Fem')}}</th>
+                  {{translate('tags.MascShort')}}&nbsp;/<br/>{{translate('tags.Fem')}}</th>
                 <th v-if="(j<0 || j==3) && hasPerfPartFem"
                     :id="'Fem'+lemma.id"
                     scope="col"
                     class="infl-label sub label-border-bottom" :class="mq">
-                  {{$t('Fem')}}</th>
+                  {{translate('tags.Fem')}}</th>
                 <th :id="'Neuter'+lemma.id"
                     scope="col"
                     class="infl-label sub label-border-bottom" :class="mq"
-                    v-if="(j<0 || j==3)">{{$t('Neuter')}}</th>
+                    v-if="(j<0 || j==3)">{{translate('tags.Neuter')}}</th>
                 <th v-if="(j<0 || j==3) && hasPerfPartDef"
                     :id="'Def'+lemma.id"
                     scope="col"
-                    class="infl-label sub label-border-bottom" :class="mq">{{$t('Def')}} {{$t('Form')}}</th>
+                    class="infl-label sub label-border-bottom" :class="mq">{{translate('tags.Def')}} {{translate('tags.Form')}}</th>
                 <th v-if="(j<0 || j==4) && hasPerfPartDef"
                     :id="'Plur'+lemma.id"
                     scope="col"
-                    class="infl-label sub label-border-bottom" :class="mq">{{$t('Plur')}}</th>
+                    class="infl-label sub label-border-bottom" :class="mq">{{translate('tags.Plur')}}</th>
               </tr>
             </template>
             <template v-else-if="hasPresPart">
               <tr>
                 <th v-if="j<0 || j==4"
                     :id="'PresPart'+lemma.id"
-                    class="infl-label label-border-top" :class="mq">{{$t('PresPart')}}</th>
+                    class="infl-label label-border-top" :class="mq">{{translate('tags.PresPart')}}</th>
               </tr>
             </template>
           </thead>
@@ -184,7 +172,8 @@
             <inflectionRowParticiple v-for="(paradigm, index) in standardParadigms"
                                      :key="index"
                                      :part="j"
-                                     :dict="language"
+                                     :translate="translate"
+                                     :dict="dict"
                                      :hasPerfPart="hasPerfPart"
                                      :hasPerfPartFem="hasPerfPartFem"
                                      :lemmaId="lemma.id"
@@ -198,15 +187,12 @@
     </div>
     <div v-else
          class="infl-wordclass" :class="mq">
-      <div class="lemma">
-          <span class="infl-lemma">{{lemma.lemma}} </span>
-          <span class="sub">{{wordClass}}</span>
-      </div>
       <div>
         <table class="infl-table" :class="mq" >
           <inflectionRowsVerb v-for="(tags, index) in inflTagsVerb"
                               :key="index"
                               :tags="tags"
+                              :translate="translate"
                               :lemmaId="lemma.id"
                               :paradigms="standardParadigms"
                               @hilite="hilite"
@@ -219,13 +205,9 @@
     <div v-if="mq!='xs'"
            class="infl-wordclass"
            :class="mq">
-      <div class="lemma label-border-lemma">
-        <span class="infl-lemma">{{lemma.lemma}} </span>
-        <span class="sub">{{wordClass}}</span>
-      </div>
       <div v-if="hasSingAdj || hasPlur">
         <table class="infl-table" :class="mq">
-          <caption class="caption">{{$t('Inflection table for this adjective')}}</caption>
+          <caption class="caption">{{translate('caption.ADJ')}}</caption>
           <thead>
             <tr>
               <th v-if="hasSingAdj"
@@ -234,14 +216,14 @@
                   :id="'Sing'+lemma.id"
                   scope="col"
                   :colspan="hasFem ? 4 : 3">
-                {{$t('Sing')}}
+                {{translate('tags.Sing')}}
               </th>
               <th v-if="hasPlur"
                   class="infl-label label-border-top-right" :class="mq"
                   :id="'Plur'+lemma.id"
                   scope="col"
                   :rowspan="hasSingAdj ? 2 : 1">
-                {{$t('Plur')}}
+                {{translate('tags.Plur')}}
               </th>
             </tr>
             <tr v-if="hasSingAdj">
@@ -250,32 +232,32 @@
                   :id="'Masc'+lemma.id"
                   scope="col"
                   :class="mq">
-                {{$t('Masc')}}
+                {{translate('tags.Masc')}}
               </th>
               <th v-if="!hasFem"
                   class="infl-label sub label-border-bottom"
                   :id="'Masc'+lemma.id"
                   scope="col"
                   :class="mq">
-                <span class="nobr">{{$t('MascShort')}}&nbsp;/</span><br/>{{$t('Fem')}}</th>
+                <span class="nobr">{{translate('tags.MascShort')}}&nbsp;/</span><br/>{{translate('tags.Fem')}}</th>
               <th v-if="hasFem"
                   class="infl-label sub label-border-bottom"
                   :id="'Fem'+lemma.id"
                   scope="col"
                   :class="mq">
-                {{$t('Fem')}}
+                {{translate('tags.Fem')}}
               </th>
               <th class="infl-label sub label-border-bottom"
                   :id="'Neuter'+lemma.id"
                   scope="col"
                   :class="mq">
-                {{$t('Neuter')}}
+                {{translate('tags.Neuter')}}
               </th>
               <th class="infl-label sub label-border-bottom"
                   :id="'Def'+lemma.id"
                   scope="col"
                  :class="mq">
-                {{$t('Def')}} {{$t('Form')}}
+                {{translate('tags.Def')}} {{translate('tags.Form')}}
               </th>
             </tr>
           </thead>
@@ -293,7 +275,7 @@
       </div>
       <div v-if="hasDeg">
         <table class="infl-table" :class="mq">
-          <caption class="caption">{{$t('Inflection table for this adjective (comparative, superlative)')}}</caption>
+          <caption class="caption">{{translate('caption.ADJCS')}}</caption>
           <thead>
             <tr>
               <th class="infl-label label-border-top-left-right"
@@ -301,24 +283,24 @@
                   :id="'Deg'+lemma.id"
                   scope="col"
                   colspan="3">
-                {{$t('Deg')}}
+                {{translate('tags.Deg')}}
               </th>
             </tr>
             <tr>
               <th :id ="'Cmp'+lemma.id"
                   scope="col"
                   class="infl-label label-border-bottom">
-                {{$t('Cmp')}}
+                {{translate('tags.Cmp')}}
               </th>
               <th :id="'SupInd'+lemma.id"
                   scope="col"
                   class="infl-label label-border-bottom">
-                {{$t('Sup')}}<br/><span class="sub">{{$t('Ind')}} {{$t('Form')}}</span>
+                {{translate('tags.Sup')}}<br/><span class="sub">{{translate('tags.Ind')}} {{translate('tags.Form')}}</span>
               </th>
               <th :id="'SupDef'+lemma.id"
                   scope="col"
                   class="infl-label label-border-bottom">
-                {{$t('Sup')}}<br/><span class="sub">{{$t('Def')}} {{$t('Form')}}</span>
+                {{translate('tags.Sup')}}<br/><span class="sub">{{translate('tags.Def')}} {{translate('tags.Form')}}</span>
               </th>
             </tr>
           </thead>
@@ -335,15 +317,12 @@
     </div>
     <div v-else
       class="infl-wordclass" :class="mq">
-      <div class="lemma">
-          <span class="infl-lemma">{{lemma.lemma}} </span>
-          <span class="sub">{{wordClass}}</span>
-      </div>
       <div>
         <table class="infl-table" :class="mq" >
           <inflectionRowsAdj v-for="(tags, index) in inflTagsAdj"
                              :key="index"
                              :tags="tags"
+                             :translate="translate"
                              :lemmaId="lemma.id"
                              :paradigms="standardParadigms"
                              @hilite="hilite"
@@ -356,23 +335,19 @@
     <div v-if="mq!='xs'"
            class="infl-wordclass"
            :class="mq">
-      <div class="lemma label-border-lemma">
-        <span class="infl-lemma">{{lemma.lemma}} </span>
-        <span class="sub">{{wordClass}}</span>
-      </div>
       <div v-if="hasDeg">
         <table class="infl-table" :class="mq">
-          <caption class="caption">{{$t('Inflection table for this adverb')}}</caption>
+          <caption class="caption">{{translate('caption.ADV')}}</caption>
           <thead>
             <tr>
               <th class="infl-label label-border-bottom">
-                {{$t('Pos')}}
+                {{translate('tags.Pos')}}
               </th>
               <th class="infl-label label-border-bottom">
-                {{$t('Cmp')}}
+                {{translate('tags.Cmp')}}
               </th>
               <th class="infl-label label-border-bottom">
-                {{$t('Sup')}}
+                {{translate('tags.Sup')}}
               </th>
             </tr>
           </thead>
@@ -389,10 +364,6 @@
     </div>
     <div v-else
       class="infl-wordclass" :class="mq">
-      <div class="lemma">
-          <span class="infl-lemma">{{lemma.lemma}} </span>
-          <span class="sub">{{wordClass}}</span>
-      </div>
       <div>
         <table class="infl-table" :class="mq" >
           <inflectionRowsAdj v-for="(tags, index) in inflTagsAdjAdv"
@@ -410,23 +381,19 @@
     <div v-if="mq!='xs'"
          class="infl-wordclass"
          :class="mq">
-      <div class="lemma label-border-lemma">
-          <span class="infl-lemma">{{lemma.lemma}} </span>
-          <span class="sub">{{wordClass}}</span>
-      </div>
       <div>
         <table class="infl-table" :class="mq">
-          <caption class="caption">{{$t('Inflection table for this pronoun')}}</caption>
+          <caption class="caption">{{translate('caption.PRON')}}</caption>
           <thead>
             <tr>
               <th v-if="hasNom" class="infl-label sub label-border-top-left">
-                {{$t('Nom')}}
+                {{translate('tags.Nom')}}
               </th>
               <th v-if="hasAcc" class="infl-label sub label-border-top-right">
-                {{$t('Acc')}}
+                {{translate('tags.Acc')}}
               </th>
               <th v-if="hasNeuter" class="infl-label sub label-border-top-right">
-                {{$t('Neuter')}}
+                {{translate('tags.Neuter')}}
               </th>
             </tr>
           </thead>
@@ -444,16 +411,12 @@
     <div v-else
          class="infl-wordclass"
          :class="mq">
-      <div class="lemma">
-        <span class="infl-lemma">{{lemma.lemma}} </span>
-        <span class="sub">{{wordClass}}</span>
-        <span class="sub" v-if="nounGender"> {{nounGender}}</span>
-      </div>
       <div>
         <table class="infl-table" :class="mq">
           <inflectionRowsPron v-for="(tags, index) in inflTagsPron"
                               :key="index"
                               :tags="tags"
+                              :translate="translate"
                               :lemmaId="lemma.id"
                               :paradigms="standardParadigms"
                               @hilite="hilite"
@@ -466,13 +429,9 @@
     <div v-if="mq!='xs'"
          class="infl-wordclass"
          :class="mq">
-      <div class="lemma label-border-lemma">
-          <span class="infl-lemma">{{lemma.lemma}} </span>
-          <span class="sub">{{wordClass}}</span>
-      </div>
       <div>
         <table class="infl-table" :class="mq">
-          <caption class="caption">{{$t('Inflection table for this determinative')}}</caption>
+          <caption class="caption">{{translate('caption.DET')}}</caption>
           <thead>
             <tr>
               <th v-if="hasSing"
@@ -480,14 +439,14 @@
                   id="Sing"
                   scope="col"
                   :colspan="DETColspan">
-                {{$t('Sing')}}
+                {{translate('tags.Sing')}}
               </th>
               <th v-if="hasPlur"
                   class="infl-label label-border-top-right" :class="mq"
                   id="Plur"
                   scope="col"
                   :rowspan="hasSing?2:1">
-                {{$t('Plur')}}
+                {{translate('tags.Plur')}}
               </th>
             </tr>
             <tr v-if="hasSing">
@@ -495,25 +454,25 @@
                   class="infl-label sub label-border-bottom" :class="mq"
                   id="Masc"
                   scope="col">
-                {{$t('Masc')}}
+                {{translate('tags.Masc')}}
               </th>
               <th v-if="hasFem"
                   class="infl-label sub label-border-bottom" :class="mq"
                   id="Fem"
                   scope="col">
-                {{$t('Fem')}}
+                {{translate('tags.Fem')}}
               </th>
               <th v-if="hasNeuter"
                   class="infl-label sub label-border-bottom" :class="mq"
                   id="Neuter"
                   scope="col">
-                {{$t('Neuter')}}
+                {{translate('tags.Neuter')}}
               </th>
               <th v-if="hasDef"
                   class="infl-label sub label-border-bottom" :class="mq"
                   id="Def"
                   scope="col">
-                {{$t('Def')}} {{$t('Form')}}
+                {{translate('tags.Def')}} {{translate('tags.Form')}}
               </th>
             </tr>
           </thead>
@@ -529,16 +488,12 @@
     <div v-else
          class="infl-wordclass"
          :class="mq">
-      <div class="lemma">
-        <span class="infl-lemma">{{lemma.lemma}} </span>
-        <span class="sub">{{wordClass}}</span>
-        <span class="sub" v-if="nounGender"> {{nounGender}}</span>
-      </div>
       <div>
         <table class="infl-table" :class="mq">
           <inflectionRowsDet v-for="(tags, index) in inflTagsDet"
                              :key="index"
                              :tags="tags"
+                             :translate="translate"
                              :lemmaId="lemma.id"
                              :paradigms="standardParadigms"/>
         </table>
@@ -547,16 +502,12 @@
   </template>
   <template v-if="lemma && isUninflected && !isADJ_Adv">
     <div class="infl-wordclass" :class="mq">
-      <div class="lemma label-border-top">
-        <span class="lemma">{{lemma.lemma}} </span>
-        <span class="sub">{{wordClass}}</span>
-      </div>
       <div>
         <table class="infl-table" :class="mq">
-          <caption class="caption">{{$t('Inflection table for this adverb')}}</caption>
+          <caption class="caption">{{translate('caption.ADV')}}</caption>
           <thead>
             <tr>
-              <th class="infl-label label-border">{{$t('Uninfl')}}</th>
+              <th class="infl-label label-border">{{translate('tags.Uninfl')}}</th>
             </tr>
           </thead>
           <tbody>
@@ -574,7 +525,7 @@
 
 <script>
 
-import $ from 'jquery'
+
 
 import inflectionRowNoun from './inflectionRowNoun.vue'
 import inflectionRowAdj from './inflectionRowAdj.vue'
@@ -617,10 +568,13 @@ export default {
                          // https://clarino.uib.no/ordbank-api-prod/lemmas?query=<lemma_id>&stubs=false&language=nob
             'mq',        // media query screen size
             'context',   // show participle context?
+            'locale',
+            'customTranslate',
             'includeNonStandard'
            ],
     data: function () {
-        return { language: this.lemmaList ? this.lemmaList[0].language : null,
+        return { dict: this.lemmaList ? this.lemmaList[0].language : null,
+                 translate: this.customTranslate || this.defaultTranslate,
                  hasFem: this.hasInflForm(['Fem']),
                  hasNeuter: this.hasInflForm(['Neuter']),
                  hasMasc: this.hasInflForm(['Masc']),
@@ -705,18 +659,6 @@ export default {
                }
     },
     computed: {
-        wordClass: function () {
-            if (this.lemmaList) {
-                if (this.isADJ_Adv) {
-                    return this.$t('ADV')
-                } else {
-                    return this.$t(this.lemmaList[0].word_class)
-                        || this.lemmaList[0].word_class
-                }
-            } else {
-                return null
-            }
-        },
         formattedLemma: function () {
             return markdownToHTML(this.lemma.markdown_lemma || this.lemma.lemma)
         },
@@ -790,15 +732,20 @@ export default {
             },
         nounGender: function () {
             this.getGender()
-            return !this.gender || this.gender=='+' ? null : this.$t(this.gender)
+            return !this.gender || this.gender=='+' ? null : this.translate('tags', this.gender)
         },
         edit: function () {
             return this.lemma.mode == 'edit' || this.lemma.mode == 'new'
         }
     },
     methods: {
+        defaultTranslate: function(...args) {
+              if (args.includes(undefined)) {
+                  return ""
+              }
+              return this.locale ? this.$t(args.join("."), {locale: this.locale}) : this.$t(args.join("."))
+        },
         hilited: function(rowindex, lemmaId) {
-            console.log('hilited', rowindex, lemmaId)
             if(lemmaId === this.hilitedLemma)
                 for(const item of rowindex) {
                     if (this.hilitedRows.includes(item)) {
@@ -966,9 +913,6 @@ export default {
                 }
             })
             return this.gender
-        },
-        unhiliteRows: function () {
-            $('td[index]').removeClass('hilite')
         }
     }
 }
@@ -993,18 +937,18 @@ div.comma:not(:last-child):after {
     content: ", ";
 }
 
-td[class="infl-group"] {
+td.infl-group {
   background-color: #FDF4F5;
   font-style: italic;
   text-align: center;
 }
 
-td[class*="infl-label"] {
+td.infl-label {
   font-style: italic;
   text-align: left;
 }
 
-td[class="infl-cell"] {
+td.infl-cell {
   text-align: center;
 }
 

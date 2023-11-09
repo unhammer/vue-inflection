@@ -12,12 +12,12 @@
         @mouseover="$emit('hilite', rowindex, lemma.id)">
       <span class='comma'
             v-for="(form, i) in forms"
-            :key="i">{{$t(form)}}</span>
+            :key="i">{{translate('tags',  form)}}</span>
     </th>
     <td v-else
         class="notranslate infl-cell"
         :headers="colref"
-        :key="index"
+        :key="index + 'else'"
         :rowspan="rowspan"
         :class="{hilite: $parent.hilited(rowindex, lemma.id)}"
         @mouseover="$emit('hilite', rowindex, lemma.id)"
@@ -41,7 +41,7 @@ import { inflectedForm, indefArticle, markdownToHTML
 
 export default {
     name: 'inflectionRowNoun',
-    props: ['paradigm','dict', 'showGender', 'lemma','hasDef', 'hasSing', 'hasPlur'],
+    props: ['paradigm','dict', 'translate', 'showGender', 'lemma','hasDef', 'hasSing', 'hasPlur'],
     emits: ['hilite', 'unhilite'],
     data: function () {
         return {
