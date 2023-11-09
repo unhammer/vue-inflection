@@ -34,6 +34,7 @@ export default {
     data: function () {
         return {
             cells: this.paradigms.map(p => this.inflForm(p, this.tags.tags))
+                .filter(r => r && r[0])
         }
     },
     methods: {

@@ -45,7 +45,7 @@ export default {
                     p => this.inflForm(p,
                                        this.tags.tags,
                                        this.tags.excl))
-                .filter(r => r) :
+                .filter(r => r && r[0]) :
                 []
         }
     },
