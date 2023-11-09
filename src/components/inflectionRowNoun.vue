@@ -8,20 +8,21 @@
         :headers="'Gender'+lemma.id"
         :key="index"
         :rowspan="rowspan"
-        :index="rowindex"
-        @mouseover.stop="hiliteRow(rowindex)">
+        :class="{hilite: $parent.hilited(rowindex, lemma.id)}"
+        @mouseover="$emit('hilite', rowindex, lemma.id)">
       <span class='comma'
             v-for="(form, i) in forms"
-            :key="i">{{tagToName(form)}}</span>
+            :key="i">{{$t(form)}}</span>
     </th>
     <td v-else
-        class="infl-cell"
+        class="notranslate infl-cell"
         :headers="colref"
         :key="index"
         :rowspan="rowspan"
-        :index="rowindex"
-        @mouseover.stop="hiliteRow(rowindex)">
-      <span v-if="standardisation!='STANDARD'">(</span>
+        :class="{hilite: $parent.hilited(rowindex, lemma.id)}"
+        @mouseover="$emit('hilite', rowindex, lemma.id)"
+        @mouseleave="$emit('unhilite')">
+       <span v-if="standardisation!='STANDARD'">(</span>
       <span>
         <span class='comma'
               v-for="(form, i) in forms"
@@ -35,14 +36,13 @@
 
 <script>
 
-import $ from 'jquery'
-
-import { inflectedForm, tagToName, indefArticle, markdownToHTML
+import { inflectedForm, indefArticle, markdownToHTML
        } from './mixins/ordbankUtils.js' 
 
 export default {
     name: 'inflectionRowNoun',
-    props: ['paradigm','dict', 'locale', 'showGender', 'lemma','hasDef', 'hasSing', 'hasPlur'],
+    props: ['paradigm','dict', 'showGender', 'lemma','hasDef', 'hasSing', 'hasPlur'],
+    emits: ['hilite', 'unhilite'],
     data: function () {
         return {
             cells: [
@@ -77,15 +77,6 @@ export default {
         },
         formattedForm: function (form) {
             return markdownToHTML(form)
-        },
-        tagToName: function (tag) {
-            return tagToName(tag, this.locale)
-        },
-        hiliteRow: function (rowindex) {
-            if (rowindex) {
-                $('td[index]').removeClass('hilite')
-                rowindex.forEach(i => $('#lemma' + this.lemma.id + ' td[index*='+ i + ']').addClass('hilite'))
-            }
         }
     }
 }

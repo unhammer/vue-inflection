@@ -1,10 +1,10 @@
 <template>
-<tr class="infl-row" :id="'lemma'+lemma.id">
+<tr class="infl-row" :id="'lemma'+lemmaId">
   <template v-if="tags.tags">
     <th class="infl-label xs"
         :id="tags.tags.join('')"
         scope="row">
-      {{tagToName(tags.label)}}
+      {{$t(tags.label)}}
     </th>
     <template v-for="([prefix, [rowspan,rowindex,forms], headers], index) in cells">
       <th v-if="tags.tags[0]=='_gender'"
@@ -13,17 +13,19 @@
           :key="index"
           scope="row"
           :colspan="rowspan"
-          :index="rowindex"
-          @mouseover.stop="hiliteRow(rowindex)">
+          :class="{hilite: $parent.hilited(rowindex, lemmaId)}"
+          @mouseover="$emit('hilite', rowindex, lemmaId)"
+          @mouseleave="$emit('unhilite')">
         <span v-html="formattedForm(tags,forms[0])"/>
       </th>
       <td v-else
-          class="infl-cell"
+          class="notranslate infl-cell"
           :key="index"
           :colspan="rowspan"
-          :index="rowindex"
           :headers="headers"
-          @mouseover.stop="hiliteRow(rowindex)">
+          :class="{hilite: $parent.hilited(rowindex, lemmaId)}"
+          @mouseover="$emit('hilite', rowindex, lemmaId)"
+          @mouseleave="$emit('unhilite')">
         <span class='comma'
               v-for="(form, index) in forms"
               :key="index">
@@ -38,7 +40,7 @@
         :colspan="paradigms.length+1"
         scope="col"
         :id="tags.title">
-      {{tagToName(tags.title)}}
+      {{$t(tags.title)}}
     </th>
   </template>
 </tr>
@@ -46,14 +48,13 @@
 
 <script>
 
-import $ from 'jquery'
-
-import { inflectedForm, tagToName, markdownToHTML
+import { inflectedForm, markdownToHTML
        } from './mixins/ordbankUtils.js' 
 
 export default {
     name: 'inflectionRowsNoun',
-    props: ['paradigms','tags','dict','locale', 'lemma', 'showGender'],
+    props: ['paradigms','tags','dict', 'lemmaId', 'showGender'],
+    emits: ['hilite', 'unhilite'],
     data: function () {
         return {
             cells: !this.tags.title ?
@@ -114,15 +115,8 @@ export default {
                 return [prefix, forms, gender + tagList[0] +  ' ' + tagList[0] + tagList[1]]
             }
         },
-        hiliteRow: function (rowindex) {
-            $('td[index]').removeClass('hilite')
-            rowindex.forEach(i => $('#lemma' + this.lemma.id + ' td[index*='+ i + ']').addClass('hilite'))
-        },
-        tagToName: function (tag) {
-            return tagToName(tag, this.locale)
-        },
         formattedForm: function (tags,form) {
-            return tags.tags[0]=='_gender' ? this.tagToName(form) : markdownToHTML(form)
+            return tags.tags[0]=='_gender' ? this.$t(form) : markdownToHTML(form)
         }
     }
 }

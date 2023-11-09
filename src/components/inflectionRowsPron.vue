@@ -5,14 +5,15 @@
         class="infl-label xs"
         :id="tags.label"
         scope="row">
-      {{tagToName(tags.label)}}
+      {{$t(tags.label)}}
     </th>
-    <td class="infl-cell"
+    <td class="notranslate infl-cell"
         v-for="([rowspan,rowindex,forms], index) in cells"
         :key="index"
         :colspan="rowspan"
-        :index="rowindex"
-        @mouseover.stop="hiliteRow(rowindex)">
+        :class="{hilite: $parent.hilited(rowindex, lemmaId)}"
+        @mouseover="$emit('hilite', rowindex, lemmaId)"
+        @mouseleave="$emit('unhilite')">
       <span class='comma'
             v-for="(form, index) in forms"
             :key="index">
@@ -24,14 +25,12 @@
 
 <script>
 
-import $ from 'jquery'
-
-import { inflectedForm, tagToName
+import { inflectedForm
        } from './mixins/ordbankUtils.js' 
 
 export default {
     name: 'inflectionRowsPron',
-    props: ['paradigms','lemma','tags','locale','lemmaId'],
+    props: ['paradigms','tags','lemmaId'],
     data: function () {
         return {
             cells: this.paradigms.map(p => this.inflForm(p, this.tags.tags))
@@ -41,13 +40,6 @@ export default {
         inflForm: function (paradigm, tagList) {
             let forms = inflectedForm(paradigm, tagList, [])
             return forms || [1,0,[this.lemma]] // workaround for missing inflection
-        },
-        hiliteRow: function (rowindex) {
-            $('td[index]').removeClass('hilite')
-            rowindex.forEach(i => $('#lemma' + this.lemmaId + ' td[index*='+ i + ']').addClass('hilite'))
-        },
-        tagToName: function (tag) {
-            return tagToName(tag, this.locale)
         }
     }
 }

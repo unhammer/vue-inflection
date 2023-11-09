@@ -4,8 +4,9 @@
       v-for="([prefix, [rowspan,rowindex,forms,gender,standardisation], suffix], index) in rows"
       :key="index"
       :rowspan="rowspan"
-      :index="rowindex"
-      @mouseover.stop="hiliteRow(rowindex)">
+      :class="{hilite: $parent.hilited(rowindex, lemmaId)}"
+      @mouseover="$emit('hilite', rowindex, lemmaId)"
+      @mouseleave="$emit('unhilite')">
     <span v-if="standardisation!='STANDARD'">(</span>
     <span>
       <span class="comma nobr"
@@ -21,14 +22,13 @@
 
 <script>
 
-import $ from 'jquery'
-
 import { inflectedForm, hasInflForm
        } from './mixins/ordbankUtils.js' 
 
 export default {
     name: 'inflectionRowVerb',
     props: ['paradigm','part','lemmaId'],
+    emits: ['hilite', 'unhilite'],
     data: function () {
         return {
             rows: [ !this.part || this.part==1 ? this.inflForm(['Inf'],['Pass'],'å') : null,
@@ -48,10 +48,6 @@ export default {
             } else {
                 return null
             }
-        },
-        hiliteRow: function (rowindex) {
-            $('td[index]').removeClass('hilite')
-            rowindex.forEach(i => $('#lemma' + this.lemmaId + ' td[index*='+ i + ']').addClass('hilite'))
         }
     }
 }

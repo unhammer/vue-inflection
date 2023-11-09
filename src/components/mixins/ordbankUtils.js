@@ -314,13 +314,17 @@ export function hasInflForm (paradigm, tagList) {
     return !!res
 }
 
+const tagNames = [ 'Form', 'Gender', 'Sing', 'Plur', 'Ind', 'Def', 'Finite', 'Inf', 'Pres', 'Past',
+                   'PresPerf', 'Imp', 'PerfPart', 'Fem', 'FemShort', 'Masc', 'MascShort', 'MascFem',
+                   'Neuter', 'NeuterShort', 'PresPart', 'Deg', 'Pos', 'Cmp',
+                   'Sup', 'SupInd', 'SupDef', 'Nom', 'Acc', 'Uninfl' ]
+
 function hyphenatedForm (form, lemma) {
     if (lemma &&
         lemma.word_class == 'NOUN' &&
         lemma.lemma.length > 10 &&
         lemma.initial_lexeme &&
-        !tagNames_eng[form] &&
-        // form.length >= lemma.initial_lexeme.length && // excludes _gender virtual tag!
+        !tagNames.find(f=>f==form) &&
         !lemma.neg_junction) {
         let junction = (lemma.junction && lemma.junction != '-') ? lemma.junction : null
         let il = lemma.initial_lexeme + (junction || '') + '­'
@@ -332,206 +336,6 @@ function hyphenatedForm (form, lemma) {
         }
     }
     return form
-}
-
-const tagNames_nob = { Form: "form",
-                       Gender: "kjønn",
-                       Sing: "entall",
-                       Plur: "flertall",
-                       Ind: "ubestemt",
-                       Def: "bestemt",
-                       Finite: "finitte former",
-                       Inf: "infinitiv",
-                       Pres: "presens",
-                       Past: "preteritum",
-                       PresPerf: "presens perfektum",
-                       Imp: "imperativ",
-                       PerfPart: "perfektum partisipp",
-                       Fem: "hunkjønn",
-                       FemShort: "hunkjønn",
-                       Masc: "hankjønn",
-                       MascShort: "hankjønn",
-                       MascFem: "hankjønn/ hunkjønn",
-                       Neuter: "intetkjønn",
-                       NeuterShort: "intetkjønn",
-                       PresPart: "presens partisipp",
-                       Deg: "gradbøying",
-                       Pos: "positiv",
-                       Cmp: "komparativ",
-                       Sup: "superlativ",
-                       SupInd: "superlativ ubestemt",
-                       SupDef: "superlativ bestemt",
-                       Nom: "subjektsform",
-                       Acc: "objektsform",
-                       Uninfl: "ubøyelig"
-                     }
-
-const tagNames_nno = { Form: "form",
-                       Gender: "kjønn",
-                       Sing: "eintal",
-                       Plur: "fleirtal",
-                       Ind: "ubunden",
-                       Def: "bunden",
-                       Finite: "finitte former",
-                       Inf: "infinitiv",
-                       Pres: "presens",
-                       Past: "preteritum",
-                       PresPerf: "presens perfektum",
-                       Imp: "imperativ",
-                       PerfPart: "perfektum partisipp",
-                       Fem: "hokjønn",
-                       FemShort: "hokjønn",
-                       Masc: "hankjønn",
-                       MascShort: "hankjønn",
-                       MascFem: "hankjønn/ hokjønn",
-                       Neuter: "inkjekjønn",
-                       NeuterShort: "inkjekjønn",
-                       PresPart: "presens partisipp",
-                       Deg: "gradbøying",
-                       Pos: "positiv",
-                       Cmp: "komparativ",
-                       Sup: "superlativ",
-                       SupInd: "superlativ ubunden",
-                       SupDef: "superlativ bunden",
-                       Nom: "subjektsform",
-                       Acc: "objektsform",
-                       Uninfl: "ubøyeleg"
-                     }
-
-const tagNames_eng = { Form: "form",
-                       Gender: "gender",
-                       Sing: "singular",
-                       Plur: "plural",
-                       Ind: "indefinite",
-                       Def: "definite",
-                       Finite: "finite forms",
-                       Inf: "infinitive",
-                       Pres: "present",
-                       Past: "past",
-                       PresPerf: "present perfect",
-                       Imp: "imperative",
-                       PerfPart: "perfect participle",
-                       Fem: "feminine",
-                       FemShort: "feminine",
-                       Masc: "masculine",
-                       MascShort: "masculine",
-                       MascFem: "masculine/ feminine",
-                       Neuter: "neuter",
-                       NeuterShort: "neuter",
-                       PresPart: "present participle",
-                       Deg: "degrees of comparison",
-                       Pos: "positive",
-                       Cmp: "comparative",
-                       Sup: "superlative",
-                       SupInd: "superlative indefinite",
-                       SupDef: "superlative definite",
-                       Nom: "subject form",
-                       Acc: "object form",
-                       Uninfl: "uninflected"
-                     }
-
-const tagNames_ukr = { Form: "форма",
-                       Gender: "рід",
-                       Sing: "однина",
-                       Plur: "множина",
-                       Ind: "неозначена",
-                       Def: "означена",
-                       // Ind: "неозначений",
-                       // Def: "означений",
-                       Finite: "кінцеві форми",
-                       Inf: "інфінітив",
-                       Pres: "теперішній",
-                       Past: "минулий",
-                       PresPerf: "теперішній доконаний",
-                       Imp: "імператив",
-                       PerfPart: "дієприкметник минулого часу",
-                       Fem: "жіночий рід",
-                       FemShort: "жіночий",
-                       Masc: "чоловічий рід",
-                       MascShort: "чоловічий",
-                       MascFem: "чоловічий/ жіночий рід",
-                       Neuter: "середній рід",
-                       NeuterShort: "середній",
-                       PresPart: "дієприкметник теперішнього часу",
-                       Deg: "ступені порівняння",
-                       Pos: "звичайний",
-                       Cmp: "вищий",
-                       Sup: "найвищий",
-                       SupInd: "найвищий неозначений",
-                       SupDef: "найвищий означений",
-                       Nom: "суб’єкт",
-                       Acc: "об’єкт",
-                       Uninfl: "незмінні"
-                     }
-
-export function tagToName (tag, language) {
-    switch (language) {
-    case 'nob':
-        return tagNames_nob[tag]
-    case 'nno':
-        return tagNames_nno[tag]
-    case 'eng':
-        return tagNames_eng[tag]
-    case 'ukr':
-        return tagNames_ukr[tag]
-    }
-}
-
-const posNames_nor = { NOUN: "substantiv",
-                       PROPN: "prop",
-                       VERB: "verb",
-                       ADJ: "adjektiv",
-                       ADV: "adverb",
-                       ADP: "preposisjon",
-                       INTJ: "interjeksjon",
-                       DET: "determinativ",
-                       PRON: "pronomen",
-                       CCONJ: "konjunksjon",
-                       SCONJ: "subjunksjon",
-                       SYM: "symbol",
-                       INFM: "infinitivsmerke"
-                     }
-
-const posNames_eng = { NOUN: "noun",
-                       PROPN: "proper noun",
-                       VERB: "verb",
-                       ADJ: "adjektive",
-                       ADV: "adverb",
-                       ADP: "preposition",
-                       INTJ: "interjection",
-                       DET: "determinative",
-                       PRON: "pronoun",
-                       CCONJ: "conjunction",
-                       SCONJ: "subjunction",
-                       SYM: "symbol",
-                       INFM: "infinitive marker"
-                     }
-
-const posNames_ukr = { NOUN: "іменник",
-                       PROPN: "власний іменник",
-                       VERB: "дієслово",
-                       ADJ: "прикметник",
-                       ADV: "прислівник",
-                       ADP: "прийменник",
-                       INTJ: "вигук",
-                       DET: "детермінатив",
-                       PRON: "займенник",
-                       CCONJ: "сполучник",
-                       SCONJ: "підрядний сполучник",
-                       SYM: "символ",
-                       INFM: "інфінітивний маркер"
-                     }
-
-export function posName (pos, language) {
-    switch (language) {
-    case 'nob':
-    case 'nno':
-        return posNames_nor[pos]
-    case 'eng':
-        return posNames_eng[pos]
-    case 'ukr':
-        return posNames_ukr[pos]
-    }
 }
 
 const indefArticle_nob = { Masc: "en",

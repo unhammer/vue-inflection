@@ -1,11 +1,12 @@
 <template>
 <tr>
-  <td class="infl-cell"
+  <td class="notranslate infl-cell"
       v-for="([rowspan,rowindex,forms], index) in rows"
       :key="index"
       :rowspan="rowspan"
-      :index="rowindex"
-      @mouseover.stop="hiliteRow(rowindex)">
+      :class="{hilite: $parent.hilited(rowindex, lemmaId)}"
+      @mouseover="$emit('hilite', rowindex, lemmaId)"
+      @mouseleave="$emit('unhilite')">
     <span class='comma'
           v-for="form in forms"
           :key="form">
@@ -17,13 +18,13 @@
 
 <script>
 
-import $ from 'jquery'
 import { inflectedForm
        } from './mixins/ordbankUtils.js' 
 
 export default {
     name: 'inflectionRowAdjAdv',
     props: ['paradigm','lemmaId'],
+    emits: ['hilite', 'unhilite'],
     data: function () {
         return {
             rows: [ this.inflForm(['Pos']),
@@ -35,10 +36,6 @@ export default {
     methods: {
         inflForm: function (tagList,exclTagList) {
             return inflectedForm(this.paradigm, tagList, exclTagList)
-        },
-        hiliteRow: function (rowindex) {
-            $('td[index]').removeClass('hilite')
-            rowindex.forEach(i => $('#lemma' + this.lemmaId + ' td[index*='+ i + ']').addClass('hilite'))
         }
     }
 }
