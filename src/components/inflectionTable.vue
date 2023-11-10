@@ -3,7 +3,7 @@
   <div class="infl-wrapper">
     <template v-if="isNoun">
         <table v-if="mq!='xs'" class="infl-table" :class="mq">
-          <caption class="caption">{{translate('caption.VERB')}}</caption>
+          <caption class="caption">{{translate('caption.NOUN')}}</caption>
           <thead :lang="lang">
             <tr>
               <th class="infl-label sub label-border-top-left" :class="mq"
