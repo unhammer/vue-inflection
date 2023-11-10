@@ -1,8 +1,9 @@
 stages:
   - publish
 
+image: node:latest
+
 publish:
-  image: node:latest
   stage: publish
   only:
   - tags
@@ -23,3 +24,12 @@ publish:
   - cp -r dist package/
   - cp -r src package/
   - tar -czvf module.tar.gz package/
+
+publish_vue3:
+  stage: publish
+  artifacts:
+    paths:
+      - components.tar.gz
+    expire_in: never
+  script:
+  - cp -r src/components vue-inflection && tar -czvf components.tar.gz vue-inflection
