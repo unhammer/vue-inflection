@@ -55,7 +55,7 @@ function appendTwoWordForms (wf1, wf2) {
         let res = wf1.map(w => w)
         wf2.forEach(w => { if (!wf1.find(x => x == w)) { res.push(w) } })
     }
-    if (Array.isArray(res)) res = res.sort((a,b) => a.localeCompare(b))
+    if (Array.isArray(res)) res = res.sort((a,b) => a.localeCompare(b, 'no'))
     return res
 }
 
@@ -393,4 +393,111 @@ function markdownCharToHTML (str,c,e,whole) {
         pos = i + c.length
     }
     return html + str.substring(pos)
+}
+
+// the paradigms that should be shown in the table
+// sort Masc < Fem < Neuter, then sort alphabetically by word_form (first elt if it is a list)
+export function getStandardParadigms (lemmaList, edit, includeNonStandard) {
+    let paradigms = []
+    lemmaList &&
+        lemmaList.
+        forEach(lemma =>
+            paradigms = paradigms.concat(
+                calculateStandardParadigms(lemma, edit, includeNonStandard)))
+    if (!paradigms.length) {
+        return []
+    }
+
+    let isNoun = paradigms[0].tags.find(t => t == 'NOUN') ||
+        lemmaList && lemmaList[0].paradigm_info[0].inflection_group == 'NOUN_regular'
+    
+    let concat_wordforms = function (infl) {
+        let chain = ''
+        for (let i = 0; i < infl.length; i++) {
+            let wf = infl[i].word_form
+            if (wf == 'Masc' || wf == 'MascShort') { // Masc < Fem < Neuter
+                chain += 'a#'
+            } else if (wf == 'Fem' || wf == 'FemShort') {
+                chain += 'b#'
+            } else if (wf == 'Neuter'|| wf == 'NeuterShort') {
+                chain += 'c#'
+            } else if (typeof wf == 'string') {
+                chain += wf + '#'
+            } else if (!wf) {
+                null
+            } else {
+                chain += wf[0] + '#'
+            }
+        }
+        return chain
+    }
+    
+    paradigms.forEach((p) => {
+        // cases like ‘et nynorsk’, see #406, #510
+        if (isNoun && p.tags.find(t=>t=='Uninfl') && p.inflection.length == 1) {
+            let standard = p.inflection[0].standardisation
+            p.inflection.push({ tags: ['Sing', 'Ind'],
+                                word_form: this.lemma.lemma,
+                                standardisation: standard })
+            p.inflection.push({ tags: ['Sing', 'Def'],
+                                word_form: '–',
+                                standardisation: standard })
+            p.inflection.push({ tags: ['Plur', 'Ind'],
+                                word_form: '–',
+                                standardisation: standard })
+            p.inflection.push({ tags: ['Plur', 'Def'],
+                                word_form: '–',
+                                standardisation: standard })
+        }
+    })
+
+    paradigms = paradigms.sort((p1,p2) => {
+        let chain1 = concat_wordforms(p1.inflection)
+        let chain2 = concat_wordforms(p2.inflection)
+        return chain1.localeCompare(chain2)
+    })
+
+    let currentTags = paradigms[0].tags
+    let currentInfl = paradigms[0].inflection.map(infl => {
+        infl.rowspan = 0
+        infl.index = []
+        return infl })
+    // merge equal cells by setting rowspan
+    paradigms.forEach((p,index) => {
+        for (let i = 0; i < p.inflection.length; i++) {
+            if (currentInfl[i] &&
+                p.inflection[i] &&
+                currentInfl[i].rowspan > 0 &&
+                word_formsEqual(currentInfl[i].word_form,
+                                p.inflection[i].word_form,
+                                currentTags,
+                                p.tags,
+                                hasTags(currentInfl[i], ['Sing','Ind']) // no vertical merge
+                               )
+               ) {
+                currentInfl[i].index.push(index+1) // remember paradigm row, for hiliting
+                currentInfl[i].rowspan++
+                if (p.inflection[i].standardisation == 'STANDARD') {
+                    currentInfl[i].standardisation = 'STANDARD'
+                }
+                if (isNoun) {
+                    let gender = p.tags[1]
+                    if (!currentInfl[i].gender.find(g=>g==gender)) {
+                        currentInfl[i].gender.push(gender)
+                    }
+                }
+                p.inflection[i].rowspan = 0
+            } else {
+                currentInfl[i] = p.inflection[i]
+                currentInfl[i].index = []
+                currentInfl[i].index.push(index+1) // remember paradigm row, for hiliting
+                currentInfl[i].rowspan = 1
+                if (isNoun) {
+                    let gender = p.tags[1]
+                    currentInfl[i].gender = [gender]
+                }
+            }
+        }
+    })
+    return paradigms
 }

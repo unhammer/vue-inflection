@@ -2,79 +2,69 @@
 <div :id="'lemma'+lemma.id">
   <div class="infl-wrapper">
     <template v-if="isNoun">
-      <div v-if="mq!='xs'"
-           class="infl-wordclass"
-           :class="mq">
-        <div>
-          <table class="infl-table" :class="mq">
-            <caption class="caption">{{translate('caption.NOUN')}}</caption>
-            <thead>
-              <tr>
-                <th class="infl-label sub label-border-top-left" :class="mq"
-                    v-if="!nounGender && hasGender"
-                    :id="'Gender'+lemma.id"
-                    scope="col"
-                    rowspan='2'>{{translate('tags.Gender')}}</th>
-                <th v-if="hasSing"
-                    :id="'Sing'+lemma.id"
-                    class="infl-label label-border-top-left" :class="mq"
-                    scope="col"
-                    :colspan='hasDef?2:1'>
-                  {{translate('tags.Sing')}}</th>
-                <th v-if="hasPlur"
-                    :id="'Plur'+lemma.id"
-                    class="infl-label label-border-top-right"
-                    :class="mq" scope="col"
-                    :colspan='hasDef?2:1'>
-                  {{translate('tags.Plur')}}</th>
-              </tr>
-              <tr>
-                <th v-if="hasSing"
-                    :id="'SingInd'+lemma.id"
-                    class="infl-label sub label-border-bottom" scope="col" :class="mq">
-                  {{translate('tags.Ind')}} {{translate('tags.Form')}}
-                </th>
-                <th v-if="hasDef && hasSing"
-                    :id="'SingDef'+lemma.id"
-                    class="infl-label sub label-border-bottom" scope="col" :class="mq">
-                  {{translate('tags.Def')}} {{translate('tags.Form')}}
-                </th>
-                <th v-if="hasPlur" class="infl-label sub label-border-bottom"
-                    :id="'PlurInd'+lemma.id"
-                    scope="col" :class="mq">
-                  {{translate('tags.Ind')}} {{translate('tags.Form')}}
-                </th>
-                <th v-if="hasDef && hasPlur"
-                    class="infl-label sub label-border-bottom"
-                    :id="'PlurDef'+lemma.id"
-                    scope="col" :class="mq">
-                  {{translate('tags.Def')}} {{translate('tags.Form')}}
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <inflectionRowNoun v-for="(paradigm, index) in standardParadigms"
-                                 :key="index"
-                                 :showGender="!nounGender"
-                                 :dict="dict"
-                                 :translate="translate"
-                                 :lemma="lemma"
-                                 :hasDef="hasDef"
-                                 :hasSing="hasSing"
-                                 :hasPlur="hasPlur"
-                                 :paradigm="paradigm"
-                                 @hilite="hilite"
-                                 @unhilite="unhilite"
-                                 />
-            </tbody>
-          </table>
-        </div>
-    </div>
-    <div v-else
-         class="infl-wordclass"
-         :class="mq">
-      <div>
-        <table class="infl-table" :class="mq">
+        <table v-if="mq!='xs'" class="infl-table" :class="mq">
+          <caption class="caption">{{translate('caption.VERB')}}</caption>
+          <thead :lang="lang">
+            <tr>
+              <th class="infl-label sub label-border-top-left" :class="mq"
+                  v-if="!nounGender && hasGender"
+                  :id="'Gender'+lemma.id"
+                  scope="col"
+                  rowspan='2'>{{translate('tags.Gender')}}</th>
+              <th v-if="hasSing"
+                  :id="'Sing'+lemma.id"
+                  class="infl-label label-border-top-left" :class="mq"
+                  scope="col"
+                  :colspan='hasDef?2:1'>
+                {{translate('tags.Sing')}}</th>
+              <th v-if="hasPlur"
+                  :id="'Plur'+lemma.id"
+                  class="infl-label label-border-top-right"
+                  :class="mq" scope="col"
+                  :colspan='hasDef?2:1'>
+                {{translate('tags.Plur')}}</th>
+            </tr>
+            <tr>
+              <th v-if="hasSing"
+                  :id="'SingInd'+lemma.id"
+                  class="infl-label sub label-border-bottom" scope="col" :class="mq">
+                {{translate('tags.Ind')}} {{translate('tags.Form')}}
+              </th>
+              <th v-if="hasDef && hasSing"
+                  :id="'SingDef'+lemma.id"
+                  class="infl-label sub label-border-bottom" scope="col" :class="mq">
+                {{translate('tags.Def')}} {{translate('tags.Form')}}
+              </th>
+              <th v-if="hasPlur" class="infl-label sub label-border-bottom"
+                  :id="'PlurInd'+lemma.id"
+                  scope="col" :class="mq">
+                {{translate('tags.Ind')}} {{translate('tags.Form')}}
+              </th>
+              <th v-if="hasDef && hasPlur"
+                  class="infl-label sub label-border-bottom"
+                  :id="'PlurDef'+lemma.id"
+                  scope="col" :class="mq">
+                {{translate('tags.Def')}} {{translate('tags.Form')}}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <inflectionRowNoun v-for="(paradigm, index) in standardParadigms"
+                                :key="index"
+                                :showGender="!nounGender"
+                                :dict="dict"
+                                :translate="translate"
+                                :lemma="lemma"
+                                :hasDef="hasDef"
+                                :hasSing="hasSing"
+                                :hasPlur="hasPlur"
+                                :paradigm="paradigm"
+                                @hilite="hilite"
+                                @unhilite="unhilite"
+                                />
+          </tbody>
+        </table>
+        <table v-else class="infl-table" :class="mq">
           <inflectionRowsNoun v-for="(tags, index) in inflTagsNoun"
                               :key="index"
                               :showGender="!nounGender"
@@ -87,16 +77,13 @@
                               @unhilite="unhilite"
                               />
         </table>
-      </div>
-    </div>
   </template>
   <template v-if="lemma && lemma.word_class=='VERB'">
-    <div v-if="mq!='xs'"
-           class="infl-wordclass" :class="mq">
+    <template v-if="mq!='xs'">
       <div v-for="i in mq=='xs' ? [1,2] : [0]" :key="i">
         <table class="infl-table" :class="mq">
-          <caption class="caption">{{translate('caption.NOUN')}}</caption>
-          <thead>
+          <caption class="caption">{{translate('caption.VERB')}}</caption>
+          <thead :lang="lang">
             <tr>
               <th v-if="!i || i==1" class="infl-label label-border-top-left" :class="mq">{{translate('tags.Inf')}}</th>
               <th v-if="!i || i==1" class="infl-label label-border-top" :class="mq">{{translate('tags.Pres')}}</th>
@@ -118,8 +105,8 @@
       </div>
       <div v-for="j in mq=='xs' ? [3,4] : [-1]" :key="j">
         <table class="infl-table" :class="mq">
-          <caption class="caption">{{translate('caption.NOUN')}}</caption>
-          <thead>
+          <caption class="caption">{{translate('caption.VERBPP')}}</caption>
+          <thead :lang="lang">
             <template v-if="hasPerfPart">
               <tr>
                 <th class="infl-label label-border-top-left"
@@ -174,6 +161,7 @@
                                      :part="j"
                                      :translate="translate"
                                      :dict="dict"
+                                     :lang="lang"
                                      :hasPerfPart="hasPerfPart"
                                      :hasPerfPartFem="hasPerfPartFem"
                                      :lemmaId="lemma.id"
@@ -184,31 +172,25 @@
           </tbody>
         </table>
       </div>
-    </div>
-    <div v-else
-         class="infl-wordclass" :class="mq">
-      <div>
-        <table class="infl-table" :class="mq" >
-          <inflectionRowsVerb v-for="(tags, index) in inflTagsVerb"
-                              :key="index"
-                              :tags="tags"
-                              :translate="translate"
-                              :lemmaId="lemma.id"
-                              :paradigms="standardParadigms"
-                              @hilite="hilite"
-                              @unhilite="unhilite"/>
-        </table>
-      </div>
-    </div>
+    </template>
+    <table v-else class="infl-table" :class="mq" >
+      <inflectionRowsVerb v-for="(tags, index) in inflTagsVerb"
+                          :key="index"
+                          :tags="tags"
+                          :translate="translate"
+                          :lang="lang"
+                          :lemmaId="lemma.id"
+                          :paradigms="standardParadigms"
+                          @hilite="hilite"
+                          @unhilite="unhilite"/>
+    </table>
   </template>
   <template v-if="lemma && lemma.word_class=='ADJ'">
-    <div v-if="mq!='xs'"
-           class="infl-wordclass"
-           :class="mq">
-      <div v-if="hasSingAdj || hasPlur">
+    <div v-if="mq!='xs'">
+      <template v-if="hasSingAdj || hasPlur">
         <table class="infl-table" :class="mq">
           <caption class="caption">{{translate('caption.ADJ')}}</caption>
-          <thead>
+          <thead :lang="lang">
             <tr>
               <th v-if="hasSingAdj"
                   class="infl-label label-border-top-left"
@@ -272,11 +254,11 @@
                               @unhilite="unhilite"/>
           </tbody>
         </table>
-      </div>
-      <div v-if="hasDeg">
+      </template>
+      <template v-if="hasDeg">
         <table class="infl-table" :class="mq">
           <caption class="caption">{{translate('caption.ADJCS')}}</caption>
-          <thead>
+          <thead :lang="lang">
             <tr>
               <th class="infl-label label-border-top-left-right"
                   v-if="hasDeg"
@@ -313,32 +295,25 @@
                                  @unhilite="unhilite"/>
           </tbody>
         </table>
-      </div>
+      </template>
     </div>
-    <div v-else
-      class="infl-wordclass" :class="mq">
-      <div>
-        <table class="infl-table" :class="mq" >
-          <inflectionRowsAdj v-for="(tags, index) in inflTagsAdj"
-                             :key="index"
-                             :tags="tags"
-                             :translate="translate"
-                             :lemmaId="lemma.id"
-                             :paradigms="standardParadigms"
-                             @hilite="hilite"
-                             @unhilite="unhilite"/>
-        </table>
-      </div>
-    </div>
+    <table v-else class="infl-table" :class="mq" >
+      <inflectionRowsAdj v-for="(tags, index) in inflTagsAdj"
+                          :key="index"
+                          :tags="tags"
+                          :translate="translate"
+                          :lemmaId="lemma.id"
+                          :paradigms="standardParadigms"
+                          @hilite="hilite"
+                          @unhilite="unhilite"/>
+    </table>
   </template>
   <template v-if="lemma && lemma.word_class=='ADV' && isADJ_Adv">
-    <div v-if="mq!='xs'"
-           class="infl-wordclass"
-           :class="mq">
-      <div v-if="hasDeg">
+    <template v-if="mq!='xs'">
+      <template v-if="hasDeg">
         <table class="infl-table" :class="mq">
           <caption class="caption">{{translate('caption.ADV')}}</caption>
-          <thead>
+          <thead :lang="lang">
             <tr>
               <th class="infl-label label-border-bottom">
                 {{translate('tags.Pos')}}
@@ -360,31 +335,23 @@
                                  @unhilite="unhilite"/>
           </tbody>
         </table>
-      </div>
-    </div>
-    <div v-else
-      class="infl-wordclass" :class="mq">
-      <div>
-        <table class="infl-table" :class="mq" >
-          <inflectionRowsAdj v-for="(tags, index) in inflTagsAdjAdv"
-                             :key="index"
-                             :tags="tags"
-                             :lemmaId="lemma.id"
-                             :paradigms="standardParadigms"
-                             @hilite="hilite"
-                             @unhilite="unhilite"/>
-        </table>
-      </div>
-    </div>
+      </template>
+    </template>
+    <table v-else class="infl-table" :class="mq" >
+      <inflectionRowsAdj v-for="(tags, index) in inflTagsAdjAdv"
+                          :key="index"
+                          :tags="tags"
+                          :lemmaId="lemma.id"
+                          :paradigms="standardParadigms"
+                          @hilite="hilite"
+                          @unhilite="unhilite"/>
+    </table>
   </template>
   <template v-if="lemma && lemma.word_class=='PRON' && standardParadigms[0] && standardParadigms[0].inflection">
-    <div v-if="mq!='xs'"
-         class="infl-wordclass"
-         :class="mq">
-      <div>
+    <template v-if="mq!='xs'">
         <table class="infl-table" :class="mq">
           <caption class="caption">{{translate('caption.PRON')}}</caption>
-          <thead>
+          <thead :lang="lang">
             <tr>
               <th v-if="hasNom" class="infl-label sub label-border-top-left">
                 {{translate('tags.Nom')}}
@@ -406,126 +373,101 @@
                                @unhilite="unhilite"/>
           </tbody>
         </table>
-      </div>
-    </div>
-    <div v-else
-         class="infl-wordclass"
-         :class="mq">
-      <div>
-        <table class="infl-table" :class="mq">
-          <inflectionRowsPron v-for="(tags, index) in inflTagsPron"
-                              :key="index"
-                              :tags="tags"
-                              :translate="translate"
-                              :lemmaId="lemma.id"
-                              :paradigms="standardParadigms"
-                              @hilite="hilite"
-                              @unhilite="unhilite"/>
-        </table>
-      </div>
-    </div>
+    </template>
+    <table v-else class="infl-table" :class="mq">
+      <inflectionRowsPron v-for="(tags, index) in inflTagsPron"
+                          :key="index"
+                          :tags="tags"
+                          :translate="translate"
+                          :lemmaId="lemma.id"
+                          :paradigms="standardParadigms"
+                          @hilite="hilite"
+                          @unhilite="unhilite"/>
+    </table>
   </template>
   <template v-if="lemma && lemma.word_class=='DET' && !isUninflected">
-    <div v-if="mq!='xs'"
-         class="infl-wordclass"
-         :class="mq">
-      <div>
-        <table class="infl-table" :class="mq">
-          <caption class="caption">{{translate('caption.DET')}}</caption>
-          <thead>
-            <tr>
-              <th v-if="hasSing"
-                  class="infl-label label-border-top-left" :class="mq"
-                  id="Sing"
-                  scope="col"
-                  :colspan="DETColspan">
-                {{translate('tags.Sing')}}
-              </th>
-              <th v-if="hasPlur"
-                  class="infl-label label-border-top-right" :class="mq"
-                  id="Plur"
-                  scope="col"
-                  :rowspan="hasSing?2:1">
-                {{translate('tags.Plur')}}
-              </th>
-            </tr>
-            <tr v-if="hasSing">
-              <th v-if="hasMasc"
-                  class="infl-label sub label-border-bottom" :class="mq"
-                  id="Masc"
-                  scope="col">
-                {{translate('tags.Masc')}}
-              </th>
-              <th v-if="hasFem"
-                  class="infl-label sub label-border-bottom" :class="mq"
-                  id="Fem"
-                  scope="col">
-                {{translate('tags.Fem')}}
-              </th>
-              <th v-if="hasNeuter"
-                  class="infl-label sub label-border-bottom" :class="mq"
-                  id="Neuter"
-                  scope="col">
-                {{translate('tags.Neuter')}}
-              </th>
-              <th v-if="hasDef"
-                  class="infl-label sub label-border-bottom" :class="mq"
-                  id="Def"
-                  scope="col">
-                {{translate('tags.Def')}} {{translate('tags.Form')}}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <inflectionRowDet v-for="(paradigm, index) in standardParadigms"
-                              :key="index"
-                              :lemmaId="lemma.id"
-                              :paradigm="paradigm"/>
-          </tbody>
-        </table>
-      </div>
-    </div>
-    <div v-else
-         class="infl-wordclass"
-         :class="mq">
-      <div>
-        <table class="infl-table" :class="mq">
-          <inflectionRowsDet v-for="(tags, index) in inflTagsDet"
-                             :key="index"
-                             :tags="tags"
-                             :translate="translate"
-                             :lemmaId="lemma.id"
-                             :paradigms="standardParadigms"/>
-        </table>
-      </div>
-    </div>
+    <table v-if="mq!='xs'" class="infl-table" :class="mq">
+      <caption class="caption">{{translate('caption.DET')}}</caption>
+      <thead :lang="lang">
+        <tr>
+          <th v-if="hasSing"
+              class="infl-label label-border-top-left" :class="mq"
+              id="Sing"
+              scope="col"
+              :colspan="DETColspan">
+            {{translate('tags.Sing')}}
+          </th>
+          <th v-if="hasPlur"
+              class="infl-label label-border-top-right" :class="mq"
+              id="Plur"
+              scope="col"
+              :rowspan="hasSing?2:1">
+            {{translate('tags.Plur')}}
+          </th>
+        </tr>
+        <tr v-if="hasSing">
+          <th v-if="hasMasc"
+              class="infl-label sub label-border-bottom" :class="mq"
+              id="Masc"
+              scope="col">
+            {{translate('tags.Masc')}}
+          </th>
+          <th v-if="hasFem"
+              class="infl-label sub label-border-bottom" :class="mq"
+              id="Fem"
+              scope="col">
+            {{translate('tags.Fem')}}
+          </th>
+          <th v-if="hasNeuter"
+              class="infl-label sub label-border-bottom" :class="mq"
+              id="Neuter"
+              scope="col">
+            {{translate('tags.Neuter')}}
+          </th>
+          <th v-if="hasDef"
+              class="infl-label sub label-border-bottom" :class="mq"
+              id="Def"
+              scope="col">
+            {{translate('tags.Def')}} {{translate('tags.Form')}}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <inflectionRowDet v-for="(paradigm, index) in standardParadigms"
+                          :key="index"
+                          :lemmaId="lemma.id"
+                          :paradigm="paradigm"/>
+      </tbody>
+    </table>
+    <table v-else class="infl-table" :class="mq">
+      <inflectionRowsDet v-for="(tags, index) in inflTagsDet"
+                          :key="index"
+                          :tags="tags"
+                          :translate="translate"
+                          :lemmaId="lemma.id"
+                          :paradigms="standardParadigms"/>
+    </table>
   </template>
   <template v-if="lemma && isUninflected && !isADJ_Adv">
-    <div class="infl-wordclass" :class="mq">
-      <div>
-        <table class="infl-table" :class="mq">
-          <caption class="caption">{{translate('caption.ADV')}}</caption>
-          <thead>
-            <tr>
-              <th class="infl-label label-border">{{translate('tags.Uninfl')}}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="infl-cell label-border">{{lemma.lemma}}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+    <table class="infl-table" :class="mq">
+      <caption class="caption">{{translate('caption.ADV')}}</caption>
+      <thead :lang="lang">
+        <tr>
+          <th class="infl-label label-border">{{translate('tags.Uninfl')}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="infl-cell label-border">{{lemma.lemma}}</td>
+        </tr>
+      </tbody>
+    </table>
   </template>
   </div>
 </div>
 </template>
 
 <script>
-
-
 
 import inflectionRowNoun from './inflectionRowNoun.vue'
 import inflectionRowAdj from './inflectionRowAdj.vue'
@@ -539,13 +481,13 @@ import inflectionRowDet from './inflectionRowDet.vue'
 import inflectionRowsNoun from './inflectionRowsNoun.vue'
 import inflectionRowsVerb from './inflectionRowsVerb.vue'
 import inflectionRowsAdj from './inflectionRowsAdj.vue'
-// import inflectionRowsAdjAdv from './inflectionRowsAdjAdv.vue'
 import inflectionRowsPron from './inflectionRowsPron.vue'
 import inflectionRowsDet from './inflectionRowsDet.vue'
 
 
-import { calculateStandardParadigms,
-         word_formsEqual, hasTags, hasInflForm, markdownToHTML
+import { getStandardParadigms,
+         hasInflForm,
+         markdownToHTML
        } from './mixins/ordbankUtils.js'
 
 export default {
@@ -569,14 +511,16 @@ export default {
             'mq',        // media query screen size
             'context',   // show participle context?
             'locale',
+            'langTag',
             'customTranslate',
             'includeNonStandard'
            ],
     data: function () {
         return { dict: this.lemmaList ? this.lemmaList[0].language : null,
                  translate: this.customTranslate || this.defaultTranslate,
+                 lang: this.langTag || this.locale || this.$i18n.locale,
                  hasFem: this.hasInflForm(['Fem']),
-                 hasNeuter: this.hasInflForm(['Neuter']),
+                 hasNeuter: this.hasInflForm(['Neuter']) && !this.hasInflForm(['Nom']),
                  hasMasc: this.hasInflForm(['Masc']),
                  hasDeg: this.hasInflForm(['Cmp']),
                  hasDef: this.hasInflForm(['Def']),
@@ -714,7 +658,7 @@ export default {
                     this.hasPerfPartDef ? { block: 'PerfPart', label: 'Plur', tags: ['Adj','Plur']} : null,
                     this.hasPresPart ? { title: 'PresPart' } : null,
                     this.hasPresPart ? { block: 'PresPart', tags: ['Adj','<PresPart>'] } : null,
-                   ].filter(r => r)
+                   ].filter(r=>r)
         },
         inflTagsAdj: function () {
             return [ this.hasSingAdj ? { title: 'Sing' } : null,
@@ -780,114 +724,8 @@ export default {
             }
             return info
             },
-        // the paradigms that should be shown in the table
-        // sort Masc < Fem < Neuter, then sort alphabetically by word_form (first elt if it is a list)
         getStandardParadigms: function () {
-            if (this.paradigms) {
-                return this.paradigms
-            }
-            let paradigms = []
-            this.lemmaList &&
-                this.lemmaList.
-                forEach(lemma =>
-                        paradigms = paradigms.concat(
-                            calculateStandardParadigms(lemma, this.edit, this.includeNonStandard)))
-            if (!paradigms.length) {
-                return []
-            }
-
-            let isNoun = paradigms[0].tags.find(t => t == 'NOUN') ||
-                this.lemmaList && this.lemmaList[0].paradigm_info[0].inflection_group == 'NOUN_regular'
-            
-            let concat_wordforms = function (infl) {
-                let chain = ''
-                for (let i = 0; i < infl.length; i++) {
-                    let wf = infl[i].word_form
-                    if (wf == 'Masc' || wf == 'MascShort') { // Masc < Fem < Neuter
-                        chain += 'a#'
-                    } else if (wf == 'Fem' || wf == 'FemShort') {
-                        chain += 'b#'
-                    } else if (wf == 'Neuter'|| wf == 'NeuterShort') {
-                        chain += 'c#'
-                    } else if (typeof wf == 'string') {
-                        chain += wf + '#'
-                    } else if (!wf) {
-                        null
-                    } else {
-                        chain += wf[0] + '#'
-                    }
-                }
-                return chain
-            }
-            
-            paradigms.forEach((p) => {
-                // cases like ‘et nynorsk’, see #406, #510
-                if (isNoun && p.tags.find(t=>t=='Uninfl') && p.inflection.length == 1) {
-                    let standard = p.inflection[0].standardisation
-                    p.inflection.push({ tags: ['Sing', 'Ind'],
-                                        word_form: this.lemma.lemma,
-                                        standardisation: standard })
-                    p.inflection.push({ tags: ['Sing', 'Def'],
-                                        word_form: '–',
-                                        standardisation: standard })
-                    p.inflection.push({ tags: ['Plur', 'Ind'],
-                                        word_form: '–',
-                                        standardisation: standard })
-                    p.inflection.push({ tags: ['Plur', 'Def'],
-                                        word_form: '–',
-                                        standardisation: standard })
-                }
-            })
-
-            paradigms = paradigms.sort((p1,p2) => {
-                let chain1 = concat_wordforms(p1.inflection)
-                let chain2 = concat_wordforms(p2.inflection)
-                return chain1.localeCompare(chain2)
-            })
-
-            let currentTags = paradigms[0].tags
-            let currentInfl = paradigms[0].inflection.map(infl => {
-                infl.rowspan = 0
-                infl.index = []
-                return infl })
-            // merge equal cells by setting rowspan
-            paradigms.forEach((p,index) => {
-                for (let i = 0; i < p.inflection.length; i++) {
-                    if (currentInfl[i] &&
-                        p.inflection[i] &&
-                        currentInfl[i].rowspan > 0 &&
-                        word_formsEqual(currentInfl[i].word_form,
-                                        p.inflection[i].word_form,
-                                        currentTags,
-                                        p.tags,
-                                        hasTags(currentInfl[i], ['Sing','Ind']) // no vertical merge
-                                       )
-                       ) {
-                        currentInfl[i].index.push(index+1) // remember paradigm row, for hiliting
-                        currentInfl[i].rowspan++
-                        if (p.inflection[i].standardisation == 'STANDARD') {
-                            currentInfl[i].standardisation = 'STANDARD'
-                        }
-                        if (isNoun) {
-                            let gender = p.tags[1]
-                            if (!currentInfl[i].gender.find(g=>g==gender)) {
-                                currentInfl[i].gender.push(gender)
-                            }
-                        }
-                        p.inflection[i].rowspan = 0
-                    } else {
-                        currentInfl[i] = p.inflection[i]
-                        currentInfl[i].index = []
-                        currentInfl[i].index.push(index+1) // remember paradigm row, for hiliting
-                        currentInfl[i].rowspan = 1
-                        if (isNoun) {
-                            let gender = p.tags[1]
-                            currentInfl[i].gender = [gender]
-                        }
-                    }
-                }
-            })
-            return paradigms
+            return this.paradigms || getStandardParadigms(this.lemmaList, this.edit, this.includeNonStandard)
         },
         isNeuterPron: function () {
             let paradigms = this.getStandardParadigms()
@@ -900,8 +738,7 @@ export default {
             return neuter
         },
         getGender: function () {
-            let paradigms = this.getStandardParadigms()
-            // let isNoun = paradigms[0] ? paradigms[0].tags.find(t => t == 'NOUN') : null
+            let paradigms = getStandardParadigms(this.lemmaList)
             paradigms.forEach(p => {
                 if (this.isNoun) {
                     let gender = p.tags[1]
