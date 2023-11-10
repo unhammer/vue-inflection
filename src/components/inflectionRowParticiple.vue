@@ -68,7 +68,7 @@ export default {
     methods: {
         inflForm: function (tagList,prefix,suffix,headers) {
             let forms = inflectedForm(this.paradigm, tagList)
-            if (forms) {
+            if (forms[0]) {
                 return [prefix, forms, suffix, headers]
             } else {
                 return null
