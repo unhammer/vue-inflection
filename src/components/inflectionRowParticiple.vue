@@ -13,7 +13,7 @@
       <span class='comma'
             v-for="(form, index) in forms"
             :key="index">
-        <em v-if="prefix" class="context">{{prefix}} </em>
+        <em v-if="prefix" class="context">{{prefix}}&nbsp;</em>
         <span :style="form=='-' ? 'color: white':''">{{form}}</span>
         <em v-if="suffix" :lang="lang" translate="yes" class="context nobr"> {{suffix}}</em>
       </span>
