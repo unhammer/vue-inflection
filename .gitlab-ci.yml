@@ -27,6 +27,9 @@ publish:
 
 publish_vue3:
   stage: publish
+  only:
+  - tags
+  - vue3-dev
   artifacts:
     paths:
       - components.tar.gz
