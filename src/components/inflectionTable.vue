@@ -51,7 +51,7 @@
           <tbody>
             <inflectionRowNoun v-for="(paradigm, index) in standardParadigms"
                                 :key="index"
-                                :showGender="!nounGender"
+                                :showGender="!nounGender && hasGender"
                                 :dict="dict"
                                 :translate="translate"
                                 :lemma="lemma"
@@ -67,7 +67,7 @@
         <table v-else class="infl-table" :class="mq">
           <inflectionRowsNoun v-for="(tags, index) in inflTagsNoun"
                               :key="index"
-                              :showGender="!nounGender"
+                              :showGender="!nounGender && hasGender"
                               :tags="tags"
                               :dict="dict"
                               :translate="translate"

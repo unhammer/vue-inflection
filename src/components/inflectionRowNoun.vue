@@ -12,7 +12,7 @@
         @mouseover="$emit('hilite', rowindex, lemma.id)">
       <span class='comma'
             v-for="(form, i) in forms"
-            :key="i">{{translate('tags',  form)}}</span>
+            :key="i">{{form}}/{{translate('tags',  form)}}</span>
     </th>
     <td v-else
         class="notranslate infl-cell"
