@@ -308,7 +308,7 @@
                           @unhilite="unhilite"/>
     </table>
   </template>
-  <template v-if="lemma && lemma.word_class=='ADV' && isADJ_Adv">
+  <template v-if="lemma && lemma.word_class=='ADV' && isADV_adj">
     <template v-if="mq!='xs'">
       <template v-if="hasDeg">
         <table class="infl-table" :class="mq">
@@ -448,7 +448,7 @@
                           :paradigms="standardParadigms"/>
     </table>
   </template>
-  <template v-if="lemma && isUninflected && !isADJ_Adv">
+  <template v-if="lemma && isUninflected && !isADV_adj">
     <table class="infl-table" :class="mq">
       <caption class="caption">{{translate('caption.ADV')}}</caption>
       <thead :lang="lang">
@@ -507,7 +507,7 @@ export default {
                   inflectionRowsDet
                 },
     props: ['lemmaList', // list of JSON objects as returned from Ordbank API call, e.g.
-                         // https://clarino.uib.no/ordbank-api-prod/lemmas?query=<lemma_id>&stubs=false&language=nob
+            // https://clarino.uib.no/ordbank-api-prod/lemmas?query=<lemma_id>&stubs=false&language=nob
             'mq',        // media query screen size
             'context',   // show participle context?
             'locale',
@@ -535,10 +535,12 @@ export default {
                  hasImp: this.hasInflForm(['Imp']),
                  hasNom: this.hasInflForm(['Nom']),
                  hasAcc: this.hasInflForm(['Acc']),
-                 isUninflected: this.lemmaList && (!['NOUN','PROPN','ADJ','VERB','PRON','DET','ABBR']
-                                                   .find(wc=>wc==this.lemmaList[0].word_class) ||
-                                                   this.lemmaList[0].paradigm_info[0].inflection_group == 'DET_simple'
-                                                  ),
+                 isUninflected: this.lemmaList &&
+                 (!['NOUN','PROPN','ADJ','VERB','PRON','DET','ABBR']
+                  .find(wc=>wc==this.lemmaList[0].word_class) ||
+                  this.lemmaList[0].paradigm_info.find(pi=>pi.inflection_group == 'DET_simple'
+                                                       && !pi.to && pi.standardisation=='STANDARD')
+                 ),
                  show: false,
                  lemma: this.lemmaList && this.lemmaList[0],
                  paradigms: null,
@@ -618,8 +620,12 @@ export default {
             return this.lemma && (this.lemma.word_class=='NOUN' ||
                                   this.lemma.paradigm_info.find(pi=>pi.inflection_group == 'NOUN_regular'))
         },
-        isADJ_Adv: function () {
-            return this.lemmaList && this.lemmaList[0].paradigm_info[0].inflection_group == 'ADJ_adv'
+        isADV_adj: function () {
+            // return this.lemmaList && this.lemmaList[0].paradigm_info[0].inflection_group == 'ADJ_adv'
+            return this.lemmaList && this.lemmaList[0].paradigm_info
+                .find(pi => (pi.inflection_group == 'ADJ_adv' ||
+                             pi.inflection_group == 'ADV_adj') // the new name
+                      && !pi.to && pi.standardisation=='STANDARD')
         },
         inflTagsPron: function () {
             return this.isNeuterPron() ? this.inflTagsPronNeuter : this.inflTagsPronNonNeuter
