@@ -342,6 +342,7 @@
                           :key="index"
                           :tags="tags"
                           :lemmaId="lemma.id"
+                          :translate="translate"
                           :paradigms="standardParadigms"
                           @hilite="hilite"
                           @unhilite="unhilite"/>
