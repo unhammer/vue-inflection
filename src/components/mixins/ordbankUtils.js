@@ -437,7 +437,7 @@ export function getStandardParadigms (lemmaList, edit, includeNonStandard) {
         if (isNoun && p.tags.find(t=>t=='Uninfl') && p.inflection.length == 1) {
             let standard = p.inflection[0].standardisation
             p.inflection.push({ tags: ['Sing', 'Ind'],
-                                word_form: this.lemma.lemma,
+                                word_form: lemmaList[0].lemma,
                                 standardisation: standard })
             p.inflection.push({ tags: ['Sing', 'Def'],
                                 word_form: '–',
