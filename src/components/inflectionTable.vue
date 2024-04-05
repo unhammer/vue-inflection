@@ -675,7 +675,7 @@ export default {
                      { block: 'Sing', label: 'Def', tags: ['Pos','Def','Sing']},
                      { title: 'Plur'},
                      { block: 'Plur', tags: ['Pos','Plur']},
-                     { title: 'Deg'},
+                     this.hasDeg ? { title: 'Deg' } : null,
                      { block: 'Deg', label: 'Cmp', tags: ['Cmp']},
                      { block: 'Deg', label: 'SupInd', tags: ['Sup','Ind']},
                      { block: 'Deg', label: 'SupDef', tags: ['Sup','Def']}
