@@ -12,7 +12,8 @@
   "unpkg": "dist/inflection-table.min.js",
   "dependencies": {
     "core-js": "~3.6.5",
-    "vue": "^2.6.11"
+    "vue": "^3.4.25"
+    "@vue/compat": "^3.1.0"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^11.1.0",
@@ -25,7 +26,7 @@
     "eslint-plugin-vue": "^6.2.2",
     "rollup": "^1.17.0",
     "rollup-plugin-vue": "^5.0.1",
-    "vue": "^2.6.10",
-    "vue-template-compiler": "^2.6.11"
+    // "vue": "^3.4.25",
+    "@vue-compiler-sfc": "^3.1.0"
   }
 }
