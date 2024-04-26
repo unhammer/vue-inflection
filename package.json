@@ -12,7 +12,7 @@
   "unpkg": "dist/inflection-table.min.js",
   "dependencies": {
     "core-js": "~3.6.5",
-    "vue": "^3.4.25"
+    "vue": "^3.4.25",
     "@vue/compat": "^3.1.0"
   },
   "devDependencies": {
