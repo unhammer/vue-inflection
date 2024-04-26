@@ -26,7 +26,6 @@
     "eslint-plugin-vue": "^6.2.2",
     "rollup": "^1.17.0",
     "rollup-plugin-vue": "^5.0.1",
-    // "vue": "^3.4.25",
     "@vue-compiler-sfc": "^3.1.0"
   }
 }
