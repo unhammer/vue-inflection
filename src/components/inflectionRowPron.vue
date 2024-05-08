@@ -5,6 +5,7 @@
       :key="index"
       :rowspan="rowspan"
       :class="{hilite: $parent.hilited(rowindex, lemmaId)}"
+      :data-rowindex="rowindex.join(',')"
       @mouseover="$emit('hilite', rowindex, lemmaId)"
       @mouseleave="$emit('unhilite')">
     <span class='comma'

@@ -2,6 +2,7 @@
 <tr>
   <td class="notranslate infl-cell left"
       :class="{'merge-right': forms[0]==='-', 'non-standard': paradigm.standardisation!='STANDARD', hilite: $parent.hilited(rowindex, lemmaId)}"
+      :data-rowindex="rowindex.join(',')"
       v-for="([prefix, [rowspan,rowindex,forms,gender,standardisation], suffix, headers], index) in rows"
       :key="index"
       :rowspan="rowspan"
