@@ -14,6 +14,7 @@
           scope="row"
           :colspan="rowspan"
           :class="{hilite: $parent.hilited(rowindex, lemmaId)}"
+          :data-rowindex="rowindex.join(',')"
           @mouseover="$emit('hilite', rowindex, lemmaId)"
           @mouseleave="$emit('unhilite')">
         <span v-html="formattedForm(tags,forms[0])"/>
@@ -24,6 +25,7 @@
           :colspan="rowspan"
           :headers="headers"
           :class="{hilite: $parent.hilited(rowindex, lemmaId)}"
+          :data-rowindex="rowindex.join(',')"
           @mouseover="$emit('hilite', rowindex, lemmaId)"
           @mouseleave="$emit('unhilite')">
         <span class='comma'

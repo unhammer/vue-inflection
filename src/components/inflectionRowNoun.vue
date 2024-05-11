@@ -9,6 +9,7 @@
         :key="index"
         :rowspan="rowspan"
         :class="{hilite: $parent.hilited(rowindex, lemma.id)}"
+        :data-rowindex="rowindex.join(',')"
         @mouseover="$emit('hilite', rowindex, lemma.id)">
       <span class='comma'
             v-for="(form, i) in forms"
@@ -20,6 +21,7 @@
         :key="index + 'else'"
         :rowspan="rowspan"
         :class="{hilite: $parent.hilited(rowindex, lemma.id)}"
+        :data-rowindex="rowindex.join(',')"
         @mouseover="$emit('hilite', rowindex, lemma.id)"
         @mouseleave="$emit('unhilite')">
        <span v-if="standardisation!='STANDARD'">(</span>
